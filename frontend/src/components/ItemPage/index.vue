@@ -1,5 +1,5 @@
 <template>
-  <ProductPageLayout>
+  <ItemPageLayout>
     <template #content>
       <div class="product-details">
         <img :src="product.image" alt="Product image" />
@@ -12,12 +12,12 @@
         </div>
       </div>
     </template>
-  </ProductPageLayout>
+  </ItemPageLayout>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import ProductPageLayout from './ProductPageLayout.vue';
+import ItemPageLayout from './ItemPageLayout.vue';
 import { useRoute } from 'vue-router';
 
 const product = ref({
