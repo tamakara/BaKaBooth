@@ -9,3 +9,7 @@ body {
 .el-button {
     padding: 0;
 }
+
+.el-button .el-icon + span {
+    margin-left: 0;
+}

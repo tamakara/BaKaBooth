@@ -6,9 +6,7 @@
     <el-main>
       <slot/>
     </el-main>
-    <el-footer>
-    xxx
-    </el-footer>
+    <el-footer></el-footer>
   </el-container>
 </template>
 
@@ -19,6 +17,15 @@ import HeaderBar from '../common/HeaderBar.vue';
 <style scoped>
 .el-container {
   height: 100vh;
+}
+
+.el-header {
+  height: 60px;
+  width: 100vw;
+}
+
+.el-footer {
+  height: 0px
 }
 
 </style>

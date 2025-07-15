@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory, type RouteRecordRaw} from 'vue-router'
 
-import HomePage from '@/components/HomePage/index.vue'
+import HomePage from '@/components/HomePage/HomePage.vue'
 import ItemPage from '@/components/ItemPage/index.vue'
 import ShopPage from '@/components/ShopPage/index.vue'
 import CartPage from '@/components/CartPage/index.vue'

@@ -1,112 +1,111 @@
 <template>
-  <div class="header-bar test">
-    <el-button class="logo" @click="goToHome">
-      <span class="logo-text test">BaKaBooth</span>
-    </el-button>
+  <div class="header-bar">
+    <div class="logo">
+      <el-button class="logo-btn" color="#fc4d50" @click="goToHome">
+        <span class="logo-text">BaKaBooth</span>
+      </el-button>
+    </div>
 
-    <el-input class="search-container test" type="text" placeholder="搜索商品"/>
 
+    <el-input
+        class="search"
+        type="text"
+        placeholder="搜索商品"
+    />
 
-    <div class="user-actions test">
+    <div class="nav">
       <el-button
-          :icon="ShoppingCart"
-          class="icon-button"
-          @click="goToCart"
-      ></el-button>
-      <el-button
-          :icon="Star"
-          class="icon-button"
-          @click="goToFavorites"
-      ></el-button>
-      <el-button
-          :icon="TakeawayBox"
-          class="icon-button"
-          @click="goToOrders"
-      ></el-button>
-      <el-button
-          :icon="User"
-          class="icon-button"
-          @click="goToAccount"
-      ></el-button>
+          class="nav-button"
+          v-for="(btn,index) in nav"
+          :key="index"
+          :icon="btn.icon"
+          @click="btn.goto"
+      >
+        <span class="nav-button-text">{{ btn.title }}</span>
+      </el-button>
+      <el-button>
+        <template #icon>
+          用户
+        </template>
+      </el-button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import {useRouter} from 'vue-router';
-import {ShoppingCart, Star, TakeawayBox, User} from "@element-plus/icons-vue";
+import {ShoppingCart, Star, List} from "@element-plus/icons-vue";
 
 const router = useRouter();
 
+const nav = [
+  {title: '购物车', icon: ShoppingCart, goto: () => router.push({name: 'cart'})},
+  {title: '收藏夹', icon: Star, goto: () => router.push({name: 'favorites'})},
+  {title: '订单', icon: List, goto: () => router.push({name: 'orders'})},
+]
+
 const goToHome = () => router.push({name: 'home'});
-const goToCart = () => router.push({name: 'cart'});
-const goToFavorites = () => router.push({name: 'favorites'});
-const goToOrders = () => router.push({name: 'orders'});
-const goToAccount = () => router.push({name: 'account'});
+
 </script>
 
 <style scoped>
-.test {
-  border: 0 solid red;
-}
-
 .header-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #ecf0f1;
-  padding: 10px;
-  gap: 20px;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
 }
 
+
 .logo {
-  background: none;
-  padding: 0;
+  height: 100%;
+  width: 240px;
+  padding-right: 20px;
+}
+
+.logo-btn {
+  border-radius: 0;
   border: 0;
+  height: 100%;
+  width: 100%;
 }
 
 .logo-text {
   font-size: 36px;
-  color: #2c3e50;
+  color: white;
   font-weight: bold;
   font-style: italic;
 }
 
-.search-container {
+.search {
+  display: flex;
   flex: 1;
-  display: flex;
   justify-content: center;
+  height: 70%;
 }
 
-.search-input {
-  width: 100%;
-  max-width: 600px;
-  padding: 8px 15px;
-  border: 1px solid #bdc3c7;
-  border-radius: 4px;
-  font-size: 16px;
-  background-color: #ffffff;
-  color: #2c3e50;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: #3498db;
-}
-
-.user-actions {
+.nav {
   display: flex;
-  gap: 5px;
+  justify-content: space-around;
+  padding: 0 20px;
+  width: 300px;
+
 }
 
-.icon-button {
+.nav-button {
+  flex-direction: column;
+  align-items: center;
   background-color: transparent;
   border: none;
   color: #2c3e50;
-  font-size: 24px;
+  font-size: 26px;
 }
 
-.icon-button:hover {
-  color: #3498db;
+.nav-button-text {
+  font-size: 12px;
+  margin-top: 4px;
 }
 </style>
