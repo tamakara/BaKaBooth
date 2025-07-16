@@ -9,8 +9,8 @@ import OrdersPage from '@/components/OrdersPage/index.vue'
 
 const routes: RouteRecordRaw[] = [
     {path: '/', name: 'home', component: HomePage},
-    {path: '/item/:uuid', name: 'item', component: ItemPage},
-    {path: '/shop/:username', name: 'shop', component: ShopPage},
+    {path: '/item/:id', name: 'item', component: ItemPage},
+    {path: '/shop/:id', name: 'shop', component: ShopPage},
     {path: '/cart', name: 'cart', component: CartPage},
     {path: '/checkout', name: 'checkout', component: CheckoutPage},
     {path: '/orders', name: 'orders', component: OrdersPage},

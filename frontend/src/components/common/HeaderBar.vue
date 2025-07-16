@@ -23,11 +23,7 @@
       >
         <span class="nav-button-text">{{ btn.title }}</span>
       </el-button>
-      <el-button>
-        <template #icon>
-          用户
-        </template>
-      </el-button>
+      <el-avatar class="avatar"> user</el-avatar>
     </div>
   </div>
 </template>
@@ -107,5 +103,9 @@ const goToHome = () => router.push({name: 'home'});
 .nav-button-text {
   font-size: 12px;
   margin-top: 4px;
+}
+
+.avatar {
+
 }
 </style>

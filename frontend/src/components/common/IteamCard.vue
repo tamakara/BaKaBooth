@@ -5,18 +5,21 @@
         :src="item.coverUrl"
         fit="cover"
         lazy
+        @click="goToItemPage"
     />
     <div class="item-info">
       <el-text
           class="title"
           tag="a"
-          href="http://localhost:5173/"
+          @click="goToItemPage"
       >
         {{ item.itemName }}
       </el-text>
 
       <el-text
           class="shop"
+          tag="a"
+          @click="goToShopPage"
       >
         {{ item.shopName }}
       </el-text>
@@ -37,7 +40,7 @@
               <Star v-else/>
             </el-icon>
           </template>
-          {{ item.favorite }}
+          {{ favoriteCount }}
         </el-button>
       </div>
     </div>
@@ -48,12 +51,15 @@
 import type {Item} from '@/types/ItemTypes.ts';
 import {Star, StarFilled} from '@element-plus/icons-vue'
 import {ref} from "vue";
+import {useRouter} from "vue-router";
 
 const props = defineProps<{
   item: Item;
 }>();
 
-const favoriteCount = ref(0); // 收藏数
+const router = useRouter();
+
+const favoriteCount = ref(props.item.favorite)
 const isFavorited = ref(false); // 是否已收藏
 
 // 切换收藏状态
@@ -64,6 +70,13 @@ const toggleFavorite = () => {
   } else {
     favoriteCount.value -= 1;  // 收藏数减1
   }
+};
+
+const goToItemPage = () => {
+  router.push({name: 'item', params: {id: props.item.itemId}});
+};
+const goToShopPage = () => {
+  router.push({name: 'shop', params: {id: props.item.shopId}});
 };
 </script>
 
@@ -78,6 +91,7 @@ const toggleFavorite = () => {
 
 .item-cover {
   flex: 4;
+  cursor: pointer
 }
 
 .item-info {
@@ -96,12 +110,14 @@ const toggleFavorite = () => {
   -webkit-box-orient: vertical;
   overflow: hidden;
   flex: 2;
+  cursor: pointer
 }
 
 .shop {
   width: 100%;
   font-size: 16px;
   flex: 1;
+  cursor: pointer
 }
 
 .price-and-favorite {
