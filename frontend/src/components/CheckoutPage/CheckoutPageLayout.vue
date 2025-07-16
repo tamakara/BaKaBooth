@@ -1,16 +1,17 @@
 <template>
-  <div class="checkout-page-layout">
-    <HeaderBar />
-    <main>
-      <div class="content">
-        <slot name="content"></slot>
-      </div>
-    </main>
-  </div>
+  <BaseLayout>
+    <div class="checkout-page-layout">
+      <main>
+        <div class="content">
+          <slot name="content"></slot>
+        </div>
+      </main>
+    </div>
+  </BaseLayout>
 </template>
 
 <script setup lang="ts">
-import HeaderBar from '../common/HeaderBar.vue';
+import BaseLayout from "@/components/common/BaseLayout.vue";
 </script>
 
 <style scoped>

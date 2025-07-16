@@ -46,10 +46,10 @@ import HomePageLayout from "@/components/HomePage/HomePageLayout.vue";
 const newItems = ref<Item[]>([
   {
     itemId: '1',
-    itemName: 'aaaaaaaavavavavaaaabbbbbbbbbbbbbbcccccccccddddddd',
+    itemName: '你好你好你好你你好你好你好你好好你好你好你好你好你好你好你好',
     coverUrl: './src/assets/test.jpg',
     shopId: 'shop1',
-    shopName: '店铺A',
+    shopName: '店铺xxxxxxxxxxxVB店铺SVASVAVSAVASVxxA',
     favorite: 100,
     price: 99.9,
     sales: 50
