@@ -13,3 +13,14 @@ body {
 .el-button .el-icon + span {
     margin-left: 0;
 }
+
+.el-link__inner {
+    display: block;
+}
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
