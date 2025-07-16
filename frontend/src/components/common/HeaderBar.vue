@@ -13,18 +13,17 @@
         placeholder="搜索商品"
     />
 
-    <div class="nav">
+    <el-space class="nav" :size="40">
       <el-button
           class="nav-button"
           v-for="(btn,index) in nav"
           :key="index"
           :icon="btn.icon"
           @click="btn.goto"
-      >
-        <span class="nav-button-text">{{ btn.title }}</span>
-      </el-button>
-      <el-avatar class="avatar"> user</el-avatar>
-    </div>
+      />
+    </el-space>
+
+    <el-avatar class="avatar"> user</el-avatar>
   </div>
 </template>
 
@@ -35,9 +34,9 @@ import {ShoppingCart, Star, List} from "@element-plus/icons-vue";
 const router = useRouter();
 
 const nav = [
-  {title: '购物车', icon: ShoppingCart, goto: () => router.push({name: 'cart'})},
-  {title: '收藏夹', icon: Star, goto: () => router.push({name: 'favorites'})},
-  {title: '订单', icon: List, goto: () => router.push({name: 'orders'})},
+  {icon: ShoppingCart, goto: () => router.push({name: 'cart'})},
+  {icon: Star, goto: () => router.push({name: 'favorites'})},
+  {icon: List, goto: () => router.push({name: 'orders'})},
 ]
 
 const goToHome = () => router.push({name: 'home'});
@@ -84,11 +83,7 @@ const goToHome = () => router.push({name: 'home'});
 }
 
 .nav {
-  display: flex;
-  justify-content: space-around;
-  padding: 0 20px;
-  width: 300px;
-
+  margin: 0 20px;
 }
 
 .nav-button {
@@ -97,15 +92,11 @@ const goToHome = () => router.push({name: 'home'});
   background-color: transparent;
   border: none;
   color: #2c3e50;
-  font-size: 26px;
+  font-size: 30px;
 }
 
-.nav-button-text {
-  font-size: 12px;
-  margin-top: 4px;
-}
 
 .avatar {
-
+  margin: 0 20px;
 }
 </style>
