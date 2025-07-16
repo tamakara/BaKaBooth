@@ -1,35 +1,37 @@
 <template>
   <HomePageLayout>
-    <div class="section">
-      <h2>关注店铺的新商品</h2>
-      <div class="item-list">
-        <ItemCard
-            v-for="item in newItems"
-            :key="item.itemId"
-            :item="item"
-        />
+    <div class="home-page">
+      <div class="section">
+        <h2>关注店铺的新商品</h2>
+        <div class="item-list">
+          <ItemCard
+              v-for="item in newItems"
+              :key="item.itemId"
+              :item="item"
+          />
+        </div>
       </div>
-    </div>
 
-    <div class="section">
-      <h2>热销商品</h2>
-      <div class="item-list">
-        <ItemCard
-            v-for="item in hotItems"
-            :key="item.itemId"
-            :item="item"
-        />
+      <div class="section">
+        <h2>热销商品</h2>
+        <div class="item-list">
+          <ItemCard
+              v-for="item in hotItems"
+              :key="item.itemId"
+              :item="item"
+          />
+        </div>
       </div>
-    </div>
 
-    <div class="section">
-      <h2>最新商品</h2>
-      <div class="item-list">
-        <ItemCard
-            v-for="item in latestItems"
-            :key="item.itemId"
-            :item="item"
-        />
+      <div class="section">
+        <h2>最新商品</h2>
+        <div class="item-list">
+          <ItemCard
+              v-for="item in latestItems"
+              :key="item.itemId"
+              :item="item"
+          />
+        </div>
       </div>
     </div>
   </HomePageLayout>
@@ -44,8 +46,8 @@ import HomePageLayout from "@/components/HomePage/HomePageLayout.vue";
 const newItems = ref<Item[]>([
   {
     itemId: '1',
-    itemName: '新商品1',
-    coverUrl: 'https://example.com/img1.jpg',
+    itemName: '新商品11111111111111111111111',
+    coverUrl: './src/assets/test.jpg',
     shopId: 'shop1',
     shopName: '店铺A',
     favorite: 100,
@@ -55,7 +57,36 @@ const newItems = ref<Item[]>([
   {
     itemId: '2',
     itemName: '新商品2',
-    coverUrl: 'https://example.com/img2.jpg',
+    coverUrl: './src/assets/test.jpg',
+    shopId: 'shop2',
+    shopName: '店铺B',
+    favorite: 200,
+    price: 149.9,
+    sales: 150
+  },
+  {
+    itemId: '2',
+    itemName: '新商品2',
+    coverUrl: './src/assets/test.jpg',
+    shopId: 'shop2',
+    shopName: '店铺B',
+    favorite: 200,
+    price: 149.9,
+    sales: 150
+  },
+  {
+    itemId: '2',
+    itemName: '新商品2',
+    coverUrl: './src/assets/test.jpg',
+    shopId: 'shop2',
+    shopName: '店铺B',
+    favorite: 200,
+    price: 149.9,
+    sales: 150
+  }, {
+    itemId: '2',
+    itemName: '新商品2',
+    coverUrl: './src/assets/test.jpg',
     shopId: 'shop2',
     shopName: '店铺B',
     favorite: 200,
@@ -112,8 +143,15 @@ const latestItems = ref<Item[]>([
 </script>
 
 <style scoped>
+.home-page {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 200px;
+}
+
 .section {
-  margin-bottom: 20px;
+
 }
 
 h2 {

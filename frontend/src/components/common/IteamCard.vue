@@ -1,24 +1,34 @@
 <template>
-  <el-card :body-style="{ padding: '20px' }">
+  <div class="item-card">
     <el-image
+        class="item-cover"
         :src="item.coverUrl"
-        lazy
         fit="cover"
-        style="width: 100%; height: 200px; border-radius: 8px;"
+        lazy
     />
     <div class="item-info">
-      <h3>{{ item.itemName }}</h3>
-      <p class="price">￥{{ item.price }}</p>
+      <el-text
+          class="title"
+          truncated
+      >
+        {{ item.itemName }}
+      </el-text>
+      <el-text
+          class="price"
+      >
+        ￥{{ item.price }}
+      </el-text>
       <div class="item-stats">
         <span>收藏: {{ item.favorite }}</span>
         <span>销量: {{ item.sales }}</span>
       </div>
+
     </div>
-  </el-card>
+  </div>
 </template>
 
 <script setup lang="ts">
-import type { Item } from "@/types/ItemTypes.ts";
+import type {Item} from "@/types/ItemTypes.ts";
 
 const props = defineProps<{
   item: Item;
@@ -26,8 +36,28 @@ const props = defineProps<{
 </script>
 
 <style scoped>
+.item-card {
+  width: 200px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.item-cover {
+  flex: 4;
+
+}
+
+
 .item-info {
-  padding-top: 10px;
+  flex: 3;
+
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 500;
 }
 
 h3 {
