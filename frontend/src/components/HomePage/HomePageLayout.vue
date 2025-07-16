@@ -13,7 +13,8 @@ import BaseLayout from "@/components/common/BaseLayout.vue";
 
 <style scoped>
 .home-page-layout {
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-
 </style>

@@ -17,15 +17,19 @@ import HeaderBar from '../common/HeaderBar.vue';
 <style scoped>
 .el-container {
   height: 100vh;
+  width: 100vw;
 }
 
 .el-header {
   height: 60px;
+}
+
+.el-main {
   width: 100vw;
 }
 
 .el-footer {
-  height: 0px
+  height: 10px;
 }
 
 </style>
