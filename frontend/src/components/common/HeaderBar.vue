@@ -57,7 +57,7 @@ const goToHome = () => router.push({name: 'home'});
 
 .logo {
   height: 100%;
-  width: 240px;
+  width: 200px;
   padding-right: 20px;
 }
 
@@ -69,7 +69,7 @@ const goToHome = () => router.push({name: 'home'});
 }
 
 .logo-text {
-  font-size: 36px;
+  font-size: 30px;
   color: white;
   font-weight: bold;
   font-style: italic;

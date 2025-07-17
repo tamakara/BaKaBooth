@@ -21,7 +21,7 @@ import HeaderBar from '../common/HeaderBar.vue';
 }
 
 .el-header {
-  height: 60px;
+  height: 52px;
 }
 
 .el-main {
