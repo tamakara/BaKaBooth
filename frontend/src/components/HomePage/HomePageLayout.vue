@@ -1,7 +1,16 @@
 <template>
   <BaseLayout>
     <div class="home-page-layout">
-      <slot/>
+      <div
+          class="section"
+          v-for="i in 2"
+          :key="i"
+      >
+        <div class="section-content">
+          <slot :name="i"/>
+        </div>
+        <el-divider/>
+      </div>
     </div>
   </BaseLayout>
 </template>
@@ -15,6 +24,19 @@ import BaseLayout from "@/components/common/BaseLayout.vue";
 .home-page-layout {
   display: flex;
   flex-direction: column;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  width: 100%;
+  gap: 20px;
+}
+
+.section-content {
+  width: 944px;
+  display: flex;
+  flex-direction: column;
 }
 </style>

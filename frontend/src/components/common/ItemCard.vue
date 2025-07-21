@@ -82,8 +82,8 @@ const goToShopPage = () => {
 
 <style scoped>
 .item-card {
-  width: 180px;
-  height: 300px;
+  width: 170px;
+
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -93,7 +93,7 @@ const goToShopPage = () => {
 }
 
 .item-cover {
-  flex: 4;
+  height: 170px;
   cursor: pointer;
   border-bottom: 1px solid #f0f0f0;
 }

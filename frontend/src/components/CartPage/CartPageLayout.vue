@@ -1,6 +1,6 @@
 <template>
   <div class="cart-page-layout">
-    <HeaderBar />
+    <Banner />
     <main>
       <div class="content">
         <slot name="content"></slot>
@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import HeaderBar from '../common/HeaderBar.vue';
+import Banner from '../common/Banner.vue';
 </script>
 
 <style scoped>

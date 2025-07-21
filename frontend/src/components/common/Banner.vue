@@ -1,29 +1,50 @@
 <template>
-  <div class="header-bar">
+  <div class="banner">
     <div class="logo">
       <el-button class="logo-btn" color="#fc4d50" @click="goToHome">
         <span class="logo-text">BaKaBooth</span>
       </el-button>
     </div>
 
+    <div class="search">
+      <el-input
+          type="text"
+          placeholder="搜索商品"
+          style="
+           height: 70%;
+           margin: auto 0;
+          "
+      />
+    </div>
 
-    <el-input
-        class="search"
-        type="text"
-        placeholder="搜索商品"
-    />
-
-    <el-space class="nav" :size="40">
-      <el-button
-          class="nav-button"
+    <div class="nav">
+      <div
+          class="nav-btn"
           v-for="(btn,index) in nav"
           :key="index"
-          :icon="btn.icon"
-          @click="btn.goto"
-      />
-    </el-space>
+      >
+        <el-button
+            :icon="btn.icon"
+            @click="btn.goto"
+            style="
+             border: none;
+             font-size: 28px;
+             height: 100%;
+             width: 100%;
+             background: transparent;
+            "
+        />
+      </div>
 
-    <el-avatar class="avatar"> user</el-avatar>
+      <div class="user">
+        <div class="user-avatar">
+          <el-avatar> user</el-avatar>
+        </div>
+        xxx
+      </div>
+    </div>
+
+
   </div>
 </template>
 
@@ -44,21 +65,18 @@ const goToHome = () => router.push({name: 'home'});
 </script>
 
 <style scoped>
-.header-bar {
+.banner {
+  height: 52px;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #ecf0f1;
-  box-sizing: border-box;
-  height: 100%;
-  width: 100%;
 }
-
 
 .logo {
   height: 100%;
   width: 200px;
-  padding-right: 20px;
 }
 
 .logo-btn {
@@ -76,27 +94,32 @@ const goToHome = () => router.push({name: 'home'});
 }
 
 .search {
+  height: 100%;
   display: flex;
   flex: 1;
-  justify-content: center;
-  height: 70%;
+  padding: 0 20px;
 }
 
 .nav {
-  margin: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  margin-right: 20px;
+  gap: 10px
 }
 
-.nav-button {
-  flex-direction: column;
-  align-items: center;
-  background-color: transparent;
-  border: none;
-  color: #2c3e50;
-  font-size: 30px;
+.nav-btn {
+  height: 52px;
+  width: 52px;
+  box-sizing: border-box;
+  padding: 1px 6px;
 }
 
+.user {
+  display: flex;
 
-.avatar {
-  margin: 0 20px;
+}
+
+.user-avatar {
+
 }
 </style>

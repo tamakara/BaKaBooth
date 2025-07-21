@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <HeaderBar/>
+      <Banner/>
     </el-header>
     <el-main>
       <slot/>
@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import HeaderBar from '../common/HeaderBar.vue';
+import Banner from './Banner.vue';
 </script>
 
 <style scoped>
@@ -21,15 +21,13 @@ import HeaderBar from '../common/HeaderBar.vue';
 }
 
 .el-header {
-  height: 52px;
 }
 
 .el-main {
-  width: 100vw;
 }
 
 .el-footer {
-  height: 10px;
+  height: 0;
 }
 
 </style>
