@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: user-service
+  cloud:
+    nacos:
+      server-addr: 172.31.241.156:8848
