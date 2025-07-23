@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import Banner from '../common/Banner.vue';
+import Banner from '../../common/Banner.vue';
 </script>
 
 <style scoped>

@@ -1,14 +1,16 @@
 import {createRouter, createWebHistory, type RouteRecordRaw} from 'vue-router'
 
-import HomePage from '@/components/HomePage/HomePage.vue'
-import ItemPage from '@/components/ItemPage/index.vue'
-import ShopPage from '@/components/ShopPage/index.vue'
-import CartPage from '@/components/CartPage/index.vue'
-import CheckoutPage from '@/components/CheckoutPage/index.vue'
-import OrdersPage from '@/components/OrdersPage/index.vue'
+import HomePage from '@/components/page/HomePage/HomePage.vue'
+import ItemPage from '@/components/page/ItemPage/ItemPage.vue'
+import ShopPage from '@/components/page/ShopPage/ShopPage.vue'
+import CartPage from '@/components/page/CartPage/CartPage.vue'
+import CheckoutPage from '@/components/page/CheckoutPage/CheckoutPage.vue'
+import OrdersPage from '@/components/page/OrdersPage/OrdersPage.vue'
+import LoginPage from "@/components/page/LoginPage/LoginPage.vue";
 
 const routes: RouteRecordRaw[] = [
     {path: '/', name: 'home', component: HomePage},
+    {path: '/login', name: 'login', component: LoginPage},
     {path: '/item/:id', name: 'item', component: ItemPage},
     {path: '/shop/:id', name: 'shop', component: ShopPage},
     {path: '/cart', name: 'cart', component: CartPage},

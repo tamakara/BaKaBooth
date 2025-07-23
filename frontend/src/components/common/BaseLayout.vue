@@ -1,36 +1,38 @@
 <template>
-  <el-container>
-    <el-header>
-      <Banner/>
+  <el-container class="container">
+    <el-header class="header">
+      <slot name="header"/>
     </el-header>
-    <el-main>
-      <slot/>
+    <el-main class="main">
+      <slot name="main"/>
     </el-main>
-    <el-footer></el-footer>
+    <el-footer class="footer">
+      <slot name="footer"/>
+    </el-footer>
   </el-container>
 </template>
 
 <script setup lang="ts">
-import Banner from './Banner.vue';
+
 </script>
 
 <style scoped>
-.el-container {
+.container {
   height: 100vh;
   width: 100vw;
   background-color: #f1f5f8;
 }
 
-.el-header {
-  border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+.header {
+  height: auto;
 }
 
-.el-main {
-
+.main {
+  height: auto;
 }
 
-.el-footer {
-  height: 0;
+.footer {
+  height: auto;
 }
 
 </style>

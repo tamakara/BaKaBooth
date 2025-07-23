@@ -20,11 +20,11 @@
     <div class="nav">
       <div class="user">
         <el-dropdown
-            v-if="true"
+            v-if="userStore.isLogged"
             @command="handleCommand"
             :hide-on-click="false"
         >
-          <el-avatar @click="handleAvatarClick">FUCK</el-avatar>
+          <el-avatar @click="handleAvatarClick" style="cursor: pointer;">FUCK</el-avatar>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item command="a">关注的店铺</el-dropdown-item>
@@ -40,7 +40,7 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <el-avatar @click="handleAvatarClick" v-else>登录</el-avatar>
+        <el-avatar v-else @click="handleAvatarClick" style="cursor: pointer;">登录</el-avatar>
       </div>
       <div
           class="nav-btn"
@@ -67,8 +67,10 @@
 import {useRouter} from 'vue-router';
 import {ShoppingCart, Star, SwitchButton} from "@element-plus/icons-vue";
 import {ElMessage} from "element-plus";
+import {useUserStore} from "@/stores/user.ts";
 
 const router = useRouter();
+const userStore = useUserStore();
 
 const nav = [
   {icon: Star, goto: () => router.push({name: 'favorites'})},
@@ -78,6 +80,11 @@ const nav = [
 const goToHome = () => router.push({name: 'home'});
 
 function handleAvatarClick() {
+  if (userStore.isLogged) {
+    ElMessage('点击头像');
+  } else {
+    router.push({name: 'login'});
+  }
 
 }
 
@@ -94,6 +101,7 @@ function handleCommand(command: string | number | object) {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.05);
 }
 
 .logo {

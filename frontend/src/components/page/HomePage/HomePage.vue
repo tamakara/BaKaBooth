@@ -1,5 +1,5 @@
 <template>
-  <HomePageLayout>
+  <HomePageLayout :size="2">
     <template #1>
       <el-text class="section-title">
         关注店铺的最新商品
@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import {ref} from 'vue'
 import type {Item} from "@/types/ItemTypes.ts"
-import HomePageLayout from "@/components/HomePage/HomePageLayout.vue";
+import HomePageLayout from "@/components/page/HomePage/HomePageLayout.vue";
 import ItemGrid from "@/components/common/ItemGrid.vue";
 
 const newItems = ref<Item[]>([
@@ -75,7 +75,7 @@ const newItems = ref<Item[]>([
   }
   , {
     itemId: '2',
-    itemName: '新商品2',
+    itemName: '我f我aewfwafg我awgawfawfawfa我wfafawfafwafdaefegfwsefwsefwfe',
     coverUrl: './src/assets/test.jpg',
     shopId: 'shop2',
     shopName: '店铺B',
@@ -119,8 +119,7 @@ const newItems = ref<Item[]>([
 <style scoped>
 
 .section-title {
-  font-size: 26px;
-  font-weight: bold;
-
+  font-size: 30px;
+  margin: 20px 0;
 }
 </style>

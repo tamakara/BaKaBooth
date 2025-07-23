@@ -1,5 +1,5 @@
 <template>
-  <CheckoutPageLayout>
+  <CheckoutPage>
     <template #content>
       <div class="checkout-items">
         <h2>结算</h2>
@@ -14,12 +14,12 @@
         </div>
       </div>
     </template>
-  </CheckoutPageLayout>
+  </CheckoutPage>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import CheckoutPageLayout from './CheckoutPageLayout.vue';
+import CheckoutPage from './CheckoutPage.vue';
 import { useRouter } from 'vue-router';
 
 const cartItems = ref([
