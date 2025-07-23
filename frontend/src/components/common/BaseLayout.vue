@@ -18,12 +18,15 @@ import Banner from './Banner.vue';
 .el-container {
   height: 100vh;
   width: 100vw;
+  background-color: #f1f5f8;
 }
 
 .el-header {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.05);
 }
 
 .el-main {
+
 }
 
 .el-footer {

@@ -18,6 +18,30 @@
     </div>
 
     <div class="nav">
+      <div class="user">
+        <el-dropdown
+            v-if="true"
+            @command="handleCommand"
+            :hide-on-click="false"
+        >
+          <el-avatar @click="handleAvatarClick">FUCK</el-avatar>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item command="a">关注的店铺</el-dropdown-item>
+              <el-dropdown-item command="b">已购买的商品</el-dropdown-item>
+              <el-dropdown-item command="c">历史订单</el-dropdown-item>
+              <el-dropdown-item
+                  command="logout"
+                  divided
+                  :icon="SwitchButton"
+              >
+                退出登录
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+        <el-avatar @click="handleAvatarClick" v-else>登录</el-avatar>
+      </div>
       <div
           class="nav-btn"
           v-for="(btn,index) in nav"
@@ -28,39 +52,38 @@
             @click="btn.goto"
             style="
              border: none;
-             font-size: 28px;
+             font-size: 30px;
              height: 100%;
              width: 100%;
              background: transparent;
             "
         />
       </div>
-
-      <div class="user">
-        <div class="user-avatar">
-          <el-avatar> user</el-avatar>
-        </div>
-        xxx
-      </div>
     </div>
-
-
   </div>
 </template>
 
 <script setup lang="ts">
 import {useRouter} from 'vue-router';
-import {ShoppingCart, Star, List} from "@element-plus/icons-vue";
+import {ShoppingCart, Star, SwitchButton} from "@element-plus/icons-vue";
+import {ElMessage} from "element-plus";
 
 const router = useRouter();
 
 const nav = [
-  {icon: ShoppingCart, goto: () => router.push({name: 'cart'})},
   {icon: Star, goto: () => router.push({name: 'favorites'})},
-  {icon: List, goto: () => router.push({name: 'orders'})},
+  {icon: ShoppingCart, goto: () => router.push({name: 'cart'})}
 ]
 
 const goToHome = () => router.push({name: 'home'});
+
+function handleAvatarClick() {
+
+}
+
+function handleCommand(command: string | number | object) {
+  ElMessage(`click on item ${command}`)
+}
 
 </script>
 
@@ -71,7 +94,6 @@ const goToHome = () => router.push({name: 'home'});
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ecf0f1;
 }
 
 .logo {
@@ -103,7 +125,7 @@ const goToHome = () => router.push({name: 'home'});
 .nav {
   display: flex;
   justify-content: space-between;
-  margin-right: 20px;
+  margin-right: 10px;
   gap: 10px
 }
 
@@ -115,11 +137,11 @@ const goToHome = () => router.push({name: 'home'});
 }
 
 .user {
+  height: 52px;
+  width: 52px;
+  box-sizing: border-box;
+  padding: 1px 6px;
   display: flex;
-
-}
-
-.user-avatar {
-
+  align-items: center;
 }
 </style>

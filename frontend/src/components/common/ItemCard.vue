@@ -83,13 +83,12 @@ const goToShopPage = () => {
 <style scoped>
 .item-card {
   width: 170px;
-
+  height: 270px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .item-cover {
@@ -103,12 +102,12 @@ const goToShopPage = () => {
   display: flex;
   flex-direction: column;
   align-items: start;
+  padding: 0 5px;
 }
 
 .title {
   width: 100%;
-  font-weight: 500;
-  font-size: 15px;
+  font-size: 14px;
   color: #333;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -116,25 +115,15 @@ const goToShopPage = () => {
   overflow: hidden;
   flex: 2;
   cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.title:hover {
-  color: #FF5733;
 }
 
 .shop {
   width: 100%;
-  font-size: 13px;
+  font-size: 12px;
   color: #666;
   flex: 1;
   cursor: pointer;
-  transition: color 0.3s ease;
   margin: 2px 0;
-}
-
-.shop:hover {
-  color: #FF5733;
 }
 
 .price-and-favorite {
@@ -159,17 +148,5 @@ const goToShopPage = () => {
   background: none;
   color: #B0B0B0;
   transition: color 0.3s ease;
-}
-
-.favorite-button:hover {
-  color: #FF5733;
-}
-
-.favorite-button .el-icon {
-  transition: transform 0.3s ease;
-}
-
-.favorite-button:hover .el-icon {
-  transform: scale(1.2);
 }
 </style>
