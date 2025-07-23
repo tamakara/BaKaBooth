@@ -18,6 +18,7 @@
         <module>shop-service</module>
         <module>cart-service</module>
         <module>pay-service</module>
+        <module>gateway</module>
     </modules>
 
     <dependencies>
@@ -37,6 +38,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--MyBatis Plus-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
         <!--NACOS-->
         <dependency>
