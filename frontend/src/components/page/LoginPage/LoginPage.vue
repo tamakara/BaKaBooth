@@ -5,30 +5,38 @@
     </template>
     <template #main>
       <div class="login-form">
-        <el-form>
-          <el-form-item>
+        <el-form
+            ref="ruleFormRef"
+            :model="loginForm"
+            :rules="rules"
+            status-icon
+        >
+          <el-form-item prop="username">
             <el-input
                 size="large"
                 type="text"
-                v-model="username"
-                placeholder="用户名或电子邮箱"
                 :prefix-icon="User"
+                placeholder="用户名或电子邮箱"
+                v-model="loginForm.username"
+                clearable
             />
           </el-form-item>
-          <el-form-item>
+          <el-form-item prop="password">
             <el-input
                 size="large"
                 type="password"
-                v-model="password"
-                placeholder="密码"
                 :prefix-icon="Lock"
+                placeholder="密码"
+                v-model="loginForm.password"
+                clearable
+                show-password
             />
           </el-form-item>
           <el-form-item>
             <el-button
                 color="#2c9ba6"
                 type="primary"
-                @click="handleLoginClick"
+                @click="handleLoginClick(ruleFormRef)"
                 style="width: 100%;height: 40px"
             >
               登录
@@ -63,21 +71,38 @@
 
 <script setup lang="ts">
 import LoginPageLayout from "@/components/page/LoginPage/LoginPageLayout.vue";
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 import {User, Lock} from "@element-plus/icons-vue"
 import {useRouter} from "vue-router";
+import type {LoginForm} from "@/types/user";
+import type {FormInstance, FormRules} from "element-plus";
 
 const router = useRouter()
 
-const username = ref('')
-const password = ref('')
+const ruleFormRef = ref<FormInstance>()
+const loginForm = ref<LoginForm>({
+  username: '',
+  password: ''
+});
 
-function handleLoginClick() {
+const rules = reactive<FormRules<LoginForm>>({
+  username: [{required: true, message: '请输入用户名或电子邮箱', trigger: 'blur'},],
+  password: [{required: true, message: '请输入密码', trigger: 'blur'},],
+})
 
+async function handleLoginClick(formEl: FormInstance | undefined) {
+  if (!formEl) return
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      console.log('submit!')
+    } else {
+      console.log('error submit!', fields)
+    }
+  })
 }
 
 function handleRegisterClick() {
-
+  router.push({name: 'register'})
 }
 
 function handleBackToHomeClick() {

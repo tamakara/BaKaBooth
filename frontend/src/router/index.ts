@@ -7,10 +7,12 @@ import CartPage from '@/components/page/CartPage/CartPage.vue'
 import CheckoutPage from '@/components/page/CheckoutPage/CheckoutPage.vue'
 import OrdersPage from '@/components/page/OrdersPage/OrdersPage.vue'
 import LoginPage from "@/components/page/LoginPage/LoginPage.vue";
+import RegisterPage from "@/components/page/RegisterPage/RegisterPage.vue";
 
 const routes: RouteRecordRaw[] = [
     {path: '/', name: 'home', component: HomePage},
-    {path: '/login', name: 'login', component: LoginPage},
+    {path: '/user/login', name: 'login', component: LoginPage},
+    {path: '/user/register', name: 'register', component: RegisterPage},
     {path: '/item/:id', name: 'item', component: ItemPage},
     {path: '/shop/:id', name: 'shop', component: ShopPage},
     {path: '/cart', name: 'cart', component: CartPage},
