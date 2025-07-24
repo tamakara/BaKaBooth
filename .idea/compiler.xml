@@ -18,6 +18,7 @@
         <module name="cart-service" />
         <module name="pay-service" />
         <module name="common" />
+        <module name="authorization-server" />
         <module name="item-service" />
         <module name="shop-service" />
         <module name="api" />
@@ -29,6 +30,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api" options="-parameters" />
+      <module name="authorization-server" options="-parameters" />
       <module name="backend" options="-parameters" />
       <module name="bakabooth" options="" />
       <module name="cart-service" options="-parameters" />

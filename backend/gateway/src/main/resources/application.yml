@@ -30,12 +30,13 @@ spring:
                   - "*"
                 allowCredentials: false
                 maxAge: 3600
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://your-issuer-url
+          jwk-set-uri: https://your-jwk-set-uri
 
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
-    org.springframework.cloud.client.loadbalancer: DEBUG
-    org.springframework.cloud.discovery: DEBUG
-    com.netflix.discovery: DEBUG
-    com.netflix.loadbalancer: DEBUG
-    com.alibaba.nacos.client.naming: DEBUG

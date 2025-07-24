@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: authorization-server
+
+security:
+  oauth2:
+    authorization-server:
+      issuer-uri: http://localhost:8080/oauth2
