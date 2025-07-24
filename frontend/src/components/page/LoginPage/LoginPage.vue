@@ -76,8 +76,10 @@ import {User, Lock} from "@element-plus/icons-vue"
 import {useRouter} from "vue-router";
 import type {LoginForm} from "@/types/user";
 import type {FormInstance, FormRules} from "element-plus";
+import {useUserStore} from "@/stores/user.ts";
 
 const router = useRouter()
+const userStore = useUserStore()
 
 const ruleFormRef = ref<FormInstance>()
 const loginForm = ref<LoginForm>({
@@ -94,9 +96,10 @@ async function handleLoginClick(formEl: FormInstance | undefined) {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
     if (valid) {
-      console.log('submit!')
+      userStore.submitLoginForm(loginForm.value)
+      console.log('提交登录请求', loginForm.value)
     } else {
-      console.log('error submit!', fields)
+      console.log('登录表单校验失败', fields)
     }
   })
 }
@@ -114,9 +117,5 @@ function handleBackToHomeClick() {
 .login-form {
   padding: 40px;
   width: 100%;
-}
-
-.login-input {
-
 }
 </style>

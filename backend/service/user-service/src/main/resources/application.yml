@@ -7,9 +7,14 @@ spring:
     openfeign:
       okhttp:
         enabled: true
+  datasource:
+    url: jdbc:mysql://172.31.241.156:3306/user_service_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: user_service_user
+    password: 0d000721
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 server:
-  port: 8001
+  port: 8081
 
 mybatis-plus:
   type-aliases-package: com.bakabooth.user.domain.entity
@@ -21,3 +26,9 @@ mybatis-plus:
     db-config:
       id-type: assign_id
       update-strategy: not_null
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.springframework.cloud: DEBUG
+    com.netflix.discovery: DEBUG

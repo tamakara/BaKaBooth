@@ -30,10 +30,10 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api" options="-parameters" />
       <module name="backend" options="-parameters" />
-      <module name="bakabooth" options="-parameters" />
+      <module name="bakabooth" options="" />
       <module name="cart-service" options="-parameters" />
       <module name="common" options="-parameters" />
-      <module name="frontend" options="-parameters" />
+      <module name="frontend" options="" />
       <module name="gateway" options="-parameters" />
       <module name="item-service" options="-parameters" />
       <module name="pay-service" options="-parameters" />

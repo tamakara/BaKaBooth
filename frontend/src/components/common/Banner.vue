@@ -1,7 +1,7 @@
 <template>
   <div class="banner">
     <div class="logo">
-      <el-button class="logo-btn" color="#fc4d50" @click="goToHome">
+      <el-button class="logo-btn" color="#fc4d50" @click="goToRoute('home')">
         <span class="logo-text">BaKaBooth</span>
       </el-button>
     </div>
@@ -44,12 +44,25 @@
       </div>
       <div
           class="nav-btn"
-          v-for="(btn,index) in nav"
-          :key="index"
       >
         <el-button
-            :icon="btn.icon"
-            @click="btn.goto"
+            :icon="Star"
+            @click="goToRoute('favorites')"
+            style="
+             border: none;
+             font-size: 30px;
+             height: 100%;
+             width: 100%;
+             background: transparent;
+            "
+        />
+      </div>
+      <div
+          class="nav-btn"
+      >
+        <el-button
+            :icon="ShoppingCart"
+            @click="goToRoute('cart')"
             style="
              border: none;
              font-size: 30px;
@@ -66,30 +79,25 @@
 <script setup lang="ts">
 import {useRouter} from 'vue-router';
 import {ShoppingCart, Star, SwitchButton} from "@element-plus/icons-vue";
-import {ElMessage} from "element-plus";
 import {useUserStore} from "@/stores/user.ts";
 
 const router = useRouter();
 const userStore = useUserStore();
 
-const nav = [
-  {icon: Star, goto: () => router.push({name: 'favorites'})},
-  {icon: ShoppingCart, goto: () => router.push({name: 'cart'})}
-]
-
-const goToHome = () => router.push({name: 'home'});
+const goToRoute = (name: string) => router.push({name});
 
 function handleAvatarClick() {
   if (userStore.isLogged) {
-    ElMessage('点击头像');
+    goToRoute('user')
   } else {
-    router.push({name: 'login'});
+    goToRoute('login')
   }
-
 }
 
 function handleCommand(command: string | number | object) {
-  ElMessage(`click on item ${command}`)
+  if (command === 'logout') {
+    userStore.clearUser()
+  }
 }
 
 </script>
