@@ -18,7 +18,6 @@
         <module name="cart-service" />
         <module name="pay-service" />
         <module name="common" />
-        <module name="authorization-server" />
         <module name="item-service" />
         <module name="shop-service" />
         <module name="api" />
@@ -26,6 +25,9 @@
         <module name="gateway" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="authorization-server" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

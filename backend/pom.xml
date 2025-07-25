@@ -17,7 +17,6 @@
         <module>common</module>
         <module>gateway</module>
         <module>service</module>
-        <module>authorization-server</module>
     </modules>
 
     <properties>
@@ -33,6 +32,7 @@
         <mybatis-plus.version>3.5.12</mybatis-plus.version>
         <lombok.version>1.18.38</lombok.version>
         <knife4j.version>4.4.0</knife4j.version>
+        <sa-token.version>1.44.0</sa-token.version>
     </properties>
 
     <dependencies>
@@ -60,6 +60,7 @@
             <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
             <version>${knife4j.version}</version>
         </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -92,6 +93,11 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-spring-boot-starter</artifactId>
+                <version>${sa-token.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

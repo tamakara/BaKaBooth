@@ -39,33 +39,9 @@ services:
       - bakabooth-network
     restart: always
 
-  keycloak:
-    image: quay.io/keycloak/keycloak:latest
-    container_name: keycloak
-    environment:
-      - KC_BOOTSTRAP_ADMIN_USERNAME=tamakara
-      - KC_BOOTSTRAP_ADMIN_PASSWORD=0d000721
-      - KC_DB=mysql
-      - KC_DB_URL=jdbc:mysql://mysql:3306/keycloak
-      - KC_DB_USERNAME=keycloak
-      - KC_DB_PASSWORD=0d000721
-      - KC_HOSTNAME=172.31.241.156
-    ports:
-      - "172.31.241.156:8081:8080"
-    depends_on:
-      - mysql
-    volumes:
-      - keycloak_data:/opt/keycloak/data
-    networks:
-      - bakabooth-network
-    restart: always
-    command:
-      - start-dev
-
 volumes:
   mysql-data:
   nacos-data:
-  keycloak_data:
 
 networks:
   bakabooth-network:
