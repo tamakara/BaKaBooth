@@ -16,6 +16,7 @@ spring:
                 - Path=/user/**
               filters:
                 - RewritePath=/user/(?<segment>.*), /${segment}
+
           globalcors:
             cors-configurations:
               '[/**]':
@@ -30,21 +31,5 @@ spring:
                   - "*"
                 allowCredentials: false
                 maxAge: 3600
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://172.31.241.156:8081/auth/realms/my-realm
-
-logging:
-  level:
-    org.springframework.cloud.gateway: DEBUG
-
-sa-token:
-  token-name: satoken
-  timeout: 604800
-  active-timeout: -1
-  is-concurrent: true
-  is-share: false
-  token-style: uuid
-  is-log: true
+jwt:
+  secret: tamakara

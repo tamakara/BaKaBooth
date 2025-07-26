@@ -3,10 +3,10 @@ export interface LoginForm {
     password: string
 }
 
-export interface UserStatus {
-    id: number
-    token: string
-    avatar: string
+export interface UserInfo {
     username: string
     nickname: string
+    email: string
+    avatar: string
 }
+

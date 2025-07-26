@@ -20,9 +20,9 @@ public class LoginController {
 
     @Operation(summary = "登录")
     @PostMapping("/login")
-    public ResponseEntity<UserLoginVO> login(@RequestBody LoginFormDTO loginFormDTO) {
-        UserLoginVO userLoginVO = userService.login(loginFormDTO);
-        return ResponseEntity.ok().body(userLoginVO);
+    public ResponseEntity<String> login(@RequestBody LoginFormDTO loginFormDTO) {
+        String token = userService.login(loginFormDTO);
+        return ResponseEntity.ok(token);
     }
 
 }

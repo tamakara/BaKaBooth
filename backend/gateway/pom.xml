@@ -12,6 +12,12 @@
     <artifactId>gateway</artifactId>
 
     <dependencies>
+        <!--Common-->
+        <dependency>
+            <groupId>com.bakabooth</groupId>
+            <artifactId>common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!--Gateway-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -27,15 +33,10 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
-        <!--Spring Security-->
+        <!--java-jwt-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-        </dependency>
-        <!--Sa-Token-->
-        <dependency>
-            <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-spring-boot-starter</artifactId>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
         </dependency>
     </dependencies>
 </project>

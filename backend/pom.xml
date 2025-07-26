@@ -32,7 +32,7 @@
         <mybatis-plus.version>3.5.12</mybatis-plus.version>
         <lombok.version>1.18.38</lombok.version>
         <knife4j.version>4.4.0</knife4j.version>
-        <sa-token.version>1.44.0</sa-token.version>
+        <java-jwt.version>4.5.0</java-jwt.version>
     </properties>
 
     <dependencies>
@@ -60,7 +60,6 @@
             <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
             <version>${knife4j.version}</version>
         </dependency>
-
     </dependencies>
 
     <dependencyManagement>
@@ -95,9 +94,9 @@
                 <version>${mybatis-plus.version}</version>
             </dependency>
             <dependency>
-                <groupId>cn.dev33</groupId>
-                <artifactId>sa-token-spring-boot-starter</artifactId>
-                <version>${sa-token.version}</version>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${java-jwt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

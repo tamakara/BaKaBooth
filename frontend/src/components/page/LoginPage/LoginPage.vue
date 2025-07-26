@@ -97,7 +97,7 @@ async function handleLoginClick(formEl: FormInstance | undefined) {
   await formEl.validate((valid, fields) => {
     if (valid) {
       userStore.submitLoginForm(loginForm.value)
-      console.log('提交登录请求', loginForm.value)
+      handleBackToHomeClick()
     } else {
       console.log('登录表单校验失败', fields)
     }

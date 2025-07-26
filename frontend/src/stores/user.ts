@@ -1,34 +1,26 @@
 import {defineStore} from 'pinia';
-import type {LoginForm, UserStatus} from "@/types/user";
+import type {LoginForm, UserInfo} from "@/types/user";
 import {login} from "@/api/user.ts";
 
 export const useUserStore = defineStore('user', {
     state: () => ({
-        userStatus: null as UserStatus | null,
+        isLogged: false,
+        userInfo: null as UserInfo | null,
     }),
     actions: {
-        initializeUserStatus() {
-            const storedUserStatus = localStorage.getItem('user-status');
-            if (storedUserStatus) {
-                this.userStatus = JSON.parse(storedUserStatus);
-            }
-        },
         async submitLoginForm(loginForm: LoginForm) {
             try {
-                this.userStatus = await login(loginForm);
-                localStorage.setItem('user-status', JSON.stringify(this.userStatus));
+                const token = await login(loginForm);
+                localStorage.setItem('token', token);
+                this.isLogged = true
             } catch (error) {
                 console.log('登录失败', error);
             }
         },
         clearUser() {
-            this.userStatus = null;
-            localStorage.removeItem('user-status');
+            localStorage.removeItem('token');
+            this.isLogged = false
         }
     },
-    getters: {
-        isLogged(state) {
-            return state.userStatus !== null
-        }
-    }
+    getters: {}
 });

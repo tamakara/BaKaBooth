@@ -6,5 +6,5 @@ import com.bakabooth.user.domain.vo.UserLoginVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface IUserService extends IService<User> {
-    UserLoginVO login(LoginFormDTO loginFormDTO);
+    String login(LoginFormDTO loginFormDTO);
 }

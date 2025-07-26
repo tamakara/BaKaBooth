@@ -11,4 +11,12 @@
 
     <artifactId>user-service</artifactId>
 
+    <dependencies>
+        <!--java-jwt-->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
