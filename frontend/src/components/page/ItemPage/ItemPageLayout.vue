@@ -1,59 +1,67 @@
 <template>
   <BaseLayout>
-    <div class="item-page-layout">
-      <div class="item-content">
-        <div class="left">
-          <div class="item-image">
-            <slot name="item-image"/>
+    <template #header>
+      <Banner/>
+    </template>
+    <template #main>
+      <div class="item-page-layout">
+        <div class="item-content">
+          <div class="left">
+            <div class="item-image">
+              <slot name="item-image"/>
+            </div>
+
+            <div class="item-text">
+              <slot name="item-text"/>
+            </div>
           </div>
 
-          <div class="item-text">
-            <slot name="item-text"/>
+          <div class="right">
+            <div class="item-header">
+              <slot name="item-header"/>
+            </div>
+
+            <el-divider/>
+
+            <div class="item-variations">
+              <slot name="item-variations"/>
+            </div>
+
+            <el-divider/>
+
+            <div class="item-terms">
+              <slot name="item-terms"/>
+            </div>
           </div>
         </div>
 
-        <div class="right">
-          <div class="item-header">
-            <slot name="item-header"/>
-          </div>
-
-          <el-divider/>
-
-          <div class="item-variations">
-            <slot name="item-variations"/>
-          </div>
-
-          <el-divider/>
-
-          <div class="item-terms">
-            <slot name="item-terms"/>
-          </div>
+        <div class="item-tag-list">
+          <slot name="item-tag-list"/>
         </div>
+
+        <el-divider/>
+
+        <div class="shop-items">
+          <slot name="shop-items"/>
+        </div>
+
       </div>
-
-      <div class="item-tag-list">
-        <slot name="item-tag-list"/>
-      </div>
-
-      <el-divider/>
-
-      <div class="shop-items">
-        <slot name="shop-items"/>
-      </div>
-
-    </div>
+    </template>
   </BaseLayout>
 </template>
 
 <script setup lang="ts">
 import BaseLayout from "@/components/common/BaseLayout.vue";
+import Banner from "@/components/common/Banner.vue";
 </script>
 
 <style scoped>
 .item-page-layout {
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #ffffff;
 }
 
 .item-content {
@@ -61,22 +69,25 @@ import BaseLayout from "@/components/common/BaseLayout.vue";
   display: flex;
   justify-content: center;
   gap: 48px;
+  margin-top: 52px;
 }
 
 .left {
   flex: 3;
-  width: 550px;
 
   display: flex;
   flex-direction: column;
   gap: 20px;
+
 }
 
 .item-image {
   height: 550px;
+  width: 550px;
 }
 
 .item-text {
+
 
 }
 
@@ -86,10 +97,13 @@ import BaseLayout from "@/components/common/BaseLayout.vue";
 
   display: flex;
   flex-direction: column;
+
 }
 
 .item-header {
-
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 </style>

@@ -9,7 +9,7 @@
     />
     <div class="item-info">
       <el-text
-          class="title"
+          class="item-title"
           tag="a"
           @click="goToItemPage"
       >
@@ -105,7 +105,7 @@ const goToShopPage = () => {
   padding: 0 5px;
 }
 
-.title {
+.item-title {
   width: 100%;
   font-size: 14px;
   color: #333;
