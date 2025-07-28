@@ -3,11 +3,7 @@
 
     <template #item-image>
       <div class="item-image-wrapper">
-        <el-image
-            fit="contain"
-            src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg"
-            style="width: 100%;height: 100%;"
-        />
+        <ImageSlider/>
       </div>
 
     </template>
@@ -25,6 +21,45 @@
         <div class="shop-name">{{ item.shop.name }}</div>
       </div>
       <div class="item-title">{{ item.title }}</div>
+      <div class="item-buttons">
+        <div class="item-buttons-left">
+          <el-button class="item-button-favorite">
+            <el-icon size="24" style="margin-right: 3px">
+              <HeartIcon/>
+            </el-icon>
+            {{ item.favorites }}
+          </el-button>
+        </div>
+        <div class="item-buttons-right">
+          <el-button class="item-button-chat" text>
+            <el-icon size="24">
+              <ChatBubbleOvalLeftEllipsisIcon/>
+            </el-icon>
+          </el-button>
+
+          <el-button class="item-button-share" text>
+            <el-icon size="24">
+              <ShareIcon/>
+            </el-icon>
+          </el-button>
+
+          <el-button class="item-button-report" text>
+            <el-icon size="24">
+              <ExclamationTriangleIcon/>
+            </el-icon>
+          </el-button>
+        </div>
+      </div>
+    </template>
+
+    <template #item-variations>
+      <el-divider/>
+      <ItemVariation
+          :name="item.variation.name"
+          :type="item.variation.type"
+          :price="item.variation.price"
+      />
+      <el-divider/>
     </template>
 
   </ItemPageLayout>
@@ -32,15 +67,23 @@
 
 <script setup lang="ts">
 import ItemPageLayout from './ItemPageLayout.vue';
-
 import {useRoute} from 'vue-router';
+import ImageSlider from "@/components/common/ImageSlider.vue";
+import {HeartIcon, ShareIcon, ExclamationTriangleIcon, ChatBubbleOvalLeftEllipsisIcon} from '@heroicons/vue/24/outline'
+import ItemVariation from "@/components/common/ItemVariation.vue";
 
 const route = useRoute();
 
 console.log(route.params.id)
 
 const item = {
-  title: ' 【体験版ゲームデータ】『パーガトリー・ブルー』CF用体験版',
+  title: '美遊・エーデルフェルト Miyu Edelfelt Fate/kaleid liner プリズマ☆イリヤ 抱き枕カバー(白雪R18)',
+  favorites: 666,
+  variation: {
+    name: '抱き枕カバー',
+    type: '160×50cm',
+    price: '6,666 JPY'
+  },
   text: '   美遊・エーデルフェルト Miyu Edelfelt Fate/kaleid liner プリズマ☆イリヤ 抱き枕カバー(白雪R18)\n' +
       '\n' +
       '        ※生地：白雪（Shirayuki）IRAD超一流2wayトリコット\n' +
@@ -132,5 +175,36 @@ const item = {
 .item-title {
   font-size: 24px;
   font-weight: 700;
+}
+
+.item-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.item-buttons-left {
+
+}
+
+
+.item-buttons-right {
+  display: flex;
+}
+
+.item-button-favorite {
+  width: 80px;
+  height: 50px;
+  border: 2px solid #e4e7ed;
+  border-radius: 8px;
+  display: flex;
+  font-size: 18px;
+}
+
+.item-button-chat,
+.item-button-share,
+.item-button-report {
+  width: 50px;
+  height: 50px;
+
 }
 </style>

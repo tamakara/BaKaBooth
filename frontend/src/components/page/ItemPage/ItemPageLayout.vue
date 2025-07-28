@@ -21,13 +21,9 @@
               <slot name="item-header"/>
             </div>
 
-            <el-divider/>
-
             <div class="item-variations">
               <slot name="item-variations"/>
             </div>
-
-            <el-divider/>
 
             <div class="item-terms">
               <slot name="item-terms"/>
@@ -103,7 +99,7 @@ import Banner from "@/components/common/Banner.vue";
 .item-header {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
 }
 
 </style>
