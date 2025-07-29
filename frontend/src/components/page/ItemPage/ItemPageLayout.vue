@@ -64,7 +64,7 @@ import Banner from "@/components/common/Banner.vue";
   width: 944px;
   display: flex;
   justify-content: center;
-  gap: 48px;
+  gap: 40px;
   margin-top: 52px;
 }
 
@@ -90,16 +90,20 @@ import Banner from "@/components/common/Banner.vue";
 .right {
   flex: 2;
   width: 346px;
-
   display: flex;
   flex-direction: column;
-
 }
 
 .item-header {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
+}
+
+.item-terms {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 </style>

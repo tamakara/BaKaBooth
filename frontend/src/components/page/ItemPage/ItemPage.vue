@@ -1,24 +1,30 @@
 <template>
   <ItemPageLayout>
-
     <template #item-image>
       <div class="item-image-wrapper">
         <ImageSlider/>
       </div>
-
     </template>
 
     <template #item-text>
       <div class="item-text">
         {{ item.text }}
       </div>
-
     </template>
 
     <template #item-header>
       <div class="shop-avatar-name" @click="console.log('fuck')">
         <el-avatar :size="24">Y</el-avatar>
         <div class="shop-name">{{ item.shop.name }}</div>
+        <el-button
+            text
+            @click="console.log('star')"
+            style="width: 20px"
+        >
+          <el-icon :size="20">
+            <StarIcon/>
+          </el-icon>
+        </el-button>
       </div>
       <div class="item-title">{{ item.title }}</div>
       <div class="item-buttons">
@@ -54,13 +60,74 @@
 
     <template #item-variations>
       <el-divider/>
-      <ItemVariation
-          :name="item.variation.name"
-          :type="item.variation.type"
-          :price="item.variation.price"
-      />
-      <el-divider/>
+      <div
+          class="item-variations"
+          v-for="(i, index) in [item,item,item]"
+          :key="index"
+      >
+        <ItemVariation
+            :name="i.variation.name"
+            :type="i.variation.type"
+            :price="i.variation.price"
+        />
+        <el-divider/>
+      </div>
     </template>
+
+    <template #item-terms>
+
+      <div class="item-info">
+        <div class="item-terms-title">
+          <el-icon>
+            <InformationCircleIcon/>
+          </el-icon>
+          商品信息
+        </div>
+        <div class="item-terms-content">
+          发售日期
+          <br/>
+          更新日期
+          <br/>
+          商品类型
+          <br/>
+          商品参数
+        </div>
+      </div>
+
+      <div class="item-delivery">
+        <div class="item-terms-title">
+          <el-icon>
+            <TruckIcon/>
+          </el-icon>
+          发货方式
+        </div>
+        <div class="item-terms-content">
+          人工发货
+          <br/>
+          自动发货
+          <br/>
+          快递物流
+        </div>
+      </div>
+
+      <div class="item-service">
+        <div class="item-terms-title">
+          <el-icon>
+            <ShieldCheckIcon/>
+          </el-icon>
+          售后服务
+        </div>
+        <div class="item-terms-content">
+          不支持退换货
+          <br/>
+          七天无理由退换货
+          <br/>
+          质保一个月
+        </div>
+      </div>
+
+    </template>
+
 
   </ItemPageLayout>
 </template>
@@ -69,8 +136,17 @@
 import ItemPageLayout from './ItemPageLayout.vue';
 import {useRoute} from 'vue-router';
 import ImageSlider from "@/components/common/ImageSlider.vue";
-import {HeartIcon, ShareIcon, ExclamationTriangleIcon, ChatBubbleOvalLeftEllipsisIcon} from '@heroicons/vue/24/outline'
 import ItemVariation from "@/components/common/ItemVariation.vue";
+import {
+  StarIcon,
+  HeartIcon,
+  ShareIcon,
+  ExclamationTriangleIcon,
+  ChatBubbleOvalLeftEllipsisIcon,
+  InformationCircleIcon,
+  TruckIcon,
+  ShieldCheckIcon
+} from '@heroicons/vue/24/outline'
 
 const route = useRoute();
 
@@ -206,5 +282,16 @@ const item = {
   width: 50px;
   height: 50px;
 
+}
+
+.item-terms-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.item-terms-content {
+  font-size: 14px;
+  font-weight: 320;
 }
 </style>

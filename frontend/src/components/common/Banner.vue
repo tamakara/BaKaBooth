@@ -46,7 +46,7 @@
           class="nav-btn"
       >
         <el-button
-            :icon="Star"
+            :icon="StarIcon"
             @click="goToRoute('favorites')"
             style="
              border: none;
@@ -61,7 +61,7 @@
           class="nav-btn"
       >
         <el-button
-            :icon="ShoppingCart"
+            :icon="ShoppingCartIcon"
             @click="goToRoute('cart')"
             style="
              border: none;
@@ -78,7 +78,9 @@
 
 <script setup lang="ts">
 import {useRouter} from 'vue-router';
-import {ShoppingCart, Star, SwitchButton} from "@element-plus/icons-vue";
+import {SwitchButton} from "@element-plus/icons-vue";
+import {StarIcon, ShoppingCartIcon} from '@heroicons/vue/24/outline'
+
 import {useUserStore} from "@/stores/user.ts";
 
 const router = useRouter();
