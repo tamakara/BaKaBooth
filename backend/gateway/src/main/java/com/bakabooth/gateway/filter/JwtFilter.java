@@ -30,8 +30,6 @@ public class JwtFilter implements GlobalFilter, Ordered {
                         .verify(token)
                         .getSubject();
 
-                System.out.println("User ID from JWT: " + userId);
-
                 exchange.getRequest().mutate()
                         .header("X-UID", userId)
                         .build();

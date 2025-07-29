@@ -23,6 +23,7 @@
             v-if="userStore.isLogged"
             @command="handleCommand"
             :hide-on-click="false"
+            trigger="click"
         >
           <el-avatar @click="handleAvatarClick" style="cursor: pointer;">FUCK</el-avatar>
           <template #dropdown>
@@ -30,13 +31,10 @@
               <el-dropdown-item command="a">关注的店铺</el-dropdown-item>
               <el-dropdown-item command="b">已购买的商品</el-dropdown-item>
               <el-dropdown-item command="c">历史订单</el-dropdown-item>
-              <el-dropdown-item
-                  command="logout"
-                  divided
-                  :icon="SwitchButton"
-              >
-                退出登录
-              </el-dropdown-item>
+              <el-dropdown-item command="c" divided>店铺管理</el-dropdown-item>
+              <el-dropdown-item command="c">商品管理</el-dropdown-item>
+              <el-dropdown-item command="c" divided>账号设定</el-dropdown-item>
+              <el-dropdown-item command="logout">登出</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -78,7 +76,6 @@
 
 <script setup lang="ts">
 import {useRouter} from 'vue-router';
-import {SwitchButton} from "@element-plus/icons-vue";
 import {StarIcon, ShoppingCartIcon} from '@heroicons/vue/24/outline'
 
 import {useUserStore} from "@/stores/user.ts";

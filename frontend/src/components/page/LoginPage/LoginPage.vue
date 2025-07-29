@@ -94,9 +94,9 @@ const rules = reactive<FormRules<LoginForm>>({
 
 async function handleLoginClick(formEl: FormInstance | undefined) {
   if (!formEl) return
-  await formEl.validate((valid, fields) => {
+  await formEl.validate(async (valid, fields) => {
     if (valid) {
-      userStore.submitLoginForm(loginForm.value)
+      await userStore.submitLoginForm(loginForm.value)
       handleBackToHomeClick()
     } else {
       console.log('登录表单校验失败', fields)

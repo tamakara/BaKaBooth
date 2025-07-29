@@ -4,7 +4,7 @@ import {login} from "@/api/user.ts";
 
 export const useUserStore = defineStore('user', {
     state: () => ({
-        isLogged: false,
+
         userInfo: null as UserInfo | null,
     }),
     actions: {
@@ -12,15 +12,19 @@ export const useUserStore = defineStore('user', {
             try {
                 const token = await login(loginForm);
                 localStorage.setItem('token', token);
-                this.isLogged = true
+
             } catch (error) {
                 console.log('登录失败', error);
             }
         },
         clearUser() {
             localStorage.removeItem('token');
-            this.isLogged = false
         }
     },
-    getters: {}
+    getters: {
+        isLogged(state) {
+            return localStorage.getItem('token') !== null
+        }
+
+    }
 });
