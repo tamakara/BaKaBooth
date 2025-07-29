@@ -7,7 +7,7 @@
       <ItemGrid
           :max-rows="2"
           :max-columns="5"
-          :gap="16"
+          :gap="20"
           :items="newItems"
       />
     </template>
@@ -19,7 +19,7 @@
       <ItemGrid
           :max-rows="4"
           :max-columns="5"
-          :gap="16"
+          :gap="20"
           :items="newItems"
       />
     </template>

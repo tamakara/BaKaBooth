@@ -37,8 +37,8 @@
         >
           <template #icon>
             <el-icon>
-              <StarFilled v-if="isFavorited" style="color: #FF5733;"/>
-              <Star v-else style="color: #B0B0B0;"/>
+              <HeartSolidIcon v-if="isFavorited" style="color: #FF5733;"/>
+              <HeartOutlineIcon v-else style="color: #B0B0B0;"/>
             </el-icon>
           </template>
           {{ favoriteCount }}
@@ -50,7 +50,8 @@
 
 <script setup lang="ts">
 import type {Item} from '@/types/ItemTypes.ts';
-import {Star, StarFilled} from '@element-plus/icons-vue'
+import {HeartIcon as HeartOutlineIcon} from '@heroicons/vue/24/outline'
+import {HeartIcon as HeartSolidIcon} from '@heroicons/vue/24/solid'
 import {ref} from "vue";
 import {useRouter} from "vue-router";
 
@@ -88,7 +89,6 @@ const goToShopPage = () => {
   flex-direction: column;
   box-sizing: border-box;
   overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .item-cover {
