@@ -33,12 +33,10 @@ public class JwtFilter implements GlobalFilter, Ordered {
                 exchange.getRequest().mutate()
                         .header("X-UID", userId)
                         .build();
-
             } catch (Exception e) {
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                 return exchange.getResponse().setComplete();
             }
-
         }
 
         return chain.filter(exchange);
