@@ -28,7 +28,8 @@
 }
 
 .main {
-  height: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .footer {

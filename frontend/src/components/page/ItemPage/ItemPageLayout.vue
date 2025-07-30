@@ -4,78 +4,75 @@
       <Banner/>
     </template>
     <template #main>
-      <div class="item-page-layout">
-        <div class="item-content">
-          <div class="left">
-            <div class="item-image">
-              <slot name="item-image"/>
-            </div>
+      <ContentLayout class="item-page-layout">
+        <ColLayout>
+          <template #left>
+            <div class="left">
+              <div class="item-image">
+                <slot name="item-image"/>
+              </div>
 
-            <div class="item-text">
-              <slot name="item-text"/>
+              <div class="item-text">
+                <slot name="item-text"/>
+              </div>
             </div>
+          </template>
+          <template #right>
+            <div class="right">
+              <div class="item-header">
+                <slot name="item-header"/>
+              </div>
+
+              <div class="item-variations">
+                <slot name="item-variations"/>
+              </div>
+
+              <div class="item-terms">
+                <slot name="item-terms"/>
+              </div>
+            </div>
+          </template>
+        </ColLayout>
+
+        <RowLayout>
+          <div class="item-tag-list">
+            <slot name="item-tag-list"/>
           </div>
-
-          <div class="right">
-            <div class="item-header">
-              <slot name="item-header"/>
-            </div>
-
-            <div class="item-variations">
-              <slot name="item-variations"/>
-            </div>
-
-            <div class="item-terms">
-              <slot name="item-terms"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="item-tag-list">
-          <slot name="item-tag-list"/>
-        </div>
+        </RowLayout>
 
         <el-divider/>
 
-        <div class="shop-items">
-          <slot name="shop-items"/>
-        </div>
-
-      </div>
+        <RowLayout>
+          <div class="shop-items">
+            <slot name="shop-items"/>
+          </div>
+        </RowLayout>
+      </ContentLayout>
     </template>
   </BaseLayout>
 </template>
 
 <script setup lang="ts">
-import BaseLayout from "@/components/common/BaseLayout.vue";
+import BaseLayout from "@/components/common/layout/BaseLayout.vue";
 import Banner from "@/components/common/Banner.vue";
+import ContentLayout from "@/components/common/layout/ContentLayout.vue";
+import ColLayout from "@/components/common/layout/ColLayout.vue";
+import RowLayout from "@/components/common/layout/RowLayout.vue";
 </script>
 
 <style scoped>
 .item-page-layout {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #ffffff;
-}
-
-.item-content {
-  width: 944px;
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin-top: 52px;
+  margin-top: 50px;
 }
 
 .left {
-  flex: 3;
-
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-
+  padding-right: 16px;
 }
+
+.right {
+  padding-left: 32px;
+}
+
 
 .item-image {
   height: 550px;
@@ -83,15 +80,7 @@ import Banner from "@/components/common/Banner.vue";
 }
 
 .item-text {
-
-
-}
-
-.right {
-  flex: 2;
-  width: 346px;
-  display: flex;
-  flex-direction: column;
+  margin-top: 20px;
 }
 
 .item-header {

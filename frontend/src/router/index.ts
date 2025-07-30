@@ -9,6 +9,7 @@ import OrdersPage from '@/components/page/OrdersPage/OrdersPage.vue'
 import LoginPage from "@/components/page/LoginPage/LoginPage.vue";
 import RegisterPage from "@/components/page/RegisterPage/RegisterPage.vue";
 import FavoritesPage from "@/components/page/FavoritesPage/FavoritesPage.vue";
+import ShopManagePage from "@/components/page/ShopManagePage/ShopManagePage.vue";
 
 const routes: RouteRecordRaw[] = [
     {path: '/', name: 'home', component: HomePage},
@@ -16,6 +17,7 @@ const routes: RouteRecordRaw[] = [
     {path: '/user/register', name: 'register', component: RegisterPage},
     {path: '/user/favorites', name: 'favorites', component: FavoritesPage},
     {path: '/item/:id', name: 'item', component: ItemPage},
+    {path: '/shop/manage', name: 'shop-manage', component: ShopManagePage},
     {path: '/shop/:id', name: 'shop', component: ShopPage},
     {path: '/cart', name: 'cart', component: CartPage},
     {path: '/checkout', name: 'checkout', component: CheckoutPage},

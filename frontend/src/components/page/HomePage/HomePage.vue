@@ -1,28 +1,33 @@
 <template>
-  <HomePageLayout :size="2">
-    <template #1>
-      <el-text class="section-title">
-        关注店铺的最新商品
-      </el-text>
-      <ItemGrid
-          :max-rows="2"
-          :max-columns="5"
-          :gap="20"
-          :items="newItems"
-      />
+  <HomePageLayout>
+    <template #section1>
+      <div class="section">
+        <el-text class="section-title">
+          关注店铺的最新商品
+        </el-text>
+        <ItemGrid
+            :max-rows="2"
+            :max-columns="5"
+            :gap="20"
+            :items="newItems"
+        />
+      </div>
     </template>
 
-    <template #2>
-      <el-text class="section-title">
-        热销商品
-      </el-text>
-      <ItemGrid
-          :max-rows="4"
-          :max-columns="5"
-          :gap="20"
-          :items="newItems"
-      />
+    <template #section2>
+      <div class="section">
+        <el-text class="section-title">
+          热销商品
+        </el-text>
+        <ItemGrid
+            :max-rows="4"
+            :max-columns="5"
+            :gap="20"
+            :items="newItems"
+        />
+      </div>
     </template>
+
   </HomePageLayout>
 </template>
 
@@ -117,6 +122,11 @@ const newItems = ref<Item[]>([
 </script>
 
 <style scoped>
+.section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
 .section-title {
   font-size: 30px;

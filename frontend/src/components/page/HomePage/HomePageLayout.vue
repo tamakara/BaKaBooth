@@ -3,50 +3,32 @@
     <template #header>
       <Banner/>
     </template>
-   <template #main>
-     <div class="home-page-layout">
-       <div
-           class="section"
-           v-for="i in size"
-           :key="i"
-       >
-         <div class="section-content">
-           <slot :name="i"/>
-         </div>
-         <el-divider/>
-       </div>
-     </div>
-   </template>
+    <template #main>
+      <ContentLayout>
+        <RowLayout>
+          <slot name="section1"/>
+        </RowLayout>
+      </ContentLayout>
+
+      <el-divider/>
+
+      <ContentLayout>
+        <RowLayout>
+          <slot name="section2"/>
+        </RowLayout>
+      </ContentLayout>
+    </template>
   </BaseLayout>
 </template>
 
 <script setup lang="ts">
-import BaseLayout from "@/components/common/BaseLayout.vue";
+import BaseLayout from "@/components/common/layout/BaseLayout.vue";
 import Banner from "@/components/common/Banner.vue";
-
-defineProps<{
-  size: number;
-}>();
+import ContentLayout from "@/components/common/layout/ContentLayout.vue";
+import RowLayout from "@/components/common/layout/RowLayout.vue";
 
 </script>
 
 <style scoped>
-.home-page-layout {
-  display: flex;
-  flex-direction: column;
-}
 
-.section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  gap: 20px;
-}
-
-.section-content {
-  width: 944px;
-  display: flex;
-  flex-direction: column;
-}
 </style>

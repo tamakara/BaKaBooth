@@ -29,9 +29,10 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item command="a">关注的店铺</el-dropdown-item>
+              <el-dropdown-item command="a">收藏的商品</el-dropdown-item>
               <el-dropdown-item command="b">已购买的商品</el-dropdown-item>
               <el-dropdown-item command="c">历史订单</el-dropdown-item>
-              <el-dropdown-item command="c" divided>店铺管理</el-dropdown-item>
+              <el-dropdown-item command="shop-manage" divided>店铺管理</el-dropdown-item>
               <el-dropdown-item command="c">商品管理</el-dropdown-item>
               <el-dropdown-item command="c" divided>账号设定</el-dropdown-item>
               <el-dropdown-item command="logout">登出</el-dropdown-item>
@@ -94,9 +95,16 @@ function handleAvatarClick() {
 }
 
 function handleCommand(command: string | number | object) {
-  if (command === 'logout') {
-    userStore.clearUser()
+  switch (command) {
+    case 'shop-manage':
+      goToRoute('shop-manage');
+      break;
+    case 'logout':
+      userStore.clearUser();
+      goToRoute('home');
+      break;
   }
+
 }
 
 </script>
