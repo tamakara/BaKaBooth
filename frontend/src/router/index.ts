@@ -10,15 +10,22 @@ import LoginPage from "@/components/page/LoginPage/LoginPage.vue";
 import RegisterPage from "@/components/page/RegisterPage/RegisterPage.vue";
 import FavoritesPage from "@/components/page/FavoritesPage/FavoritesPage.vue";
 import ShopManagePage from "@/components/page/ShopManagePage/ShopManagePage.vue";
+import ShopManageItemPage from "@/components/page/ShopManageItemPage/ShopManageItemPage.vue";
 
 const routes: RouteRecordRaw[] = [
     {path: '/', name: 'home', component: HomePage},
+
+    {path: '/item/:id', name: 'item', component: ItemPage},
+
     {path: '/user/login', name: 'login', component: LoginPage},
     {path: '/user/register', name: 'register', component: RegisterPage},
     {path: '/user/favorites', name: 'favorites', component: FavoritesPage},
-    {path: '/item/:id', name: 'item', component: ItemPage},
-    {path: '/shop/manage', name: 'shop-manage', component: ShopManagePage},
+
     {path: '/shop/:id', name: 'shop', component: ShopPage},
+
+    {path: '/shop/manage', name: 'shop-manage', component: ShopManagePage},
+    {path: '/shop/manage/item', name: 'shop-manage-item', component: ShopManageItemPage},
+
     {path: '/cart', name: 'cart', component: CartPage},
     {path: '/checkout', name: 'checkout', component: CheckoutPage},
     {path: '/orders', name: 'orders', component: OrdersPage},

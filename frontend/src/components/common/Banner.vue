@@ -41,9 +41,20 @@
         </el-dropdown>
         <el-avatar v-else @click="handleAvatarClick" style="cursor: pointer;">登录</el-avatar>
       </div>
-      <div
-          class="nav-btn"
-      >
+      <div class="nav-btn">
+        <el-button
+            :icon="BellIcon"
+            @click="goToRoute('messages')"
+            style="
+             border: none;
+             font-size: 30px;
+             height: 100%;
+             width: 100%;
+             background: transparent;
+            "
+        />
+      </div>
+      <div class="nav-btn">
         <el-button
             :icon="StarIcon"
             @click="goToRoute('favorites')"
@@ -56,9 +67,7 @@
             "
         />
       </div>
-      <div
-          class="nav-btn"
-      >
+      <div class="nav-btn">
         <el-button
             :icon="ShoppingCartIcon"
             @click="goToRoute('cart')"
@@ -77,7 +86,7 @@
 
 <script setup lang="ts">
 import {useRouter} from 'vue-router';
-import {StarIcon, ShoppingCartIcon} from '@heroicons/vue/24/outline'
+import {StarIcon, ShoppingCartIcon,BellIcon} from '@heroicons/vue/24/outline'
 
 import {useUserStore} from "@/stores/user.ts";
 

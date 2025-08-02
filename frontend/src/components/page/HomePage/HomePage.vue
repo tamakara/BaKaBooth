@@ -1,10 +1,10 @@
 <template>
   <HomePageLayout>
+    <template #section1-title>
+      关注店铺
+    </template>
     <template #section1>
       <div class="section">
-        <el-text class="section-title">
-          关注店铺的最新商品
-        </el-text>
         <ItemGrid
             :max-rows="2"
             :max-columns="5"
@@ -14,11 +14,11 @@
       </div>
     </template>
 
+    <template #section2-title>
+      热销商品
+    </template>
     <template #section2>
       <div class="section">
-        <el-text class="section-title">
-          热销商品
-        </el-text>
         <ItemGrid
             :max-rows="4"
             :max-columns="5"

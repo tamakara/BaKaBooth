@@ -1,5 +1,8 @@
 <template>
   <div class="content-layout">
+    <div class="content-title">
+      <slot name="title"/>
+    </div>
     <slot/>
   </div>
 </template>
@@ -15,5 +18,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.content-title {
+
 }
 </style>

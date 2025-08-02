@@ -1,95 +1,86 @@
 <template>
   <ShopManagePageLayout>
-
-    <RowLayout class="shop-manage-title">
-      店铺管理页面
-    </RowLayout>
-    <ContentLayout>
-      <div class="shop-manage-content">
-        <RowLayout>
-          <div class="dashboard-header">
-            <ColLayout>
-              <template #left>
-                <div class="shop-status">
-                  店铺隐藏中
-                </div>
-
-                <div class="shop-name">
-                  tamakara
-                  <el-text tag="a">[编辑]</el-text>
-                </div>
-
-                <div class="shop-url">
-                  <el-text tag="a" style="font-size: 13px"> xxx.tamakara.com</el-text>
-                </div>
-
-                <div class="shop-followers">
-                  <el-icon style="margin-right: 5px">
-                    <UserPlusIcon/>
-                  </el-icon>
-                  666 关注者
-                </div>
-              </template>
-              <template #right>
-                <div class="goto">
-                  <el-button
-                      class="goto-setting"
-                  >
-                    店铺设置
-                  </el-button>
-                  <el-button
-                      class="change-status"
-                  >
-                    切换状态
-                  </el-button>
-                </div>
-              </template>
-            </ColLayout>
-          </div>
-        </RowLayout>
-        <ColLayout class="dashboard-pane">
-          <template #left>
-            <div class="dashboard-pane-left">
-              xxx
-            </div>
-          </template>
-          <template #right>
-            yyy
-          </template>
-        </ColLayout>
+    <template #dashboard-header-left>
+      <div class="shop-status">
+        店铺隐藏中
       </div>
-    </ContentLayout>
+
+      <div class="shop-name">
+        tamakara
+        <el-text tag="a">[编辑]</el-text>
+      </div>
+
+      <div class="shop-url">
+        <el-text tag="a" style="font-size: 13px"> xxx.tamakara.com</el-text>
+      </div>
+
+      <div class="shop-followers">
+        <el-icon style="margin-right: 5px">
+          <UserPlusIcon/>
+        </el-icon>
+        666 关注者
+      </div>
+
+    </template>
+
+    <template #dashboard-header-right>
+      <div class="goto">
+        <el-button class="goto-setting">
+          店铺设置
+        </el-button>
+        <el-button class="change-status">
+          公开店铺
+        </el-button>
+      </div>
+    </template>
+
+    <template #dashboard-pane-left>
+      <div>收益信息</div>
+      <div>xxx</div>
+    </template>
+    <template #dashboard-pane-right>
+
+      <div class="nav">
+        <div class="nav-item" @click="goToRoute('shop-manage-item')">
+          <el-icon class="nav-item-icon">
+            <ShoppingBagIcon/>
+          </el-icon>
+          商品管理
+        </div>
+
+        <div class="nav-item">
+          <el-icon class="nav-item-icon">
+            <ShoppingBagIcon/>
+          </el-icon>
+          订单列表
+        </div>
+
+        <div class="nav-item">
+          <el-icon class="nav-item-icon">
+            <ShoppingBagIcon/>
+          </el-icon>
+          收益管理
+        </div>
+      </div>
+
+
+    </template>
+
+
   </ShopManagePageLayout>
 </template>
 
 <script setup lang="ts">
 import ShopManagePageLayout from "@/components/page/ShopManagePage/ShopManagePageLayout.vue";
-import ColLayout from "@/components/common/layout/ColLayout.vue";
-import ContentLayout from "@/components/common/layout/ContentLayout.vue";
-import RowLayout from "@/components/common/layout/RowLayout.vue";
-import {UserPlusIcon} from "@heroicons/vue/24/outline";
+import {UserPlusIcon, ShoppingBagIcon} from "@heroicons/vue/24/outline";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
+const goToRoute = (name: string) => router.push({name});
+
 </script>
 
 <style scoped>
-.shop-manage-content {
-  width: 100%;
-  height: 100%;
-  border: 1px solid #e6e8eb;
-}
-
-.shop-manage-title {
-  display: flex;
-  justify-content: center;
-  font-size: 20px;
-  margin: 20px 0;
-}
-
-.dashboard-header {
-  background-color: white;
-  height: 100px;
-  padding: 25px;
-  border-bottom: 1px solid #e6e8eb;
-}
 
 .shop-status {
   width: 80px;
@@ -115,7 +106,6 @@ import {UserPlusIcon} from "@heroicons/vue/24/outline";
 .goto {
   height: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
   gap: 20px;
 }
@@ -129,13 +119,23 @@ import {UserPlusIcon} from "@heroicons/vue/24/outline";
   border-radius: 2px;
 }
 
-.dashboard-pane {
-  background-color: white;
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.dashboard-pane-left {
-  padding: 26px;
-  border-right: 1px solid #e6e8eb;
+.nav-item {
+  height: 24px;
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
 }
 
+.nav-item-icon {
+  padding: 4px;
+  background-color: #42b5bd;
+  color: white;
+  border-radius: 4px;
+}
 </style>

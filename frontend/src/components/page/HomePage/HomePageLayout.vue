@@ -5,6 +5,9 @@
     </template>
     <template #main>
       <ContentLayout>
+        <template #title>
+          <slot name="section1-title"/>
+        </template>
         <RowLayout>
           <slot name="section1"/>
         </RowLayout>
@@ -13,6 +16,9 @@
       <el-divider/>
 
       <ContentLayout>
+        <template #title>
+          <slot name="section2-title"/>
+        </template>
         <RowLayout>
           <slot name="section2"/>
         </RowLayout>
