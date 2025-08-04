@@ -6,11 +6,10 @@
     <template #main>
       <ContentLayout>
         <template #title>
-          <RowLayout class="dashboard-title">
-            店铺管理页面
+          <RowLayout class="title">
+            店铺管理
           </RowLayout>
         </template>
-
         <RowLayout class="dashboard">
           <RowLayout class="dashboard-header">
             <div>
@@ -20,7 +19,6 @@
               <slot name="dashboard-header-right"/>
             </div>
           </RowLayout>
-
           <ColLayout class="dashboard-pane">
             <template #left>
               <RowLayout class="dashboard-pane-left">
@@ -32,16 +30,9 @@
                 <slot name="dashboard-pane-right"/>
               </RowLayout>
             </template>
-
           </ColLayout>
-
         </RowLayout>
-
-
       </ContentLayout>
-
-
-      <slot/>
     </template>
   </BaseLayout>
 </template>
@@ -55,7 +46,7 @@ import ContentLayout from "@/components/common/layout/ContentLayout.vue";
 </script>
 
 <style scoped>
-.dashboard-title {
+.title {
   font-size: 20px;
   margin: 26px 0;
 }

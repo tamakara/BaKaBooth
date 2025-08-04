@@ -41,7 +41,7 @@
               <HeartOutlineIcon v-else style="color: #B0B0B0;"/>
             </el-icon>
           </template>
-          {{ favoriteCount }}
+          {{ favorites }}
         </el-button>
       </div>
     </div>
@@ -49,27 +49,27 @@
 </template>
 
 <script setup lang="ts">
-import type {Item} from '@/types/ItemTypes.ts';
+import type {ItemDisplayDTO} from '@/types/ItemTypes.ts';
 import {HeartIcon as HeartOutlineIcon} from '@heroicons/vue/24/outline'
 import {HeartIcon as HeartSolidIcon} from '@heroicons/vue/24/solid'
 import {ref} from "vue";
 import {useRouter} from "vue-router";
 
 const props = defineProps<{
-  item: Item;
+  item: ItemDisplayDTO;
 }>();
 
 const router = useRouter();
 
-const favoriteCount = ref(props.item.favorite)
+const favorites = ref(props.item.favorites)
 const isFavorited = ref(false);
 
 const toggleFavorite = () => {
   isFavorited.value = !isFavorited.value;
   if (isFavorited.value) {
-    favoriteCount.value += 1;
+    favorites.value += 1;
   } else {
-    favoriteCount.value -= 1;
+    favorites.value -= 1;
   }
 };
 

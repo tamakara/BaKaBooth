@@ -33,90 +33,74 @@
 
 <script setup lang="ts">
 import {ref} from 'vue'
-import type {Item} from "@/types/ItemTypes.ts"
+import type {ItemDisplayDTO} from "@/types/ItemTypes.ts"
 import HomePageLayout from "@/components/page/HomePage/HomePageLayout.vue";
 import ItemGrid from "@/components/common/ItemGrid.vue";
 
-const newItems = ref<Item[]>([
+const newItems = ref<ItemDisplayDTO[]>([
   {
     itemId: '1',
     itemName: '你好你好你好你你好你好你好你好好你好你好你好你好你好你好你好',
     coverUrl: './src/assets/test.jpg',
-    shopId: 'shop1',
     shopName: '店铺xxxxxxxxxxxVB店铺SVASVAVSAVASVxxA',
-    favorite: 100,
+    favorites: 100,
     price: 99.9,
-    sales: 50
   },
   {
     itemId: '2',
     itemName: '新商品2',
     coverUrl: './src/assets/test.jpg',
-    shopId: 'shop2',
     shopName: '店铺B',
-    favorite: 200,
+    favorites: 200,
     price: 149.9,
-    sales: 150
   },
   {
     itemId: '2',
     itemName: '新商品2',
     coverUrl: './src/assets/test.jpg',
-    shopId: 'shop2',
     shopName: '店铺B',
-    favorite: 200,
+    favorites: 200,
     price: 149.9,
-    sales: 150
   },
   {
     itemId: '2',
     itemName: '新商品2',
     coverUrl: './src/assets/test.jpg',
-    shopId: 'shop2',
     shopName: '店铺B',
-    favorite: 200,
+    favorites: 200,
     price: 149.9,
-    sales: 150
   }
   , {
     itemId: '2',
     itemName: '我f我aewfwafg我awgawfawfawfa我wfafawfafwafdaefegfwsefwsefwfe',
     coverUrl: './src/assets/test.jpg',
-    shopId: 'shop2',
     shopName: '店铺B',
-    favorite: 200,
+    favorites: 200,
     price: 149.9,
-    sales: 150
   },
   {
     itemId: '2',
     itemName: '新商品2',
     coverUrl: './src/assets/test.jpg',
-    shopId: 'shop2',
     shopName: '店铺B',
-    favorite: 200,
+    favorites: 200,
     price: 149.9,
-    sales: 150
   },
   {
     itemId: '2',
     itemName: '新商品2',
     coverUrl: './src/assets/test.jpg',
-    shopId: 'shop2',
     shopName: '店铺B',
-    favorite: 200,
+    favorites: 200,
     price: 149.9,
-    sales: 150
   },
   {
     itemId: '2',
     itemName: '新商品2',
     coverUrl: './src/assets/test.jpg',
-    shopId: 'shop2',
     shopName: '店铺B',
-    favorite: 200,
+    favorites: 200,
     price: 149.9,
-    sales: 150
   }
 ])
 </script>
