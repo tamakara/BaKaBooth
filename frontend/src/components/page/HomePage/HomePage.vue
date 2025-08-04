@@ -33,74 +33,90 @@
 
 <script setup lang="ts">
 import {ref} from 'vue'
-import type {ItemDisplayDTO} from "@/types/ItemTypes.ts"
+import type {ItemDisplayVO} from "@/types/ItemTypes.d.ts"
 import HomePageLayout from "@/components/page/HomePage/HomePageLayout.vue";
 import ItemGrid from "@/components/common/ItemGrid.vue";
 
-const newItems = ref<ItemDisplayDTO[]>([
+const newItems = ref<ItemDisplayVO[]>([
   {
     itemId: '1',
     itemName: '你好你好你好你你好你好你好你好好你好你好你好你好你好你好你好',
     coverUrl: './src/assets/test.jpg',
+    shopId: 222,
     shopName: '店铺xxxxxxxxxxxVB店铺SVASVAVSAVASVxxA',
-    favorites: 100,
-    price: 99.9,
+    favorite: 100,
+    minPrice: 99.9,
+    maxPrice: 99.9,
   },
   {
     itemId: '2',
     itemName: '新商品2',
     coverUrl: './src/assets/test.jpg',
+    shopId: 222,
     shopName: '店铺B',
-    favorites: 200,
-    price: 149.9,
+    favorite: 200,
+    minPrice: 149.9,
+    maxPrice: 99.9,
   },
   {
     itemId: '2',
     itemName: '新商品2',
     coverUrl: './src/assets/test.jpg',
+    shopId: 222,
     shopName: '店铺B',
-    favorites: 200,
-    price: 149.9,
+    favorite: 200,
+    minPrice: 149.9,
+    maxPrice: 99.9,
   },
   {
     itemId: '2',
     itemName: '新商品2',
     coverUrl: './src/assets/test.jpg',
+    shopId: 222,
     shopName: '店铺B',
-    favorites: 200,
-    price: 149.9,
+    favorite: 200,
+    minPrice: 149.9,
+    maxPrice: 99.9,
   }
   , {
     itemId: '2',
     itemName: '我f我aewfwafg我awgawfawfawfa我wfafawfafwafdaefegfwsefwsefwfe',
     coverUrl: './src/assets/test.jpg',
+    shopId: 222,
     shopName: '店铺B',
-    favorites: 200,
-    price: 149.9,
+    favorite: 200,
+    minPrice: 149.9,
+    maxPrice: 99.9,
   },
   {
     itemId: '2',
     itemName: '新商品2',
     coverUrl: './src/assets/test.jpg',
+    shopId: 222,
     shopName: '店铺B',
-    favorites: 200,
-    price: 149.9,
+    favorite: 200,
+    minPrice: 149.9,
+    maxPrice: 99.9,
   },
   {
     itemId: '2',
     itemName: '新商品2',
     coverUrl: './src/assets/test.jpg',
+    shopId: 222,
     shopName: '店铺B',
-    favorites: 200,
-    price: 149.9,
+    favorite: 200,
+    minPrice: 149.9,
+    maxPrice: 99.9,
   },
   {
     itemId: '2',
     itemName: '新商品2',
     coverUrl: './src/assets/test.jpg',
+    shopId: 222,
     shopName: '店铺B',
-    favorites: 200,
-    price: 149.9,
+    favorite: 200,
+    minPrice: 149.9,
+    maxPrice: 99.9,
   }
 ])
 </script>

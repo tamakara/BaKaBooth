@@ -27,7 +27,7 @@
 
       <div class="price-and-favorite">
         <el-text class="price">
-          ￥{{ item.price }}
+          ￥{{ item.minPrice }}~
         </el-text>
         <el-button
             type="text"
@@ -49,19 +49,19 @@
 </template>
 
 <script setup lang="ts">
-import type {ItemDisplayDTO} from '@/types/ItemTypes.ts';
+import type {ItemDisplayVO} from '@/types/ItemTypes.d.ts';
 import {HeartIcon as HeartOutlineIcon} from '@heroicons/vue/24/outline'
 import {HeartIcon as HeartSolidIcon} from '@heroicons/vue/24/solid'
 import {ref} from "vue";
 import {useRouter} from "vue-router";
 
 const props = defineProps<{
-  item: ItemDisplayDTO;
+  item: ItemDisplayVO;
 }>();
 
 const router = useRouter();
 
-const favorites = ref(props.item.favorites)
+const favorites = ref(props.item.favorite)
 const isFavorited = ref(false);
 
 const toggleFavorite = () => {

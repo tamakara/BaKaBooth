@@ -11,13 +11,13 @@
             :rules="rules"
             status-icon
         >
-          <el-form-item prop="username">
+          <el-form-item prop="phone">
             <el-input
                 size="large"
                 type="text"
-                :prefix-icon="User"
-                placeholder="用户名或电子邮箱"
-                v-model="loginForm.username"
+                :prefix-icon="DevicePhoneMobileIcon"
+                placeholder="手机号"
+                v-model="loginForm.phone"
                 clearable
             />
           </el-form-item>
@@ -25,7 +25,7 @@
             <el-input
                 size="large"
                 type="password"
-                :prefix-icon="Lock"
+                :prefix-icon="LockClosedIcon"
                 placeholder="密码"
                 v-model="loginForm.password"
                 clearable
@@ -72,23 +72,23 @@
 <script setup lang="ts">
 import LoginPageLayout from "@/components/page/LoginPage/LoginPageLayout.vue";
 import {reactive, ref} from "vue";
-import {User, Lock} from "@element-plus/icons-vue"
 import {useRouter} from "vue-router";
-import type {LoginForm} from "@/types/user";
+import type {LoginForm} from "@/types/UserTypes";
 import type {FormInstance, FormRules} from "element-plus";
 import {useUserStore} from "@/stores/user.ts";
+import {DevicePhoneMobileIcon, LockClosedIcon} from "@heroicons/vue/24/outline";
 
 const router = useRouter()
 const userStore = useUserStore()
 
 const ruleFormRef = ref<FormInstance>()
 const loginForm = ref<LoginForm>({
-  username: '',
+  phone: '',
   password: ''
 });
 
 const rules = reactive<FormRules<LoginForm>>({
-  username: [{required: true, message: '请输入用户名或电子邮箱', trigger: 'blur'},],
+  phone: [{required: true, message: '请输入手机号', trigger: 'blur'},],
   password: [{required: true, message: '请输入密码', trigger: 'blur'},],
 })
 
@@ -96,7 +96,7 @@ async function handleLoginClick(formEl: FormInstance | undefined) {
   if (!formEl) return
   await formEl.validate(async (valid, fields) => {
     if (valid) {
-      await userStore.submitLoginForm(loginForm.value)
+      await userStore.login(loginForm.value)
       handleBackToHomeClick()
     } else {
       console.log('登录表单校验失败', fields)

@@ -10,7 +10,11 @@
     </template>
     <template #actions-right>
       <div class="add-item">
-        <el-button class="add-item-button" color="#2c9ba6">
+        <el-button
+            class="add-item-button"
+            color="#2c9ba6"
+            @click="handleAddItem"
+        >
           <el-icon style="margin-right: 5px">
             <PlusIcon/>
           </el-icon>
@@ -33,7 +37,7 @@
           <div style="display: flex;flex-direction: column;justify-content: center;">
             <div class="item-state">{{ item.state }}</div>
             <div class="item-name">{{ item.itemName }}</div>
-            <div class="item-url">{{ item.itemUrl }}</div>
+            <div class="item-url">http://localhost:5173/item/{{ item.itemId }}</div>
           </div>
         </div>
         <div class="variations">
@@ -66,10 +70,6 @@
               <div class="variation-data-heading">销量</div>
               {{ variation.sales }}
             </div>
-            <div class="variation-data">
-              <div class="variation-data-heading">收益</div>
-              {{ variation.proceeds }}
-            </div>
           </div>
         </div>
       </div>
@@ -80,18 +80,24 @@
 <script setup lang="ts">
 import ShopManageItemPageLayout from "@/components/page/ShopManageItemPage/ShopManageItemPageLayout.vue";
 import {ref} from "vue";
-import type {ItemManageDTO} from "@/types/ItemTypes.ts";
+import type {ItemManageVO} from "@/types/ItemTypes.d.ts";
 import {CloudArrowDownIcon, PlusIcon} from "@heroicons/vue/24/outline";
+import {createItem} from "@/api/item.ts";
+
+async function handleAddItem() {
+  const itemId = await createItem()
+  console.log(itemId)
+}
+
 
 const currentState = ref('all');
 
-const items = ref<ItemManageDTO[]>([
+const items = ref<ItemManageVO[]>([
   {
     itemId: 1,
     itemName: '商品名称',
     state: 'draft',
-    favorites: 100,
-    itemUrl: 'xxxxxxxxxxxxxxxxx',
+    favorite: 100,
     coverUrl: 'xxxxxxxxxxxxxxxxxxxx',
     variations: [
       {
@@ -99,22 +105,20 @@ const items = ref<ItemManageDTO[]>([
         price: '666 JPY',
         stock: 123,
         sales: 456,
-        proceeds: 777.7,
       },
       {
         name: '变体2',
         price: '777 JPY',
         stock: 123,
         sales: 456,
-        proceeds: 777.7,
       },
     ],
-  }, {
+  },
+  {
     itemId: 1,
     itemName: '商品名称',
     state: 'draft',
-    favorites: 100,
-    itemUrl: 'xxxxxxxxxxxxxxxxx',
+    favorite: 100,
     coverUrl: 'xxxxxxxxxxxxxxxxxxxx',
     variations: [
       {
@@ -122,14 +126,12 @@ const items = ref<ItemManageDTO[]>([
         price: '666 JPY',
         stock: 123,
         sales: 456,
-        proceeds: 777.7,
       },
       {
         name: '变体2',
         price: '777 JPY',
         stock: 123,
         sales: 456,
-        proceeds: 777.7,
       },
     ],
   },

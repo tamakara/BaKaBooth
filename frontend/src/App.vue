@@ -8,7 +8,7 @@ import {onMounted} from "vue";
 
 const userStore = useUserStore();
 onMounted(() => {
-  userStore.checkToken();
+  userStore.check();
 });
 
 </script>

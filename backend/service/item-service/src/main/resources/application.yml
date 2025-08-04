@@ -26,8 +26,3 @@ mybatis-plus:
     db-config:
       id-type: assign_id
       update-strategy: not_null
-
-logging:
-  level:
-    org.springframework.web: DEBUG
-

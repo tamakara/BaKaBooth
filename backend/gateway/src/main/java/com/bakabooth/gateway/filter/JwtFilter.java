@@ -2,6 +2,7 @@ package com.bakabooth.gateway.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -25,14 +26,18 @@ public class JwtFilter implements GlobalFilter, Ordered {
             token = token.substring(7);
 
             try {
-                String userId = JWT.require(Algorithm.HMAC256(secret))
+                DecodedJWT decodedJWT = JWT
+                        .require(Algorithm.HMAC256(secret))
                         .build()
-                        .verify(token)
-                        .getSubject();
+                        .verify(token);
 
-                exchange.getRequest().mutate()
-                        .header("X-UID", userId)
+                String userId = decodedJWT.getSubject();
+
+                exchange = exchange
+                        .mutate()
+                        .request(r -> r.header("X-UID", userId))
                         .build();
+
             } catch (Exception e) {
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                 return exchange.getResponse().setComplete();

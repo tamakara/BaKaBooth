@@ -1,9 +1,8 @@
-export interface ItemManageDTO {
+export interface ItemManageVO {
     itemId: number
     itemName: string
     state: string,
-    favorites: number
-    itemUrl: string
+    favorite: number
     coverUrl: string
 
     variations: Array<{
@@ -11,16 +10,16 @@ export interface ItemManageDTO {
         price: string
         stock: number
         sales: number
-        proceeds: number
     }>
 }
 
-export interface ItemDisplayDTO {
+export interface ItemDisplayVO {
     itemId: string
     itemName: string
+    shopId: number
     shopName: string
-    favorites: number
-    price: string
-    itemUrl: string
+    favorite: number
+    minPrice: number
+    maxPrice: number
     coverUrl: string
 }

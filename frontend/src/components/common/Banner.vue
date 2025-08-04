@@ -25,7 +25,15 @@
             :hide-on-click="false"
             trigger="click"
         >
-          <el-avatar @click="handleAvatarClick" style="cursor: pointer;">FUCK</el-avatar>
+          <div>
+            <el-text>{{ nickname }}</el-text>
+            <el-avatar
+                :src="avatarUrl"
+                @click="handleAvatarClick"
+                style="cursor: pointer;"
+            />
+          </div>
+
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item command="a">关注的店铺</el-dropdown-item>
@@ -86,9 +94,11 @@
 
 <script setup lang="ts">
 import {useRouter} from 'vue-router';
-import {StarIcon, ShoppingCartIcon,BellIcon} from '@heroicons/vue/24/outline'
+import {StarIcon, ShoppingCartIcon, BellIcon} from '@heroicons/vue/24/outline'
 
 import {useUserStore} from "@/stores/user.ts";
+import {onMounted, ref} from "vue";
+import {getUserSimpleInfo} from "@/api/user.ts";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -109,12 +119,21 @@ function handleCommand(command: string | number | object) {
       goToRoute('shop-manage');
       break;
     case 'logout':
-      userStore.clearUser();
+      userStore.logout();
       goToRoute('home');
       break;
   }
-
 }
+
+const nickname = ref();
+const avatarUrl = ref();
+
+onMounted(async () => {
+  if (!userStore.isLogged) return;
+  const userSimpleInfoVO = await getUserSimpleInfo()
+  nickname.value = userSimpleInfoVO.nickname
+  avatarUrl.value = userSimpleInfoVO.avatarUrl
+});
 
 </script>
 

@@ -1,10 +1,10 @@
 package com.bakabooth.user.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.bakabooth.user.domain.vo.UserSimpleInfoVO;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
+
+import java.time.Instant;
 
 @Data
 @TableName("user")
@@ -12,8 +12,11 @@ public class User {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @TableField(value = "username")
-    private String username;
+    @TableField(value = "phone")
+    private Integer phone;
+
+    @TableField(value = "email")
+    private String email;
 
     @TableField(value = "password")
     private String password;
@@ -21,15 +24,12 @@ public class User {
     @TableField(value = "nickname")
     private String nickname;
 
-    @TableField(value = "email")
-    private String email;
-
     @TableField(value = "avatar_file")
     private String avatarFile;
 
     @TableField(value = "created_at")
-    private Long createdAt;
+    private Instant createdAt;
 
     @TableField(value = "updated_at")
-    private Long updatedAt;
+    private Instant updatedAt;
 }

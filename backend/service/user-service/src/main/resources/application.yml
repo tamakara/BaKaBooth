@@ -31,9 +31,4 @@ jwt:
   secret: tamakara
   expiration: 604800
 
-logging:
-  level:
-    org.springframework.web: DEBUG
-    org.springframework.cloud: DEBUG
-    com.netflix.discovery: DEBUG
 

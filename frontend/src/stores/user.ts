@@ -1,14 +1,13 @@
 import {defineStore} from 'pinia';
-import type {LoginForm, UserInfo} from "@/types/user";
+import type {LoginForm} from "@/types/UserTypes";
 import {login} from "@/api/user.ts";
 
 export const useUserStore = defineStore('user', {
     state: () => ({
         isLogged: false,
-        userInfo: null as UserInfo | null,
     }),
     actions: {
-        async submitLoginForm(loginForm: LoginForm) {
+        async login(loginForm: LoginForm) {
             try {
                 const token = await login(loginForm);
                 localStorage.setItem('token', token);
@@ -18,12 +17,12 @@ export const useUserStore = defineStore('user', {
             }
         },
 
-        checkToken() {
+        async check() {
             this.isLogged = localStorage.getItem('token') !== null
             return this.isLogged
         },
 
-        clearUser() {
+        logout() {
             localStorage.removeItem('token');
             this.isLogged = false;
         }
