@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.Data;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,17 +29,23 @@ public class Item {
     @TableField(value = "cover_file")
     private String coverFile;
 
-    @TableField(value = "user_id")
-    private String userId;
+    @TableField(value = "shop_id")
+    private Long shopId;
 
     @TableField(value = "variations", typeHandler = JacksonTypeHandler.class)
     private List<Variation> variations;
 
-    public Item(String userId) {
+    @TableField(value = "created_at")
+    private Instant createdAt;
+
+    @TableField(value = "updated_at")
+    private Instant updatedAt;
+
+    public Item(Long shopId) {
         this.name = "未命名";
         this.state = "draft";
         this.favorite = 0L;
-        this.userId = userId;
+        this.shopId = shopId;
         this.variations = new ArrayList<>();
         variations.add(new Variation("默认", 0.00, 0L, 0L));
     }

@@ -17,7 +17,7 @@ public class ItemController {
 
     @Operation(summary = "创建商品")
     @PostMapping("/create")
-    public ResponseEntity<Long> createItem(@RequestHeader("X-UID") String userId) {
+    public ResponseEntity<Long> createItem(@RequestHeader("X-UID") Long userId) {
         Long itemId = itemService.create(userId);
         return ResponseEntity.ok(itemId);
     }

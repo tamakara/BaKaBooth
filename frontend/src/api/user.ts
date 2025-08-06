@@ -7,6 +7,6 @@ export async function login(data: LoginForm): Promise<string> {
 }
 
 export async function getUserSimpleInfo(): Promise<UserSimpleInfoVO> {
-    const response = await axiosInstance.get<UserSimpleInfoVO>('/user/simple-info');
+    const response = await axiosInstance.get<UserSimpleInfoVO>('/user/vo/simple-info');
     return response.data;
 }

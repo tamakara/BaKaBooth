@@ -1,10 +1,9 @@
-package com.bakabooth.client;
+package com.bakabooth.common.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 
 @FeignClient(value = "shop-service")
 public interface ShopClient {
-
 
 
 }

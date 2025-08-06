@@ -2,6 +2,7 @@ package com.bakabooth.user.service.impl;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.bakabooth.common.domain.dto.UserDTO;
 import com.bakabooth.user.config.JwtProperties;
 import com.bakabooth.user.domain.dto.LoginFormDTO;
 import com.bakabooth.user.domain.entity.User;
@@ -53,15 +54,20 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserSimpleInfoVO getUserSimpleInfo(Long userId) {
+    public UserSimpleInfoVO getUserSimpleInfoVO(Long userId) {
         User user = userMapper.selectById(userId);
 
         if (user == null) throw new RuntimeException("用户不存在");
 
-        UserSimpleInfoVO userSimpleInfoVO = new UserSimpleInfoVO();
-        userSimpleInfoVO.setNickname(user.getNickname());
-        userSimpleInfoVO.setAvatarUrl(user.getAvatarFile());
+        return user.toUserSimpleInfoVO();
+    }
 
-        return userSimpleInfoVO;
+    @Override
+    public UserDTO getUserDTO(Long userId) {
+        User user = userMapper.selectById(userId);
+
+        if (user == null) throw new RuntimeException("用户不存在");
+
+        return user.toUserDTO();
     }
 }

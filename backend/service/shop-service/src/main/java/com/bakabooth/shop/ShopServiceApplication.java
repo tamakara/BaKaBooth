@@ -1,4 +1,4 @@
-package com.bakabooth.item;
+package com.bakabooth.shop;
 
 import com.bakabooth.common.client.UserClient;
 import com.bakabooth.common.config.DefaultFeignConfig;
@@ -11,10 +11,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
         clients = {UserClient.class},
         defaultConfiguration = DefaultFeignConfig.class
 )
-@MapperScan("com.bakabooth.item.mapper")
+@MapperScan("com.bakabooth.shop.mapper")
 @SpringBootApplication
-public class ItemServiceApplication {
+public class ShopServiceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ItemServiceApplication.class, args);
+        SpringApplication.run(ShopServiceApplication.class, args);
     }
 }

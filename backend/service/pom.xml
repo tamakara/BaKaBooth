@@ -15,7 +15,7 @@
     <modules>
         <module>user-service</module>
         <module>item-service</module>
-        <module>cart-service</module>
+        <module>shop-service</module>
         <module>pay-service</module>
     </modules>
 
@@ -24,12 +24,6 @@
         <dependency>
             <groupId>com.bakabooth</groupId>
             <artifactId>common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <!--api-->
-        <dependency>
-            <groupId>com.bakabooth</groupId>
-            <artifactId>api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <!--Web-->
@@ -51,11 +45,6 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-        </dependency>
-        <!--OKHTTP-->
-        <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-okhttp</artifactId>
         </dependency>
         <!--MySQL Driver-->
         <dependency>
