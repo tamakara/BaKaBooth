@@ -26,7 +26,7 @@
       <div
           class="item"
           v-for="item in items"
-          :key="item.itemId"
+          :key="item.id"
       >
         <div style="display: flex;gap: 15px;height:80px;">
           <el-image
@@ -36,8 +36,8 @@
           />
           <div style="display: flex;flex-direction: column;justify-content: center;">
             <div class="item-state">{{ item.state }}</div>
-            <div class="item-name">{{ item.itemName }}</div>
-            <div class="item-url">http://localhost:5173/item/{{ item.itemId }}</div>
+            <div class="item-name">{{ item.name }}</div>
+            <div class="item-url">http://localhost:5173/item/{{ item.id }}</div>
           </div>
         </div>
         <div class="variations">
@@ -79,63 +79,24 @@
 
 <script setup lang="ts">
 import ShopManageItemPageLayout from "@/components/page/ShopManageItemPage/ShopManageItemPageLayout.vue";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import type {ItemManageVO} from "@/types/ItemTypes.d.ts";
 import {CloudArrowDownIcon, PlusIcon} from "@heroicons/vue/24/outline";
-import {createItem} from "@/api/item.ts";
+import {createItem, getItemManageVO} from "@/api/item.ts";
 
 async function handleAddItem() {
   const itemId = await createItem()
   console.log(itemId)
 }
 
-
 const currentState = ref('all');
 
-const items = ref<ItemManageVO[]>([
-  {
-    itemId: 1,
-    itemName: '商品名称',
-    state: 'draft',
-    favorite: 100,
-    coverUrl: 'xxxxxxxxxxxxxxxxxxxx',
-    variations: [
-      {
-        name: '变体1',
-        price: '666 JPY',
-        stock: 123,
-        sales: 456,
-      },
-      {
-        name: '变体2',
-        price: '777 JPY',
-        stock: 123,
-        sales: 456,
-      },
-    ],
-  },
-  {
-    itemId: 1,
-    itemName: '商品名称',
-    state: 'draft',
-    favorite: 100,
-    coverUrl: 'xxxxxxxxxxxxxxxxxxxx',
-    variations: [
-      {
-        name: '变体1',
-        price: '666 JPY',
-        stock: 123,
-        sales: 456,
-      },
-      {
-        name: '变体2',
-        price: '777 JPY',
-        stock: 123,
-        sales: 456,
-      },
-    ],
-  },
-])
+const items = ref<Array<ItemManageVO>>()
+
+onMounted(async () => {
+  items.value = await getItemManageVO()
+})
+
 
 </script>
 

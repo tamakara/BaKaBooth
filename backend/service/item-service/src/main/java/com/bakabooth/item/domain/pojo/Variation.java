@@ -1,4 +1,4 @@
-package com.bakabooth.item.domain.entity;
+package com.bakabooth.item.domain.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

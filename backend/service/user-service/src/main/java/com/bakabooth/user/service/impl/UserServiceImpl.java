@@ -10,6 +10,7 @@ import com.bakabooth.user.domain.vo.UserSimpleInfoVO;
 import com.bakabooth.user.mapper.UserMapper;
 import com.bakabooth.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,7 +60,11 @@ public class UserServiceImpl implements UserService {
 
         if (user == null) throw new RuntimeException("用户不存在");
 
-        return user.toUserSimpleInfoVO();
+        UserSimpleInfoVO vo = new UserSimpleInfoVO();
+        BeanUtils.copyProperties(this, vo);
+        vo.setUserId(userId);
+
+        return vo;
     }
 
     @Override
@@ -68,6 +73,9 @@ public class UserServiceImpl implements UserService {
 
         if (user == null) throw new RuntimeException("用户不存在");
 
-        return user.toUserDTO();
+        UserDTO dto = new UserDTO();
+        BeanUtils.copyProperties(this, dto);
+
+        return dto;
     }
 }

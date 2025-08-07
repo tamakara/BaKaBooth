@@ -1,11 +1,14 @@
 package com.bakabooth.item.domain.entity;
 
+import com.bakabooth.item.domain.pojo.Variation;
+import com.bakabooth.item.domain.vo.ItemManageVO;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 
 import java.time.Instant;
 import java.util.ArrayList;
