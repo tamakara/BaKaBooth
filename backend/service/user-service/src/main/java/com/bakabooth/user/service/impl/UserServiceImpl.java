@@ -61,8 +61,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) throw new RuntimeException("用户不存在");
 
         UserSimpleInfoVO vo = new UserSimpleInfoVO();
-        BeanUtils.copyProperties(this, vo);
-        vo.setUserId(userId);
+        BeanUtils.copyProperties(user, vo);
 
         return vo;
     }
@@ -74,7 +73,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) throw new RuntimeException("用户不存在");
 
         UserDTO dto = new UserDTO();
-        BeanUtils.copyProperties(this, dto);
+        BeanUtils.copyProperties(user, dto);
 
         return dto;
     }

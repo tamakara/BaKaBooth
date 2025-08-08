@@ -4,6 +4,7 @@ export interface LoginForm {
 }
 
 export interface UserSimpleInfoVO {
+    id: number
     nickname: string
     avatarUrl: string
 }

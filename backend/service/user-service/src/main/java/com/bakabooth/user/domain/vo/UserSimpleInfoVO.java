@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class UserSimpleInfoVO {
-    private Long userId;
+    private Long id;
     private String nickname;
     private String avatarUrl;
 }

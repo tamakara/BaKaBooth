@@ -83,10 +83,13 @@ import {onMounted, ref} from "vue";
 import type {ItemManageVO} from "@/types/ItemTypes.d.ts";
 import {CloudArrowDownIcon, PlusIcon} from "@heroicons/vue/24/outline";
 import {createItem, getItemManageVO} from "@/api/item.ts";
+import {useRouter} from "vue-router";
+
+const router = useRouter()
 
 async function handleAddItem() {
   const itemId = await createItem()
-  console.log(itemId)
+  await router.push({name: 'item-edit', params: {id: itemId}})
 }
 
 const currentState = ref('all');
