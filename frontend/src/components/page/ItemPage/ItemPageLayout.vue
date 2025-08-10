@@ -5,45 +5,45 @@
     </template>
     <template #main>
       <ContentLayout class="item-page-layout">
-        <ColLayout>
+        <ColLayout class="main-content">
           <template #left>
-            <div class="left">
-              <div class="item-image">
+            <div class="left-panel">
+              <div class="item-image-section">
                 <slot name="item-image"/>
               </div>
 
-              <div class="item-text">
+              <div class="item-description-section">
                 <slot name="item-text"/>
               </div>
             </div>
           </template>
           <template #right>
-            <div class="right">
-              <div class="item-header">
+            <div class="right-panel">
+              <div class="item-header-section">
                 <slot name="item-header"/>
               </div>
 
-              <div class="item-variations">
+              <div class="item-variations-section">
                 <slot name="item-variations"/>
               </div>
 
-              <div class="item-terms">
+              <div class="item-info-section">
                 <slot name="item-terms"/>
               </div>
             </div>
           </template>
         </ColLayout>
 
-        <RowLayout>
-          <div class="item-tag-list">
+        <RowLayout class="additional-content">
+          <div class="item-tags-section">
             <slot name="item-tag-list"/>
           </div>
         </RowLayout>
 
-        <el-divider/>
+        <el-divider class="section-divider"/>
 
-        <RowLayout>
-          <div class="shop-items">
+        <RowLayout class="shop-section">
+          <div class="shop-items-section">
             <slot name="shop-items"/>
           </div>
         </RowLayout>
@@ -62,37 +62,95 @@ import RowLayout from "@/components/common/layout/RowLayout.vue";
 
 <style scoped>
 .item-page-layout {
-  margin-top: 50px;
+  padding: 0;
 }
 
-.left {
-  padding-right: 16px;
+.main-content {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  margin-bottom: 24px;
 }
 
-.right {
-  padding-left: 32px;
+.left-panel {
+  padding: 24px;
+  background: #fafafa;
 }
 
-
-.item-image {
-  height: 550px;
-  width: 550px;
+.right-panel {
+  padding: 24px;
+  background: white;
+  border-left: 1px solid #e4e7ed;
 }
 
-.item-text {
-  margin-top: 20px;
+.item-image-section {
+  margin-bottom: 24px;
 }
 
-.item-header {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.item-description-section {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
-.item-terms {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+.item-header-section {
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e4e7ed;
 }
 
+.item-variations-section {
+  margin-bottom: 24px;
+}
+
+.item-info-section {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.additional-content {
+  margin: 24px 0;
+}
+
+.item-tags-section {
+  width: 100%;
+  padding: 16px 0;
+}
+
+.section-divider {
+  margin: 32px 0;
+}
+
+.shop-section {
+  margin-top: 24px;
+}
+
+.shop-items-section {
+  width: 100%;
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .left-panel,
+  .right-panel {
+    padding: 16px;
+  }
+
+  .item-description-section,
+  .item-info-section,
+  .shop-items-section {
+    padding: 16px;
+  }
+
+  .section-divider {
+    margin: 24px 0;
+  }
+}
 </style>

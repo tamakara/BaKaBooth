@@ -1,39 +1,78 @@
 <template>
   <BaseLayout>
-    <div class="shop-page-layout">
-      <main>
-        <div class="left-sidebar">
-          <slot name="left-sidebar"></slot>
+    <template #header>
+      <Banner />
+    </template>
+    <template #main>
+      <div class="shop-page-layout">
+        <div class="shop-container">
+          <div class="shop-sidebar">
+            <slot name="left-sidebar" />
+          </div>
+          <div class="shop-content">
+            <slot name="content" />
+          </div>
         </div>
-        <div class="content">
-          <slot name="content"></slot>
-        </div>
-      </main>
-    </div>
+      </div>
+    </template>
   </BaseLayout>
 </template>
 
 <script setup lang="ts">
 import BaseLayout from "@/components/common/layout/BaseLayout.vue";
+import Banner from "@/components/common/Banner.vue";
 </script>
 
 <style scoped>
 .shop-page-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.shop-container {
   display: flex;
-  flex-direction: column;
+  gap: 24px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
 }
 
-main {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
+.shop-sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  background: #f8f9fa;
+  padding: 24px;
+  border-right: 1px solid #e4e7ed;
 }
 
-.left-sidebar {
-  width: 20%;
+.shop-content {
+  flex: 1;
+  padding: 24px;
+  background: white;
 }
 
-.content {
-  width: 80%;
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .shop-page-layout {
+    padding: 16px;
+  }
+
+  .shop-container {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .shop-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e4e7ed;
+    padding: 16px;
+  }
+
+  .shop-content {
+    padding: 16px;
+  }
 }
 </style>

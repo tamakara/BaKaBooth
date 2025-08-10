@@ -12,10 +12,10 @@
         </template>
         <RowLayout class="dashboard">
           <RowLayout class="dashboard-header">
-            <div>
+            <div class="header-left">
               <slot name="dashboard-header-left"/>
             </div>
-            <div>
+            <div class="header-right">
               <slot name="dashboard-header-right"/>
             </div>
           </RowLayout>
@@ -47,31 +47,76 @@ import ContentLayout from "@/components/common/layout/ContentLayout.vue";
 
 <style scoped>
 .title {
-  font-size: 20px;
-  margin: 26px 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #303133;
+  padding: 32px 0 24px 0;
+  text-align: center;
+  border-bottom: 1px solid #e4e7ed;
+  margin-bottom: 0;
 }
 
 .dashboard {
-  border: 2px solid #e6e8eb;
   background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  margin: 0;
 }
 
 .dashboard-header {
-  padding: 26px;
   display: flex;
   justify-content: space-between;
-  border-bottom: 2px solid #e6e8eb;
+  align-items: center;
+  padding: 24px 32px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-bottom: 1px solid #e4e7ed;
+  margin: 0;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.dashboard-pane {
+  min-height: 400px;
 }
 
 .dashboard-pane-left {
-  height: 100%;
-  padding: 26px;
-  border-right: 2px solid #e6e8eb;
+  padding: 24px;
+  border-right: 1px solid #e4e7ed;
+  background: #fafafa;
 }
 
 .dashboard-pane-right {
-  height: 100%;
-  padding: 26px;
+  padding: 24px;
+  background: white;
 }
 
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .title {
+    font-size: 24px;
+    padding: 24px 16px 20px 16px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+    padding: 20px 16px;
+  }
+
+  .dashboard-pane-left,
+  .dashboard-pane-right {
+    padding: 16px;
+  }
+}
 </style>

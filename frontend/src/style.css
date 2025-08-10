@@ -33,3 +33,8 @@ a:hover {
 div {
     box-sizing: border-box;
 }
+
+.el-form-item__label {
+    font-size: 14px;
+    font-weight: bold;
+}

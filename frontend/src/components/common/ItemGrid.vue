@@ -39,4 +39,6 @@ const span = computed(() => (24 / props.maxColumns));
 </script>
 
 <style scoped>
+
+
 </style>
