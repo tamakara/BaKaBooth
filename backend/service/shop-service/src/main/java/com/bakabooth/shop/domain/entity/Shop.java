@@ -30,12 +30,6 @@ public class Shop {
     @TableField(value = "follower")
     private Long follower;
 
-    @TableField(value = "created_at")
-    private Instant createdAt;
-
-    @TableField(value = "updated_at")
-    private Instant updatedAt;
-
     public ShopInfoVO toShopInfoVO() {
         ShopInfoVO vo = new ShopInfoVO();
 

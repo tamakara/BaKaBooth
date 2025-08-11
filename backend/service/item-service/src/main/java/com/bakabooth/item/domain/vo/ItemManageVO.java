@@ -1,6 +1,6 @@
 package com.bakabooth.item.domain.vo;
 
-import com.bakabooth.item.domain.pojo.Variation;
+import com.bakabooth.item.domain.entity.Variation;
 import lombok.Data;
 
 import java.util.List;

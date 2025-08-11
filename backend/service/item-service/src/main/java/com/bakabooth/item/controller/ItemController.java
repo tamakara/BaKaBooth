@@ -1,15 +1,13 @@
 package com.bakabooth.item.controller;
 
+import com.bakabooth.item.domain.vo.ItemEditFormVO;
 import com.bakabooth.item.domain.vo.ItemManageVO;
 import com.bakabooth.item.service.ItemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,5 +29,15 @@ public class ItemController {
     public ResponseEntity<List<ItemManageVO>> getItemManageVO(@RequestHeader("X-UID") Long userId) {
         List<ItemManageVO> itemManageVOList = itemService.getItemManageVO(userId);
         return ResponseEntity.ok(itemManageVOList);
+    }
+
+    @Operation(summary = "获取商品编辑表单信息")
+    @GetMapping("/vo/item-edit-form/{item_id}")
+    public ResponseEntity<ItemEditFormVO> getItemEditFormVO(
+            @RequestHeader("X-UID") Long userId,
+            @PathVariable("item_id") Long itemId
+    ) {
+        ItemEditFormVO itemEditFormVO = itemService.getItemEditFormVO(userId,itemId);
+        return ResponseEntity.ok(itemEditFormVO);
     }
 }

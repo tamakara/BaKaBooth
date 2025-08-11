@@ -8,7 +8,7 @@ CREATE TABLE `user`
 (
     `id`          BIGINT       NOT NULL AUTO_INCREMENT,
     `shop_id`     BIGINT       DEFAULT NULL,
-    `phone`       INTEGER      NOT NULL,
+    `phone`       CHAR(11)     NOT NULL,
     `email`       VARCHAR(255) DEFAULT NULL,
     `password`    VARCHAR(255) NOT NULL,
     `nickname`    VARCHAR(255) NOT NULL,

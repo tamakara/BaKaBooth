@@ -1,4 +1,4 @@
-export interface LoginForm {
+export interface LoginFormDTO {
     phone: string
     password: string
 }

@@ -88,7 +88,7 @@
 import LoginPageLayout from "@/components/page/LoginPage/LoginPageLayout.vue";
 import {reactive, ref} from "vue";
 import {useRouter} from "vue-router";
-import type {LoginForm} from "@/types/UserTypes";
+import type {LoginFormDTO} from "@/types/UserTypes";
 import type {FormInstance, FormRules} from "element-plus";
 import {useUserStore} from "@/stores/user.ts";
 import {DevicePhoneMobileIcon, LockClosedIcon, ArrowLeftIcon} from "@heroicons/vue/24/outline";
@@ -98,12 +98,12 @@ const userStore = useUserStore()
 
 const ruleFormRef = ref<FormInstance>()
 const loginLoading = ref(false)
-const loginForm = ref<LoginForm>({
+const loginForm = ref<LoginFormDTO>({
   phone: '',
   password: ''
 });
 
-const rules = reactive<FormRules<LoginForm>>({
+const rules = reactive<FormRules<LoginFormDTO>>({
   phone: [
     {required: true, message: '请输入手机号', trigger: 'blur'},
     {pattern: /^1[3-9]\d{8}$/, message: '请输入正确的手机号', trigger: 'blur'}

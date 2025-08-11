@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import type {LoginForm} from "@/types/UserTypes";
+import type {LoginFormDTO} from "@/types/UserTypes";
 import {login} from "@/api/user.ts";
 
 export const useUserStore = defineStore('user', {
@@ -7,7 +7,7 @@ export const useUserStore = defineStore('user', {
         isLogged: false,
     }),
     actions: {
-        async login(loginForm: LoginForm) {
+        async login(loginForm: LoginFormDTO) {
             try {
                 const token = await login(loginForm);
                 localStorage.setItem('token', token);

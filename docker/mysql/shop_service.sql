@@ -12,8 +12,6 @@ CREATE TABLE `shop`
     `state`       VARCHAR(255) NOT NULL,
     `name`        VARCHAR(255) NOT NULL,
     `description` VARCHAR(255) NOT NULL,
-    `created_at`  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `updated_at`  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     UNIQUE KEY `idx_user_id` (`user_id`)
 ) DEFAULT CHARSET = utf8mb4;

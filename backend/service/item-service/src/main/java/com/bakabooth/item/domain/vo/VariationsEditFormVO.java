@@ -1,0 +1,13 @@
+package com.bakabooth.item.domain.vo;
+
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class VariationsEditFormVO {
+    private String name;
+    private Double price;
+    private Long stock;
+    private List<String> files;
+}

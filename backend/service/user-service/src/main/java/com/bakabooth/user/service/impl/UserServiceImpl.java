@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = userMapper.getUserByPhoneAndPassword(
-                Integer.valueOf(loginFormDTO.getPhone()),
+                loginFormDTO.getPhone(),
                 loginFormDTO.getPassword()
         );
 

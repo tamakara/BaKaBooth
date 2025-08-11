@@ -23,3 +23,20 @@ export interface ItemDisplayVO {
     maxPrice: number
     coverUrl: string
 }
+
+export interface VariationsEditFormVO {
+    name: string
+    price: number
+    stock: number
+    files: string[]
+}
+
+export interface ItemEditFormVO {
+    state: string
+    name: string
+    description: string
+    images: string[]
+    tags: string[]
+    variations: VariationsEditFormVO[]
+
+}

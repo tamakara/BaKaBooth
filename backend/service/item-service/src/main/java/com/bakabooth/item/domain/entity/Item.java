@@ -1,14 +1,12 @@
 package com.bakabooth.item.domain.entity;
 
-import com.bakabooth.item.domain.pojo.Variation;
-import com.bakabooth.item.domain.vo.ItemManageVO;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.Data;
-import org.springframework.beans.BeanUtils;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -20,36 +18,26 @@ public class Item {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @TableField(value = "name")
-    private String name;
+    @TableField(value = "shop_id")
+    private Long shopId;
 
     @TableField(value = "state")
     private String state;
 
+    @TableField(value = "name")
+    private String name;
+
+    @TableField(value = "description")
+    private String description;
+
     @TableField(value = "favorite")
     private Long favorite;
 
-    @TableField(value = "cover_file")
-    private String coverFile;
-
-    @TableField(value = "shop_id")
-    private Long shopId;
-
-    @TableField(value = "variations", typeHandler = JacksonTypeHandler.class)
-    private List<Variation> variations;
-
-    @TableField(value = "created_at")
-    private Instant createdAt;
-
-    @TableField(value = "updated_at")
-    private Instant updatedAt;
-
     public Item(Long shopId) {
-        this.name = "未命名";
-        this.state = "draft";
-        this.favorite = 0L;
         this.shopId = shopId;
-        this.variations = new ArrayList<>();
-        variations.add(new Variation("默认", 0.00, 0L, 0L));
+        this.state = "private";
+        this.name = "";
+        this.description = "";
+        this.favorite = 0L;
     }
 }
