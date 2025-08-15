@@ -38,5 +38,4 @@ export interface ItemEditFormVO {
     images: string[]
     tags: string[]
     variations: VariationsEditFormVO[]
-
 }

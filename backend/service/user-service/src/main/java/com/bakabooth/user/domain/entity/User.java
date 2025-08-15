@@ -15,7 +15,7 @@ public class User {
     private Long shopId;
 
     @TableField(value = "phone")
-    private Integer phone;
+    private String phone;
 
     @TableField(value = "email")
     private String email;

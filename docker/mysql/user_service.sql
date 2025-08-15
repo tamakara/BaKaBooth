@@ -21,9 +21,10 @@ CREATE TABLE `user`
     UNIQUE KEY `idx_email` (`email`)
 ) DEFAULT CHARSET = utf8mb4;
 
-INSERT INTO `user` (`phone`, `email`, `password`, `nickname`, `avatar_file`)
-VALUES (666,
+INSERT INTO `user` (`shop_id`, `phone`, `email`, `password`, `nickname`, `avatar_file`)
+VALUES (1,
+        11111111111,
         'test@test.test',
-        'test',
+        'testtest',
         'test',
         'test');

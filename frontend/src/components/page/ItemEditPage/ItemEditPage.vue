@@ -190,9 +190,7 @@
     <template #action>
       <div class="action-buttons">
         <el-button size="large" @click="handleCancel">取消</el-button>
-        <el-button type="primary" size="large" @click="handleSave">
-          保存商品
-        </el-button>
+        <el-button type="primary" size="large" @click="handleSave">保存</el-button>
       </div>
     </template>
   </ItemEditPageLayout>
@@ -200,22 +198,22 @@
 
 <script setup lang="ts">
 import ItemEditPageLayout from "@/components/page/ItemEditPage/ItemEditPageLayout.vue";
-import {ref, computed, nextTick} from "vue";
+import {ref, computed, nextTick, watch, onMounted} from "vue";
 import {PlusIcon} from "@heroicons/vue/24/outline";
 import type {ItemEditFormVO} from "@/types/ItemTypes";
+import {getItemEditFormVO} from "@/api/item.ts";
+import {useRoute} from "vue-router";
 
-const formData = ref<ItemEditFormVO>({
-  state: 'private',
-  name: '',
-  images: [],
-  description: '',
-  tags: [],
-  variations: [{
-    name: '',
-    price: 0,
-    stock: 10,
-    files: []
-  }]
+const route = useRoute()
+
+const formData = ref<ItemEditFormVO>({})
+
+onMounted(async () => {
+  formData.value = await getItemEditFormVO(route.params.id as string)
+})
+
+watch(() => route.params.id, async (itemId) => {
+  if (itemId) formData.value = await getItemEditFormVO(itemId as string)
 })
 
 // 状态开关相关

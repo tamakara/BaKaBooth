@@ -6,7 +6,6 @@ import com.bakabooth.item.domain.vo.ItemManageVO;
 import com.bakabooth.item.mapper.FileMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.Mapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 

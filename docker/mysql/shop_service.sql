@@ -15,3 +15,10 @@ CREATE TABLE `shop`
     PRIMARY KEY (`id`),
     UNIQUE KEY `idx_user_id` (`user_id`)
 ) DEFAULT CHARSET = utf8mb4;
+
+INSERT INTO `shop` (`user_id`, `state`, `name`, `description`)
+VALUES (1,
+        'private',
+        'test',
+        'test'
+       );
