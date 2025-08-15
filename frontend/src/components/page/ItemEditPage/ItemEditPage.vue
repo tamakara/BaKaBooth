@@ -85,7 +85,7 @@
               @blur="handleInputConfirm"
               class="tag-input"
           />
-          <el-button v-else class="tag-button" size="small" @click="showInput">
+          <el-button v-else class="tag-button" size="default" @click="showInput">
             <el-icon>
               <PlusIcon/>
             </el-icon>
@@ -155,11 +155,11 @@
                       :limit="1"
                       accept=".zip,.rar,.7z,.pdf,.doc,.docx"
                   >
-                    <el-button type="primary" size="default">
+                    <el-button type="primary" size="large" class="upload-file-btn">
                       <el-icon class="mr-2">
                         <PlusIcon/>
                       </el-icon>
-                      选择文件
+                      上传文件
                     </el-button>
                     <template #tip>
                       <div class="file-upload-tip">
@@ -180,7 +180,7 @@
               <el-icon class="mr-2">
                 <PlusIcon/>
               </el-icon>
-              添加新版本
+              添加版本
             </el-button>
           </div>
         </el-form-item>
@@ -189,8 +189,8 @@
 
     <template #action>
       <div class="action-buttons">
-        <el-button size="large" @click="handleCancel">取消</el-button>
-        <el-button type="primary" size="large" @click="handleSave">保存</el-button>
+        <el-button class="action-btn cancel-btn" @click="handleCancel">取消</el-button>
+        <el-button type="primary" class="action-btn save-btn" @click="handleSave">保存</el-button>
       </div>
     </template>
   </ItemEditPageLayout>
@@ -295,10 +295,6 @@ function handleSave() {
   margin-bottom: 32px;
 }
 
-.image-upload {
-  width: 100%;
-}
-
 .upload-icon {
   font-size: 28px;
   color: #8c939d;
@@ -339,15 +335,14 @@ function handleSave() {
 
 .tag-button {
   border-style: dashed;
-  height: 24px;
+  height: 32px;
+  font-size: 14px;
+  padding: 0 12px;
+  border-radius: 4px;
 }
 
 .variations-item {
   margin-bottom: 32px;
-}
-
-.variations-container {
-  width: 100%;
 }
 
 .variation-card {
@@ -379,26 +374,11 @@ function handleSave() {
   color: #303133;
 }
 
-.variation-form {
-  margin: 0;
-}
-
 .variation-row {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   gap: 16px;
   margin-bottom: 16px;
-}
-
-.variation-name,
-.variation-price,
-.variation-stock,
-.variation-file {
-  margin-bottom: 0;
-}
-
-.file-upload {
-  width: 100%;
 }
 
 .file-upload-tip {
@@ -417,24 +397,59 @@ function handleSave() {
   margin-top: 8px;
 }
 
+.upload-file-btn {
+  height: 40px;
+  font-size: 14px;
+  padding: 0 20px;
+  border-radius: 6px;
+}
+
 .action-buttons {
   display: flex;
   justify-content: center;
-  gap: 16px;
-  padding: 24px;
+  gap: 20px;
+  padding: 32px 24px;
   background: white;
   border-top: 1px solid #e4e7ed;
   margin-top: 24px;
 }
 
-.mr-2 {
-  margin-right: 8px;
+.action-btn {
+  min-width: 120px;
+  height: 44px;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 0 24px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.cancel-btn {
+  color: #606266;
+  border-color: #dcdfe6;
+  background-color: #ffffff;
+}
+
+.cancel-btn:hover {
+  color: #409eff;
+  border-color: #409eff;
+  background-color: #ecf5ff;
+}
+
+.save-btn {
+  background-color: #409eff;
+  border-color: #409eff;
+  color: #ffffff;
+}
+
+.save-btn:hover {
+  background-color: #66b1ff;
+  border-color: #66b1ff;
 }
 
 /* 响应式设计 */
 @media (max-width: 768px) {
   .form {
-    max-width: 100%;
     padding: 16px;
   }
 
@@ -446,10 +461,12 @@ function handleSave() {
   .action-buttons {
     flex-direction: column;
     gap: 12px;
+    padding: 24px 16px;
   }
 
-  .action-buttons .el-button {
+  .action-btn {
     width: 100%;
+    min-width: auto;
   }
 }
 </style>
