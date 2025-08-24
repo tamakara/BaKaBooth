@@ -15,9 +15,9 @@ public class Image {
     @TableField(value = "item_id")
     private Long itemId;
 
-    @TableField(value = "order_index")
-    private Integer orderIndex;
+    @TableField(value = "file_id")
+    private Long fileId;
 
     @TableField(value = "order_index")
-    private String hash;
+    private Integer orderIndex;
 }

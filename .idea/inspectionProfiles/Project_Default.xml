@@ -15,6 +15,7 @@
       <option name="customHeaders">
         <set>
           <option value="X-UID" />
+          <option value="X-USER-ID" />
         </set>
       </option>
     </inspection_tool>

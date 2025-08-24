@@ -15,7 +15,7 @@ public class UserController {
 
     @Operation(summary = "获取简要用户信息")
     @GetMapping("/vo/simple-info")
-    public ResponseEntity<UserSimpleInfoVO> getUserSimpleInfoVO(@RequestHeader("X-UID") Long userId) {
+    public ResponseEntity<UserSimpleInfoVO> getUserSimpleInfoVO(@RequestHeader("X-USER-ID") Long userId) {
         UserSimpleInfoVO userSimpleInfoVO = userService.getUserSimpleInfoVO(userId);
         return ResponseEntity.ok(userSimpleInfoVO);
     }

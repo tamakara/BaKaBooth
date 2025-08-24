@@ -28,14 +28,14 @@ export interface VariationsEditFormVO {
     name: string
     price: number
     stock: number
-    files: string[]
+    files: number[]
 }
 
 export interface ItemEditFormVO {
     state: string
     name: string
     description: string
-    images: string[]
+    images: number[]
     tags: string[]
     variations: VariationsEditFormVO[]
 }

@@ -26,9 +26,13 @@
 
         <el-form-item label="商品图片" prop="images" class="image-upload-item">
           <el-upload
-              v-model:file-list="formData.images"
-              action=""
+              v-model:file-list="imagesFiles"
+              action="http://localhost:8080/file/upload"
+              :headers="{ Authorization: 'Bearer ' + userStore.token }"
+              :data="{ isPublic: false }"
+              name="file"
               list-type="picture-card"
+              :on-success="handleSuccess"
               :on-remove="handleRemove"
               class="image-upload"
               :limit="5"
@@ -38,7 +42,9 @@
             </el-icon>
             <template #tip>
               <div class="upload-tip">
-                第一张图片会作为商品列表的主视图使用，最多可上传5张图片
+                第一张图片将作为商品主视图，最多可上传5张图片
+                <br/>
+                建议图片尺寸为1:1且文件小于10MB
               </div>
             </template>
           </el-upload>
@@ -149,9 +155,11 @@
 
                 <el-form-item label="商品文件" class="variation-file">
                   <el-upload
-                      v-model:file-list="variation.files"
+                      v-model:file-list="variationFiles[index]"
                       class="file-upload"
-                      action=""
+                      action="http://localhost:8080/file/upload"
+                      :headers="{ Authorization: 'Bearer ' + userStore.token }"
+                      name="file"
                       :limit="1"
                       accept=".zip,.rar,.7z,.pdf,.doc,.docx"
                   >
@@ -163,7 +171,7 @@
                     </el-button>
                     <template #tip>
                       <div class="file-upload-tip">
-                        支持 zip、rar、7z、pdf、doc、docx 格式，单个文件不超过100MB
+                        剩余容量 666GB / 888GB
                       </div>
                     </template>
                   </el-upload>
@@ -203,13 +211,43 @@ import {PlusIcon} from "@heroicons/vue/24/outline";
 import type {ItemEditFormVO} from "@/types/ItemTypes";
 import {getItemEditFormVO} from "@/api/item.ts";
 import {useRoute} from "vue-router";
+import {useUserStore} from "@/stores/user.ts";
+import type {UploadUserFile} from "element-plus";
+import {getFileVO} from "@/api/file.ts";
 
 const route = useRoute()
+const userStore = useUserStore()
 
+const imagesFiles = ref<UploadUserFile[]>()
+const variationFiles = ref<UploadUserFile[][]>([])
 const formData = ref<ItemEditFormVO>({})
 
 onMounted(async () => {
   formData.value = await getItemEditFormVO(route.params.id as string)
+  imagesFiles.value = await Promise.all(
+      formData.value.images.map(async (fileId, index) => {
+        const fileVO = await getFileVO(fileId)
+        return {
+          name: `${index}`,
+          url: fileVO.url
+        } as UploadUserFile
+      })
+  )
+  variationFiles.value = await Promise.all(
+      formData.value.variations.map(async variation =>
+          Promise.all(
+              variation.files.map(async (fileId, index) => {
+                const fileVO = await getFileVO(fileId)
+                return {
+                  name: `${index}`,
+                  url: fileVO.url
+                } as UploadUserFile
+              })
+          )
+      )
+  )
+
+
 })
 
 watch(() => route.params.id, async (itemId) => {
@@ -278,6 +316,12 @@ function handleSave() {
   // 处理保存逻辑
   console.log('保存商品', formData.value)
 }
+
+function handleSuccess(response, file, fileList) {
+  console.log('上传成功，后端返回:', response)
+  console.log('上传:', fileList)
+}
+
 </script>
 
 <style scoped>
@@ -305,7 +349,6 @@ function handleSave() {
 .upload-tip {
   font-size: 12px;
   color: #606266;
-  text-align: center;
   margin-top: 8px;
   line-height: 1.4;
 }

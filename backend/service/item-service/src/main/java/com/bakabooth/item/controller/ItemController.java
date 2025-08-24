@@ -19,14 +19,18 @@ public class ItemController {
 
     @Operation(summary = "创建商品")
     @PostMapping("/create")
-    public ResponseEntity<Long> createItem(@RequestHeader("X-UID") Long userId) {
+    public ResponseEntity<Long> createItem(
+            @RequestHeader("X-USER-ID") Long userId
+    ) {
         Long itemId = itemService.create(userId);
         return ResponseEntity.ok(itemId);
     }
 
     @Operation(summary = "获取商品列表")
     @GetMapping("/vo/item-manage")
-    public ResponseEntity<List<ItemManageVO>> getItemManageVO(@RequestHeader("X-UID") Long userId) {
+    public ResponseEntity<List<ItemManageVO>> getItemManageVO(
+            @RequestHeader("X-USER-ID") Long userId
+    ) {
         List<ItemManageVO> itemManageVOList = itemService.getItemManageVO(userId);
         return ResponseEntity.ok(itemManageVOList);
     }
@@ -34,10 +38,10 @@ public class ItemController {
     @Operation(summary = "获取商品编辑表单信息")
     @GetMapping("/vo/item-edit-form/{item_id}")
     public ResponseEntity<ItemEditFormVO> getItemEditFormVO(
-            @RequestHeader("X-UID") Long userId,
+            @RequestHeader("X-USER-ID") Long userId,
             @PathVariable("item_id") Long itemId
     ) {
-        ItemEditFormVO itemEditFormVO = itemService.getItemEditFormVO(userId,itemId);
+        ItemEditFormVO itemEditFormVO = itemService.getItemEditFormVO(userId, itemId);
         return ResponseEntity.ok(itemEditFormVO);
     }
 }

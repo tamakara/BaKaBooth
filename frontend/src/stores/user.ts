@@ -27,5 +27,7 @@ export const useUserStore = defineStore('user', {
             this.isLogged = false;
         }
     },
-    getters: {}
+    getters: {
+        token: () => localStorage.getItem('token') || ''
+    }
 });

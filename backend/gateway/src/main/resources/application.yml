@@ -16,12 +16,20 @@ spring:
                 - Path=/user/**
               filters:
                 - RewritePath=/user/(?<segment>.*), /${segment}
+
             - id: item
               uri: lb://item-service
               predicates:
                 - Path=/item/**
               filters:
                 - RewritePath=/item/(?<segment>.*), /${segment}
+
+            - id: file
+              uri: lb://file-service
+              predicates:
+                - Path=/file/**
+              filters:
+                - RewritePath=/file/(?<segment>.*), /${segment}
 
           globalcors:
             cors-configurations:

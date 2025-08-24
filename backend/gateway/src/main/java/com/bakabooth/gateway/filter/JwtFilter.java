@@ -22,7 +22,7 @@ public class JwtFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String token = exchange.getRequest().getHeaders().getFirst("Authorization");
 
-        if (token != null && token.startsWith("Bearer ")) {
+        if (token != null && token.length() > 7 && token.startsWith("Bearer ")) {
             token = token.substring(7);
 
             try {
@@ -35,7 +35,7 @@ public class JwtFilter implements GlobalFilter, Ordered {
 
                 exchange = exchange
                         .mutate()
-                        .request(r -> r.header("X-UID", userId))
+                        .request(r -> r.header("X-USER-ID", userId))
                         .build();
 
             } catch (Exception e) {

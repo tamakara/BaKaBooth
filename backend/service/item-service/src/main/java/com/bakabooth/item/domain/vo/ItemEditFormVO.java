@@ -11,7 +11,7 @@ public class ItemEditFormVO {
     private String state;
     private String name;
     private String description;
-    private List<String> images;
+    private List<Long> images;
     private List<String> tags;
     private List<VariationsEditFormVO> variations;
 }

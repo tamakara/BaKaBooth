@@ -16,7 +16,7 @@ public class ShopController {
 
     @Operation(summary = "获取店铺信息")
     @GetMapping("/shop/info")
-    public ResponseEntity<ShopInfoVO> getShopInfo(@RequestHeader("X-UID") Long userId) {
+    public ResponseEntity<ShopInfoVO> getShopInfo(@RequestHeader("X-USER-ID") Long userId) {
         ShopInfoVO shopInfoVO = shopService.getShopInfo(userId);
         return ResponseEntity.ok(shopInfoVO);
     }

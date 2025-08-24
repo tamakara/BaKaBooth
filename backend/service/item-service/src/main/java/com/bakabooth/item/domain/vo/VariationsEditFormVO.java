@@ -9,5 +9,5 @@ public class VariationsEditFormVO {
     private String name;
     private Double price;
     private Long stock;
-    private List<String> files;
+    private List<Long> files;
 }

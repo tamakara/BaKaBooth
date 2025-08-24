@@ -1,4 +1,4 @@
-package com.bakabooth.item.domain.entity;
+package com.bakabooth.file.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -12,12 +12,18 @@ public class File {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @TableField(value = "variation_id")
-    private Long variationId;
+    @TableField(value = "user_id")
+    private Long userId;
 
-    @TableField(value = "file_id")
-    private Long fileId;
+    @TableField(value = "name")
+    private String name;
 
-    @TableField(value = "order_index")
-    private Integer orderIndex;
+    @TableField(value = "hash")
+    private String hash;
+
+    @TableField(value = "size")
+    private Long size;
+
+    @TableField(value = "is_public")
+    private Boolean isPublic;
 }

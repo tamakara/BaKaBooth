@@ -1,4 +1,4 @@
-package com.bakabooth.item.domain.entity;
+package com.bakabooth.file.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -7,17 +7,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
-@TableName("file")
-public class File {
+@TableName("permission")
+public class Permission {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-
-    @TableField(value = "variation_id")
-    private Long variationId;
 
     @TableField(value = "file_id")
     private Long fileId;
 
-    @TableField(value = "order_index")
-    private Integer orderIndex;
+    @TableField(value = "user_id")
+    private Long userId;
 }

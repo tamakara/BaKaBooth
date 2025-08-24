@@ -17,10 +17,10 @@ CREATE TABLE `item`
 
 CREATE TABLE `image`
 (
-    `id`          BIGINT       NOT NULL AUTO_INCREMENT,
-    `item_id`     BIGINT       NOT NULL,
-    `order_index` INTEGER      NOT NULL,
-    `hash`        VARCHAR(255) NOT NULL,
+    `id`          BIGINT  NOT NULL AUTO_INCREMENT,
+    `item_id`     BIGINT  NOT NULL,
+    `file_id`     BIGINT  NOT NULL,
+    `order_index` INTEGER NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`item_id`, `order_index`)
 ) DEFAULT CHARSET = utf8mb4;
@@ -49,10 +49,10 @@ CREATE TABLE `variation`
 
 CREATE TABLE `file`
 (
-    `id`           BIGINT       NOT NULL AUTO_INCREMENT,
-    `variation_id` BIGINT       NOT NULL,
-    `order_index`  INTEGER      NOT NULL,
-    `hash`         VARCHAR(255) NOT NULL,
+    `id`           BIGINT  NOT NULL AUTO_INCREMENT,
+    `variation_id` BIGINT  NOT NULL,
+    `file_id`      BIGINT  NOT NULL,
+    `order_index`  INTEGER NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`variation_id`, `order_index`)
 ) DEFAULT CHARSET = utf8mb4;

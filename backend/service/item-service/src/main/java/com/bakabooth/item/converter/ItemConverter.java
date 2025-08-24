@@ -26,7 +26,7 @@ public class ItemConverter {
     public ItemEditFormVO toItemEditFormVO(Item item, List<Image> images, List<Tag> tags, List<Variation> variations) {
         ItemEditFormVO vo = new ItemEditFormVO();
         BeanUtils.copyProperties(item, vo);
-        vo.setImages(images.stream().map(Image::getHash).toList());
+        vo.setImages(images.stream().map(Image::getFileId).toList());
         vo.setTags(tags.stream().map(Tag::getName).toList());
         vo.setVariations(variations.stream().map(variation -> {
             List<File> files = fileMapper.selectList(
