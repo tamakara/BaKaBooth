@@ -27,11 +27,13 @@ CREATE TABLE `image`
 
 CREATE TABLE `tag`
 (
-    `id`      BIGINT       NOT NULL AUTO_INCREMENT,
-    `item_id` BIGINT       NOT NULL,
-    `name`    VARCHAR(255) NOT NULL,
+    `id`          BIGINT       NOT NULL AUTO_INCREMENT,
+    `item_id`     BIGINT       NOT NULL,
+    `name`        VARCHAR(255) NOT NULL,
+    `order_index` INTEGER      NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE KEY (`item_id`, `name`)
+    UNIQUE KEY (`item_id`, `name`),
+    UNIQUE KEY (`item_id`, `order_index`)
 ) DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE `variation`

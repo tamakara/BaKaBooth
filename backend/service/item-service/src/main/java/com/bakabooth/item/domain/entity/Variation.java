@@ -12,6 +12,7 @@ import java.util.List;
 
 @Data
 @TableName("variation")
+@NoArgsConstructor
 public class Variation {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;

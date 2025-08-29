@@ -31,11 +31,15 @@ public class JwtFilter implements GlobalFilter, Ordered {
                         .build()
                         .verify(token);
 
-                String userId = decodedJWT.getSubject();
+                String userId = decodedJWT.getClaim("userId").asString();
+                String shopId = decodedJWT.getClaim("shopId").asString();
 
                 exchange = exchange
                         .mutate()
-                        .request(r -> r.header("X-USER-ID", userId))
+                        .request(r -> {
+                            r.header("X-USER-ID", userId);
+                            r.header("X-SHOP-ID", shopId);
+                        })
                         .build();
 
             } catch (Exception e) {

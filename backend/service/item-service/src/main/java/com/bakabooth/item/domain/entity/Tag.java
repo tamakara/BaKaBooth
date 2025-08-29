@@ -17,4 +17,7 @@ public class Tag {
 
     @TableField(value = "name")
     private String name;
+
+    @TableField(value = "order_index")
+    private Integer orderIndex;
 }

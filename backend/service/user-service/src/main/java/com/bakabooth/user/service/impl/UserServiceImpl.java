@@ -38,15 +38,17 @@ public class UserServiceImpl implements UserService {
         if (user == null) throw new RuntimeException("手机号或密码错误");
 
         String userId = user.getId().toString();
+        String shopId = user.getShopId().toString();
         String jti = UUID.randomUUID().toString();
         Algorithm algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
 
         String token = JWT.create()
-                .withSubject(userId)
                 .withExpiresAt(Instant
                         .now()
                         .plusSeconds(jwtProperties.getExpiration())
                 )
+                .withClaim("userId", userId)
+                .withClaim("shopId", shopId)
                 .withClaim("jti", jti)
                 .sign(algorithm);
 

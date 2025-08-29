@@ -16,6 +16,7 @@
         <set>
           <option value="X-UID" />
           <option value="X-USER-ID" />
+          <option value="X-SHOP-ID" />
         </set>
       </option>
     </inspection_tool>

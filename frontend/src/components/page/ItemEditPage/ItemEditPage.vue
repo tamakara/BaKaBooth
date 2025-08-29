@@ -32,10 +32,11 @@
               :data="{ isPublic: false }"
               name="file"
               list-type="picture-card"
-              :on-success="handleSuccess"
+              :on-success="handleImageSuccess"
               :on-remove="handleRemove"
               class="image-upload"
               :limit="5"
+              accept=".png,.jpg"
           >
             <el-icon class="upload-icon">
               <PlusIcon/>
@@ -160,8 +161,7 @@
                       action="http://localhost:8080/file/upload"
                       :headers="{ Authorization: 'Bearer ' + userStore.token }"
                       name="file"
-                      :limit="1"
-                      accept=".zip,.rar,.7z,.pdf,.doc,.docx"
+                      :on-success="handleFileSuccess"
                   >
                     <el-button type="primary" size="large" class="upload-file-btn">
                       <el-icon class="mr-2">
@@ -197,7 +197,7 @@
 
     <template #action>
       <div class="action-buttons">
-        <el-button class="action-btn cancel-btn" @click="handleCancel">取消</el-button>
+        <el-button class="action-btn cancel-btn" @click="handleBack">返回</el-button>
         <el-button type="primary" class="action-btn save-btn" @click="handleSave">保存</el-button>
       </div>
     </template>
@@ -214,21 +214,23 @@ import {useRoute} from "vue-router";
 import {useUserStore} from "@/stores/user.ts";
 import type {UploadUserFile} from "element-plus";
 import {getFileVO} from "@/api/file.ts";
+import type {FileVO} from "@/types/FileTypes.ts";
 
 const route = useRoute()
 const userStore = useUserStore()
 
-const imagesFiles = ref<UploadUserFile[]>()
+const imagesFiles = ref<UploadUserFile[]>([])
 const variationFiles = ref<UploadUserFile[][]>([])
 const formData = ref<ItemEditFormVO>({})
 
 onMounted(async () => {
   formData.value = await getItemEditFormVO(route.params.id as string)
   imagesFiles.value = await Promise.all(
-      formData.value.images.map(async (fileId, index) => {
+      formData.value.images.map(async fileId => {
         const fileVO = await getFileVO(fileId)
         return {
-          name: `${index}`,
+          name: fileVO.name,
+          uid: fileId,
           url: fileVO.url
         } as UploadUserFile
       })
@@ -236,19 +238,29 @@ onMounted(async () => {
   variationFiles.value = await Promise.all(
       formData.value.variations.map(async variation =>
           Promise.all(
-              variation.files.map(async (fileId, index) => {
+              variation.files.map(async fileId => {
                 const fileVO = await getFileVO(fileId)
                 return {
-                  name: `${index}`,
+                  name: fileVO.name,
+                  uid: fileId,
                   url: fileVO.url
                 } as UploadUserFile
               })
           )
       )
   )
-
-
 })
+
+watch(() => imagesFiles.value, (files) => {
+  formData.value.images = files.map(file => file.uid as number)
+}, {deep: true})
+
+watch(() => variationFiles.value, (files) => {
+  formData.value.variations.forEach((variation, index) => {
+        variation.files = files[index].map(file => file.uid as number)
+      }
+  )
+}, {deep: true})
 
 watch(() => route.params.id, async (itemId) => {
   if (itemId) formData.value = await getItemEditFormVO(itemId as string)
@@ -296,6 +308,7 @@ function handleRemove(uploadFile: any, uploadFiles: any) {
 
 function addVariation() {
   formData.value.variations.push({
+    id: 0,
     name: '',
     price: 0.00,
     stock: 10,
@@ -307,9 +320,9 @@ function removeVariation(index: number) {
   formData.value.variations.splice(index, 1)
 }
 
-function handleCancel() {
+function handleBack() {
   // 处理取消逻辑
-  console.log('取消编辑')
+  console.log('返回')
 }
 
 function handleSave() {
@@ -317,10 +330,18 @@ function handleSave() {
   console.log('保存商品', formData.value)
 }
 
-function handleSuccess(response, file, fileList) {
-  console.log('上传成功，后端返回:', response)
-  console.log('上传:', fileList)
+function handleImageSuccess(response: FileVO, file) {
+  file.name = response.name
+  file.uid = response.id
+  file.url = response.url
 }
+
+function handleFileSuccess(response: FileVO, file) {
+  file.name = response.name
+  file.uid = response.id
+  file.url = response.url
+}
+
 
 </script>
 

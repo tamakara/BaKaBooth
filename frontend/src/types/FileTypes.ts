@@ -1,6 +1,6 @@
 export interface FileVO {
     id: number,
-    fileName: string,
+    name: string,
     size: number,
     url: string,
 }

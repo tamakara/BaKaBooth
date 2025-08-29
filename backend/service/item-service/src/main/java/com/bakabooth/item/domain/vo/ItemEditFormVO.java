@@ -6,8 +6,6 @@ import java.util.List;
 
 @Data
 public class ItemEditFormVO {
-    private Long id;
-    private Long shopId;
     private String state;
     private String name;
     private String description;

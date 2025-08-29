@@ -1,7 +1,5 @@
 package com.bakabooth.item.service.impl;
 
-import com.bakabooth.common.client.UserClient;
-import com.bakabooth.common.domain.dto.UserDTO;
 import com.bakabooth.item.converter.ItemConverter;
 import com.bakabooth.item.domain.entity.Image;
 import com.bakabooth.item.domain.entity.Item;
@@ -14,7 +12,6 @@ import com.bakabooth.item.mapper.ItemMapper;
 import com.bakabooth.item.mapper.TagMapper;
 import com.bakabooth.item.mapper.VariationMapper;
 import com.bakabooth.item.service.ItemService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +21,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
-    private final UserClient userClient;
     private final ItemMapper itemMapper;
     private final ImageMapper imageMapper;
     private final TagMapper tagMapper;
@@ -33,11 +29,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public Long create(Long userId) {
-        UserDTO userDTO = userClient.getUserDTO(userId).getBody();
-        if (userDTO == null) throw new RuntimeException("获取UserDTO失败");
-
-        Item item = new Item(userDTO.getShopId());
+    public Long createItem(Long shopId) {
+        Item item = new Item(shopId);
         itemMapper.insert(item);
         variationMapper.insert(new Variation(item.getId()));
 
@@ -45,30 +38,38 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemManageVO> getItemManageVO(Long userId) {
-        UserDTO userDTO = userClient.getUserDTO(userId).getBody();
-        if (userDTO == null) throw new RuntimeException("获取UserDTO失败");
-        List<Item> itemList = itemMapper.getItemListByShopId(userDTO.getShopId());
-        List<ItemManageVO> itemManageVOList = itemList
-                .stream()
-                .map(itemConverter::toItemManageVO)
-                .toList();
-        return itemManageVOList;
+    @Transactional
+    public void updateItem(Long shopId, Long itemId, ItemEditFormVO itemEditFormVO) {
+        Item item = itemMapper.selectById(itemId);
+        if (!item.getShopId().equals(shopId))
+            throw new RuntimeException("没有权限");
+
+        itemMapper.updateItem(itemId, itemEditFormVO);
+        imageMapper.updateImages(itemId, itemEditFormVO.getImages());
+        tagMapper.updateTags(itemId, itemEditFormVO.getTags());
+        variationMapper.updateVariations(itemId, itemEditFormVO.getVariations());
     }
 
     @Override
-    public ItemEditFormVO getItemEditFormVO(Long userId, Long itemId) {
-        UserDTO userDTO = userClient.getUserDTO(userId).getBody();
+    public List<ItemManageVO> getItemManageVO(Long shopId) {
+
+        List<Item> itemList = itemMapper.getItemListByShopId(shopId);
+        return itemList
+                .stream()
+                .map(itemConverter::toItemManageVO)
+                .toList();
+    }
+
+    @Override
+    public ItemEditFormVO getItemEditFormVO(Long shopId, Long itemId) {
         Item item = itemMapper.selectById(itemId);
-        if (item == null || userDTO == null || item.getShopId().longValue() != userDTO.getShopId().longValue())
+        if (item == null || item.getShopId().longValue() != shopId.longValue())
             throw new RuntimeException("获取商品信息失败");
 
         List<Image> images = imageMapper.selectImagesByItemId(itemId);
         List<Tag> tags = tagMapper.selectTagsByItemId(itemId);
         List<Variation> variations = variationMapper.selectVariationsByItemId(itemId);
 
-        ItemEditFormVO itemEditFormVO = itemConverter.toItemEditFormVO(item, images, tags, variations);
-
-        return itemEditFormVO;
+        return itemConverter.toItemEditFormVO(item, images, tags, variations);
     }
 }
