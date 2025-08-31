@@ -209,7 +209,7 @@ import ItemEditPageLayout from "@/components/page/ItemEditPage/ItemEditPageLayou
 import {ref, computed, nextTick, watch, onMounted} from "vue";
 import {PlusIcon} from "@heroicons/vue/24/outline";
 import type {ItemEditFormVO} from "@/types/ItemTypes";
-import {getItemEditFormVO} from "@/api/item.ts";
+import {getItemEditFormVO, updateItem} from "@/api/item.ts";
 import {useRoute} from "vue-router";
 import {useUserStore} from "@/stores/user.ts";
 import type {UploadUserFile} from "element-plus";
@@ -308,7 +308,6 @@ function handleRemove(uploadFile: any, uploadFiles: any) {
 
 function addVariation() {
   formData.value.variations.push({
-    id: 0,
     name: '',
     price: 0.00,
     stock: 10,
@@ -327,7 +326,7 @@ function handleBack() {
 
 function handleSave() {
   // 处理保存逻辑
-  console.log('保存商品', formData.value)
+  updateItem(route.params.id as string, formData.value)
 }
 
 function handleImageSuccess(response: FileVO, file) {

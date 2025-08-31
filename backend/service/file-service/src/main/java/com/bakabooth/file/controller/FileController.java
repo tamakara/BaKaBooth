@@ -4,10 +4,7 @@ import com.bakabooth.file.domain.vo.FileVO;
 import com.bakabooth.file.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -25,7 +22,7 @@ public class FileController {
         return ResponseEntity.ok(vo);
     }
 
-    @PostMapping("/vo/file")
+    @GetMapping("/vo/file")
     public ResponseEntity<FileVO> getFileUrl(
             @RequestHeader("X-USER-ID") Long userId,
             @RequestParam("fileId") Long fileId

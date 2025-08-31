@@ -44,7 +44,6 @@ CREATE TABLE `variation`
     `name`        VARCHAR(255) NOT NULL,
     `price`       DOUBLE       NOT NULL,
     `stock`       BIGINT       NOT NULL,
-    `sales`       BIGINT       NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`item_id`, `order_index`)
 ) DEFAULT CHARSET = utf8mb4;

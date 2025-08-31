@@ -32,15 +32,11 @@ public class Variation {
     @TableField(value = "stock")
     private Long stock;
 
-    @TableField(value = "sales")
-    private Long sales;
-
     public Variation(Long itemId) {
         this.itemId = itemId;
         this.orderIndex = 0;
         this.name = "默认";
         this.price = 0.0;
         this.stock = 0L;
-        this.sales = 0L;
     }
 }

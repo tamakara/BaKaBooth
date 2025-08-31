@@ -1,16 +1,11 @@
 package com.bakabooth.item.service.impl;
 
 import com.bakabooth.item.converter.ItemConverter;
-import com.bakabooth.item.domain.entity.Image;
-import com.bakabooth.item.domain.entity.Item;
-import com.bakabooth.item.domain.entity.Tag;
-import com.bakabooth.item.domain.entity.Variation;
+import com.bakabooth.item.domain.entity.*;
 import com.bakabooth.item.domain.vo.ItemEditFormVO;
 import com.bakabooth.item.domain.vo.ItemManageVO;
-import com.bakabooth.item.mapper.ImageMapper;
-import com.bakabooth.item.mapper.ItemMapper;
-import com.bakabooth.item.mapper.TagMapper;
-import com.bakabooth.item.mapper.VariationMapper;
+import com.bakabooth.item.domain.vo.VariationsEditFormVO;
+import com.bakabooth.item.mapper.*;
 import com.bakabooth.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +21,7 @@ public class ItemServiceImpl implements ItemService {
     private final TagMapper tagMapper;
     private final VariationMapper variationMapper;
     private final ItemConverter itemConverter;
+    private final FileMapper fileMapper;
 
     @Override
     @Transactional
@@ -48,6 +44,11 @@ public class ItemServiceImpl implements ItemService {
         imageMapper.updateImages(itemId, itemEditFormVO.getImages());
         tagMapper.updateTags(itemId, itemEditFormVO.getTags());
         variationMapper.updateVariations(itemId, itemEditFormVO.getVariations());
+        List<Variation> variations = variationMapper.selectVariationsByItemId(itemId);
+        for (int index = 0; index < itemEditFormVO.getVariations().size(); index++) {
+            List<Long> fileIds = itemEditFormVO.getVariations().get(index).getFiles();
+            fileMapper.updateFiles(variations.get(index).getId(), fileIds);
+        }
     }
 
     @Override

@@ -6,6 +6,12 @@ export async function createItem(): Promise<number> {
     return response.data;
 }
 
+export async function updateItem(itemId: string, formData: ItemEditFormVO): Promise<void> {
+    const response = await axiosInstance.put<void>(`/item/update/${itemId}`, formData);
+    return response.data;
+}
+
+
 export async function getItemManageVO(): Promise<Array<ItemManageVO>> {
     const response = await axiosInstance.get<Array<ItemManageVO>>('/item/vo/item-manage');
     return response.data;
