@@ -52,13 +52,15 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemManageVO> getItemManageVO(Long shopId) {
-
+    public List<ItemManageVO> getItemManageVO(Long userId,Long shopId) {
         List<Item> itemList = itemMapper.getItemListByShopId(shopId);
-        return itemList
+        List<ItemManageVO> itemManageVOList = itemList
                 .stream()
-                .map(itemConverter::toItemManageVO)
+                .map(item -> itemConverter.toItemManageVO(userId,item))
                 .toList();
+
+
+        return itemManageVOList;
     }
 
     @Override

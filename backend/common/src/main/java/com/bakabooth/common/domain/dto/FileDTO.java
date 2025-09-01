@@ -1,9 +1,9 @@
-package com.bakabooth.file.domain.vo;
+package com.bakabooth.common.domain.dto;
 
 import lombok.Data;
 
 @Data
-public class FileVO {
+public class FileDTO {
     private Long id;
     private String name;
     private Long size;

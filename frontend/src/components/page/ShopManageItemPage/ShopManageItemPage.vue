@@ -32,6 +32,7 @@
           <el-image
               lazy
               :src="item.coverUrl"
+              fit="contain"
               style="width: 80px;  "
           />
           <div style="display: flex;flex-direction: column;justify-content: center;">
@@ -65,10 +66,6 @@
             <div class="variation-data">
               <div class="variation-data-heading">存库</div>
               {{ variation.stock }}
-            </div>
-            <div class="variation-data">
-              <div class="variation-data-heading">销量</div>
-              {{ variation.sales }}
             </div>
           </div>
         </div>

@@ -1,40 +1,35 @@
 <template>
   <ItemEditPageLayout>
     <template #form>
-      <el-form
-          label-position="top"
-          class="form"
-          :model="formData"
-          label-width="auto"
-      >
+      <el-form label-position="top" :model="formData" label-width="auto">
+        <!-- 商品状态 -->
         <el-form-item label="商品状态" prop="state" class="form-item">
           <div class="state-switch-container">
             <el-switch
-                v-model="isPublic"
+                v-model="formData.state"
                 active-text="公开"
                 inactive-text="不公开"
                 active-value="public"
                 inactive-value="private"
                 size="large"
-                @change="handleStateChange"
             />
             <div class="state-description">
-              {{ isPublic === 'public' ? '商品将在商店中公开显示' : '商品不会在商店中显示' }}
+              {{ formData.state === 'public' ? '商品将在商店中公开显示' : '商品不会在商店中显示' }}
             </div>
           </div>
         </el-form-item>
 
+        <!-- 商品图片 -->
         <el-form-item label="商品图片" prop="images" class="image-upload-item">
           <el-upload
               v-model:file-list="imagesFiles"
               action="http://localhost:8080/file/upload"
-              :headers="{ Authorization: 'Bearer ' + userStore.token }"
+              :headers="uploadHeaders"
               :data="{ isPublic: false }"
               name="file"
               list-type="picture-card"
               :on-success="handleImageSuccess"
               :on-remove="handleRemove"
-              class="image-upload"
               :limit="5"
               accept=".png,.jpg"
           >
@@ -51,6 +46,7 @@
           </el-upload>
         </el-form-item>
 
+        <!-- 商品基本信息 -->
         <el-form-item label="商品名称" prop="name" class="form-item">
           <el-input
               v-model="formData.name"
@@ -73,111 +69,54 @@
           />
         </el-form-item>
 
+        <!-- 商品标签 -->
         <el-form-item label="商品标签" prop="tags" class="form-item">
-          <el-tag
-              v-for="tag in formData.tags"
-              :key="tag"
-              closable
-              @close="handleTagClose(tag)"
-              class="tag-item"
-          >
-            {{ tag }}
-          </el-tag>
-          <el-input
-              v-if="inputVisible"
-              ref="InputRef"
-              v-model="inputValue"
-              size="small"
-              @keyup.enter="handleInputConfirm"
-              @blur="handleInputConfirm"
-              class="tag-input"
-          />
-          <el-button v-else class="tag-button" size="default" @click="showInput">
-            <el-icon>
-              <PlusIcon/>
-            </el-icon>
-            添加标签
-          </el-button>
+          <div class="tags-wrapper">
+            <el-tag
+                v-for="tag in formData.tags"
+                :key="tag"
+                closable
+                @close="removeTag(tag)"
+                class="tag-item"
+            >
+              {{ tag }}
+            </el-tag>
+            <el-input
+                v-if="tagInput.visible"
+                ref="tagInputRef"
+                v-model="tagInput.value"
+                size="default"
+                @keyup.enter="confirmTag"
+                @blur="confirmTag"
+                class="tag-input"
+            />
+            <el-button
+                v-else
+                class="tag-button"
+                size="default"
+                @click="showTagInput"
+            >
+              <el-icon><PlusIcon/></el-icon>
+              添加标签
+            </el-button>
+          </div>
         </el-form-item>
 
+        <!-- 商品版本 -->
         <el-form-item label="商品版本" prop="variations" class="variations-item">
           <div class="variations-container">
-            <div
-                class="variation-card"
+            <Variation
                 v-for="(variation, index) in formData.variations"
                 :key="index"
-            >
-              <div class="variation-header">
-                <span class="variation-title">版本 {{ index + 1 }}</span>
-                <el-button
-                    v-if="formData.variations.length > 1"
-                    type="danger"
-                    size="small"
-                    text
-                    @click="removeVariation(index)"
-                >
-                  删除
-                </el-button>
-              </div>
-
-              <el-form class="variation-form" label-position="top">
-                <div class="variation-row">
-                  <el-form-item label="版本名称" class="variation-name">
-                    <el-input
-                        v-model="variation.name"
-                        placeholder="如：标准版、高级版等"
-                        size="default"
-                    />
-                  </el-form-item>
-                  <el-form-item label="价格" class="variation-price">
-                    <el-input-number
-                        v-model="variation.price"
-                        placeholder="0.00"
-                        size="default"
-                        :min="0"
-                        :max="999999"
-                        :precision="2"
-                        :step="0.01"
-                        controls-position="right"
-                    >
-                      <template #prefix>¥</template>
-                    </el-input-number>
-                  </el-form-item>
-                  <el-form-item label="库存" class="variation-stock">
-                    <el-input-number
-                        v-model="variation.stock"
-                        :min="0"
-                        :max="9999"
-                        size="default"
-                        controls-position="right"
-                    />
-                  </el-form-item>
-                </div>
-
-                <el-form-item label="商品文件" class="variation-file">
-                  <el-upload
-                      v-model:file-list="variationFiles[index]"
-                      class="file-upload"
-                      action="http://localhost:8080/file/upload"
-                      :headers="{ Authorization: 'Bearer ' + userStore.token }"
-                      name="file"
-                      :on-success="handleFileSuccess"
-                  >
-                    <el-button type="primary" size="large" class="upload-file-btn">
-                      <el-icon class="mr-2">
-                        <PlusIcon/>
-                      </el-icon>
-                      上传文件
-                    </el-button>
-                    <template #tip>
-                      <div class="file-upload-tip">
-                        剩余容量 666GB / 888GB
-                      </div>
-                    </template>
-                  </el-upload>
-                </el-form-item>
-              </el-form>
-            </div>
+                :variation="variation"
+                :index="index"
+                :files="variationFiles[index]"
+                :can-delete="formData.variations.length > 1"
+                @remove="removeVariation"
+                @file-success="handleFileSuccess"
+                @update-variation="handleUpdateVariation"
+                @update-files="handleUpdateFiles"
+            />
 
             <el-button
                 type="primary"
@@ -185,9 +124,7 @@
                 class="add-variation-btn"
                 @click="addVariation"
             >
-              <el-icon class="mr-2">
-                <PlusIcon/>
-              </el-icon>
+              <el-icon class="mr-2"><PlusIcon/></el-icon>
               添加版本
             </el-button>
           </div>
@@ -196,340 +133,241 @@
     </template>
 
     <template #action>
-      <div class="action-buttons">
-        <el-button class="action-btn cancel-btn" @click="handleBack">返回</el-button>
-        <el-button type="primary" class="action-btn save-btn" @click="handleSave">保存</el-button>
-      </div>
+      <el-button class="action-btn cancel-btn" @click="handleBack">返回</el-button>
+      <el-button type="primary" class="action-btn save-btn" @click="handleSave">保存</el-button>
     </template>
   </ItemEditPageLayout>
 </template>
 
 <script setup lang="ts">
-import ItemEditPageLayout from "@/components/page/ItemEditPage/ItemEditPageLayout.vue";
-import {ref, computed, nextTick, watch, onMounted} from "vue";
-import {PlusIcon} from "@heroicons/vue/24/outline";
-import type {ItemEditFormVO} from "@/types/ItemTypes";
-import {getItemEditFormVO, updateItem} from "@/api/item.ts";
-import {useRoute} from "vue-router";
-import {useUserStore} from "@/stores/user.ts";
-import type {UploadUserFile} from "element-plus";
-import {getFileVO} from "@/api/file.ts";
-import type {FileVO} from "@/types/FileTypes.ts";
+import ItemEditPageLayout from "./ItemEditPageLayout.vue";
+import Variation from "./Variation.vue";
+import { ref, computed, nextTick, watch, onMounted } from "vue";
+import { PlusIcon } from "@heroicons/vue/24/outline";
+import type { ItemEditFormVO } from "@/types/ItemTypes";
+import { getItemEditFormVO, updateItem } from "@/api/item.ts";
+import { useRoute, useRouter } from "vue-router";
+import { useUserStore } from "@/stores/user.ts";
+import type { UploadUserFile } from "element-plus";
+import { getFileVO } from "@/api/file.ts";
+import type { FileVO } from "@/types/FileTypes.ts";
 
-const route = useRoute()
-const userStore = useUserStore()
+// 路由和状态
+const route = useRoute();
+const router = useRouter();
+const userStore = useUserStore();
 
-const imagesFiles = ref<UploadUserFile[]>([])
-const variationFiles = ref<UploadUserFile[][]>([])
-const formData = ref<ItemEditFormVO>({})
+// 表单数据
+const formData = ref<ItemEditFormVO>({
+  state: 'private',
+  name: '',
+  description: '',
+  images: [],
+  tags: [],
+  variations: [{ name: '', price: 0.00, stock: 10, files: [] }]
+});
 
+const imagesFiles = ref<UploadUserFile[]>([]);
+const variationFiles = ref<UploadUserFile[][]>([]);
+
+// 标签输入状态
+const tagInput = ref({
+  visible: false,
+  value: ''
+});
+const tagInputRef = ref();
+
+// 计算属性
+const uploadHeaders = computed(() => ({
+  Authorization: 'Bearer ' + userStore.token
+}));
+
+// 初始化数据
 onMounted(async () => {
-  formData.value = await getItemEditFormVO(route.params.id as string)
-  imagesFiles.value = await Promise.all(
-      formData.value.images.map(async fileId => {
-        const fileVO = await getFileVO(fileId)
-        return {
-          name: fileVO.name,
-          uid: fileId,
-          url: fileVO.url
-        } as UploadUserFile
-      })
-  )
-  variationFiles.value = await Promise.all(
-      formData.value.variations.map(async variation =>
-          Promise.all(
-              variation.files.map(async fileId => {
-                const fileVO = await getFileVO(fileId)
-                return {
-                  name: fileVO.name,
-                  uid: fileId,
-                  url: fileVO.url
-                } as UploadUserFile
-              })
-          )
-      )
-  )
-})
+  await loadItemData();
+});
 
+// 监听路由变化
+watch(() => route.params.id, async (itemId) => {
+  if (itemId) await loadItemData();
+});
+
+// 监听文件变化，同步到表单数据
 watch(() => imagesFiles.value, (files) => {
-  formData.value.images = files.map(file => file.uid as number)
-}, {deep: true})
+  formData.value.images = files.map(file => file.uid as number);
+}, { deep: true });
 
 watch(() => variationFiles.value, (files) => {
   formData.value.variations.forEach((variation, index) => {
-        variation.files = files[index].map(file => file.uid as number)
-      }
-  )
-}, {deep: true})
+    if (files[index]) {
+      variation.files = files[index].map(file => file.uid as number);
+    }
+  });
+}, { deep: true });
 
-watch(() => route.params.id, async (itemId) => {
-  if (itemId) formData.value = await getItemEditFormVO(itemId as string)
-})
+// 数据加载
+async function loadItemData() {
+  try {
+    formData.value = await getItemEditFormVO(route.params.id as string);
 
-// 状态开关相关
-const isPublic = computed({
-  get: () => formData.value.state,
-  set: (value) => {
-    formData.value.state = value
+    // 加载图片文件
+    imagesFiles.value = await Promise.all(
+        formData.value.images.map(async fileId => {
+          const fileVO = await getFileVO(fileId);
+          return {
+            name: fileVO.name,
+            uid: fileId,
+            url: fileVO.url
+          } as UploadUserFile;
+        })
+    );
+
+    // 加载版本文件
+    variationFiles.value = await Promise.all(
+        formData.value.variations.map(async variation =>
+            Promise.all(
+                variation.files.map(async fileId => {
+                  const fileVO = await getFileVO(fileId);
+                  return {
+                    name: fileVO.name,
+                    uid: fileId,
+                    url: fileVO.url
+                  } as UploadUserFile;
+                })
+            )
+        )
+    );
+  } catch (error) {
+    console.error('加载商品数据失败:', error);
   }
-})
-
-function handleStateChange(value: string) {
-  formData.value.state = value
 }
 
-// 标签输入相关
-const inputVisible = ref(false)
-const inputValue = ref('')
-const InputRef = ref()
-
-function handleTagClose(tag: string) {
-  formData.value.tags.splice(formData.value.tags.indexOf(tag), 1)
+// 标签管理
+function removeTag(tag: string) {
+  const index = formData.value.tags.indexOf(tag);
+  if (index > -1) {
+    formData.value.tags.splice(index, 1);
+  }
 }
 
-function showInput() {
-  inputVisible.value = true
+function showTagInput() {
+  tagInput.value.visible = true;
   nextTick(() => {
-    InputRef.value.input.focus()
-  })
+    tagInputRef.value?.input?.focus();
+  });
 }
 
-function handleInputConfirm() {
-  if (inputValue.value && !formData.value.tags.includes(inputValue.value)) {
-    formData.value.tags.push(inputValue.value)
+function confirmTag() {
+  const value = tagInput.value.value.trim();
+  if (value && !formData.value.tags.includes(value)) {
+    formData.value.tags.push(value);
   }
-  inputVisible.value = false
-  inputValue.value = ''
+  tagInput.value.visible = false;
+  tagInput.value.value = '';
 }
 
-function handleRemove(uploadFile: any, uploadFiles: any) {
-  console.log(uploadFile, uploadFiles)
-}
-
+// 版本管理
 function addVariation() {
   formData.value.variations.push({
     name: '',
     price: 0.00,
     stock: 10,
     files: []
-  })
+  });
+  variationFiles.value.push([]);
 }
 
 function removeVariation(index: number) {
-  formData.value.variations.splice(index, 1)
+  formData.value.variations.splice(index, 1);
+  variationFiles.value.splice(index, 1);
 }
 
+function handleUpdateVariation(index: number, field: keyof VariationsEditFormVO, value: any) {
+  if (formData.value.variations[index]) {
+    (formData.value.variations[index] as any)[field] = value;
+  }
+}
+
+function handleUpdateFiles(index: number, files: UploadUserFile[]) {
+  if (variationFiles.value[index]) {
+    variationFiles.value[index] = files;
+  }
+}
+
+// 文件上传处理
+function handleImageSuccess(response: FileVO, file: any) {
+  file.name = response.name;
+  file.uid = response.id;
+  file.url = response.url;
+}
+
+function handleFileSuccess(response: FileVO, file: any) {
+  file.name = response.name;
+  file.uid = response.id;
+  file.url = response.url;
+}
+
+function handleRemove(uploadFile: any, uploadFiles: any) {
+  console.log('文件移除:', uploadFile, uploadFiles);
+}
+
+// 操作处理
 function handleBack() {
-  // 处理取消逻辑
-  console.log('返回')
+  router.back();
 }
 
-function handleSave() {
-  // 处理保存逻辑
-  updateItem(route.params.id as string, formData.value)
+async function handleSave() {
+  try {
+    await updateItem(route.params.id as string, formData.value);
+    // 可以添加成功提示
+  } catch (error) {
+    console.error('保存失败:', error);
+    // 可以添加错误提示
+  }
 }
-
-function handleImageSuccess(response: FileVO, file) {
-  file.name = response.name
-  file.uid = response.id
-  file.url = response.url
-}
-
-function handleFileSuccess(response: FileVO, file) {
-  file.name = response.name
-  file.uid = response.id
-  file.url = response.url
-}
-
-
 </script>
 
 <style scoped>
-.form {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.form-item {
-  margin-bottom: 24px;
-}
-
-.image-upload-item {
-  margin-bottom: 32px;
-}
-
-.upload-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 28px;
-  height: 28px;
-}
-
-.upload-tip {
-  font-size: 12px;
-  color: #606266;
-  margin-top: 8px;
-  line-height: 1.4;
-}
-
-.state-switch-container {
+.tags-wrapper {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
 }
 
-.state-description {
-  font-size: 12px;
-  color: #909399;
-  line-height: 1.4;
+.variations-container {
+  display: flex;
+  flex-direction: column;
 }
 
-.tag-item {
+/* 标签对齐优化 */
+.tags-wrapper :deep(.el-tag) {
+  height: 32px;
+  line-height: 30px;
   margin-right: 8px;
   margin-bottom: 8px;
 }
 
-.tag-input {
+.tags-wrapper :deep(.el-input) {
   width: 90px;
+  height: 32px;
   margin-right: 8px;
-  vertical-align: bottom;
 }
 
-.tag-button {
-  border-style: dashed;
+.tags-wrapper :deep(.el-input__wrapper) {
   height: 32px;
+}
+
+.tags-wrapper :deep(.el-input__inner) {
+  height: 32px;
+  line-height: 32px;
+}
+
+.tags-wrapper :deep(.el-button) {
+  height: 32px;
+  border-style: dashed;
   font-size: 14px;
   padding: 0 12px;
   border-radius: 4px;
-}
-
-.variations-item {
-  margin-bottom: 32px;
-}
-
-.variation-card {
-  background: #f8f9fa;
-  border: 1px solid #e4e7ed;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 16px;
-  transition: all 0.3s ease;
-}
-
-.variation-card:hover {
-  border-color: #409eff;
-  box-shadow: 0 2px 8px rgba(64, 158, 255, 0.1);
-}
-
-.variation-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #e4e7ed;
-}
-
-.variation-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #303133;
-}
-
-.variation-row {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.file-upload-tip {
-  font-size: 12px;
-  color: #909399;
-  margin-top: 4px;
-  line-height: 1.4;
-}
-
-.add-variation-btn {
-  width: 100%;
-  height: 48px;
-  border-style: dashed;
-  border-width: 2px;
-  font-size: 14px;
-  margin-top: 8px;
-}
-
-.upload-file-btn {
-  height: 40px;
-  font-size: 14px;
-  padding: 0 20px;
-  border-radius: 6px;
-}
-
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  padding: 32px 24px;
-  background: white;
-  border-top: 1px solid #e4e7ed;
-  margin-top: 24px;
-}
-
-.action-btn {
-  min-width: 120px;
-  height: 44px;
-  font-size: 16px;
-  font-weight: 500;
-  padding: 0 24px;
-  border-radius: 6px;
-  transition: all 0.3s ease;
-}
-
-.cancel-btn {
-  color: #606266;
-  border-color: #dcdfe6;
-  background-color: #ffffff;
-}
-
-.cancel-btn:hover {
-  color: #409eff;
-  border-color: #409eff;
-  background-color: #ecf5ff;
-}
-
-.save-btn {
-  background-color: #409eff;
-  border-color: #409eff;
-  color: #ffffff;
-}
-
-.save-btn:hover {
-  background-color: #66b1ff;
-  border-color: #66b1ff;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .form {
-    padding: 16px;
-  }
-
-  .variation-row {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .action-buttons {
-    flex-direction: column;
-    gap: 12px;
-    padding: 24px 16px;
-  }
-
-  .action-btn {
-    width: 100%;
-    min-width: auto;
-  }
 }
 </style>

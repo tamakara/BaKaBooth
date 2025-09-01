@@ -29,9 +29,10 @@ public class ItemController {
     @Operation(summary = "获取商品列表")
     @GetMapping("/vo/item-manage")
     public ResponseEntity<List<ItemManageVO>> getItemManageVO(
+            @RequestHeader("X-USER-ID") Long userId,
             @RequestHeader("X-SHOP-ID") Long shopId
     ) {
-        List<ItemManageVO> itemManageVOList = itemService.getItemManageVO(shopId);
+        List<ItemManageVO> itemManageVOList = itemService.getItemManageVO(userId,shopId);
         return ResponseEntity.ok(itemManageVOList);
     }
 

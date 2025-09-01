@@ -51,7 +51,7 @@ const newItems = ref<ItemDisplayVO[]>([
   {
     itemId: '1',
     itemName: '你好你好��好你你好你好你好你好好你好你好你好你好你好你好你好',
-    coverUrl: './src/assets/test.jpg',
+    coverUrl: './src/assets/test1.jpg',
     shopId: 222,
     shopName: '店铺xxxxxxxxxxxVB店铺SVASVAVSAVASVxxA',
     favorite: 100,

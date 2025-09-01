@@ -1,9 +1,13 @@
 package com.bakabooth.item.converter;
 
+import com.bakabooth.common.client.FileClient;
+import com.bakabooth.common.domain.dto.FileDTO;
 import com.bakabooth.item.domain.entity.*;
 import com.bakabooth.item.domain.vo.ItemEditFormVO;
 import com.bakabooth.item.domain.vo.ItemManageVO;
 import com.bakabooth.item.mapper.FileMapper;
+import com.bakabooth.item.mapper.ImageMapper;
+import com.bakabooth.item.mapper.VariationMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -15,11 +19,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemConverter {
     private final VariationsConverter variationsConverter;
+    private final VariationMapper variationMapper;
+    private final ImageMapper imageMapper;
     private final FileMapper fileMapper;
+    private final FileClient fileClient;
 
-    public ItemManageVO toItemManageVO(Item item) {
+    public ItemManageVO toItemManageVO(Long userId, Item item) {
         ItemManageVO vo = new ItemManageVO();
         BeanUtils.copyProperties(item, vo);
+
+        Image cover = imageMapper.selectImagesByItemId(item.getId()).get(0);
+        FileDTO fileDTO = fileClient.getFileUrl(userId, cover.getFileId()).getBody();
+        if (fileDTO == null) throw new RuntimeException("获取封面图片失败");
+        vo.setCoverUrl(fileDTO.getUrl());
+
+        List<Variation> variations = variationMapper.selectVariationsByItemId(item.getId());
+        vo.setVariations(variations);
         return vo;
     }
 

@@ -1,6 +1,6 @@
 package com.bakabooth.file.controller;
 
-import com.bakabooth.file.domain.vo.FileVO;
+import com.bakabooth.common.domain.dto.FileDTO;
 import com.bakabooth.file.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,21 +13,21 @@ public class FileController {
     private final FileService fileService;
 
     @PostMapping("/upload")
-    public ResponseEntity<FileVO> upload(
+    public ResponseEntity<FileDTO> upload(
             @RequestHeader("X-USER-ID") Long userId,
             @RequestParam("file") MultipartFile file,
             @RequestParam(name = "isPublic", defaultValue = "false") Boolean isPublic
     ) {
-        FileVO vo = fileService.saveFile(userId, file,  isPublic);
+        FileDTO vo = fileService.saveFile(userId, file,  isPublic);
         return ResponseEntity.ok(vo);
     }
 
     @GetMapping("/vo/file")
-    public ResponseEntity<FileVO> getFileUrl(
+    public ResponseEntity<FileDTO> getFileUrl(
             @RequestHeader("X-USER-ID") Long userId,
             @RequestParam("fileId") Long fileId
     ) {
-        FileVO vo = fileService.getFileVO(userId, fileId);
+        FileDTO vo = fileService.getFileVO(userId, fileId);
         return ResponseEntity.ok(vo);
     }
 }

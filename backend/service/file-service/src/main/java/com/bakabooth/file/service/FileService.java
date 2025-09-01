@@ -3,12 +3,11 @@ package com.bakabooth.file.service;
 import com.bakabooth.file.converter.FileConverter;
 import com.bakabooth.file.domain.entity.File;
 import com.bakabooth.file.domain.entity.Permission;
-import com.bakabooth.file.domain.vo.FileVO;
+import com.bakabooth.common.domain.dto.FileDTO;
 import com.bakabooth.file.mapper.FileMapper;
 import com.bakabooth.file.mapper.PermissionMapper;
 import com.bakabooth.file.util.HashUtil;
 import com.bakabooth.file.util.MinIOUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +22,7 @@ public class FileService {
     private final FileConverter fileConverter;
 
     @Transactional
-    public FileVO saveFile(Long userId, MultipartFile multipartFile, Boolean isPublic) {
+    public FileDTO saveFile(Long userId, MultipartFile multipartFile, Boolean isPublic) {
         File file = new File();
 
         file.setUserId(userId);
@@ -46,7 +45,7 @@ public class FileService {
         return fileConverter.toFileVO(file);
     }
 
-    public FileVO getFileVO(Long userId, Long fileId) {
+    public FileDTO getFileVO(Long userId, Long fileId) {
         File file = fileMapper.selectById(fileId);
         if (file == null) throw new RuntimeException("文件不存在");
         if (!file.getIsPublic() && permissionMapper.existsByFileIdAndUserId(fileId, userId) == null)
