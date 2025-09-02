@@ -30,6 +30,13 @@ public class Shop {
     @TableField(value = "follower")
     private Long follower;
 
+    public Shop(Long userId) {
+        this.userId = userId;
+        this.state = "private";
+        this.name = "未命名";
+        this.description = "请设置店铺描述";
+    }
+
     public ShopInfoVO toShopInfoVO() {
         ShopInfoVO vo = new ShopInfoVO();
 

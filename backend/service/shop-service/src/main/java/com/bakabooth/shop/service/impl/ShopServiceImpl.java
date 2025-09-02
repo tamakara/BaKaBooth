@@ -13,6 +13,13 @@ public class ShopServiceImpl implements ShopService {
     private final ShopMapper shopMapper;
 
     @Override
+    public Long create(Long userId) {
+        Shop shop = new Shop(userId);
+        shopMapper.insert(shop);
+        return shop.getId();
+    }
+
+    @Override
     public ShopInfoVO getShopInfo(Long shopId) {
         Shop shop = shopMapper.selectById(shopId);
         return shop.toShopInfoVO();

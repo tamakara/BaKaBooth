@@ -121,7 +121,7 @@ async function handleLoginClick(formEl: FormInstance | undefined) {
       try {
         loginLoading.value = true
         await userStore.login(loginForm.value)
-        handleBackToHomeClick()
+        router.push({name: 'home'})
       } catch (error) {
         console.error('登录失败', error)
       } finally {

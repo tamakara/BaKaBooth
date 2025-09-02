@@ -3,6 +3,14 @@ export interface LoginFormDTO {
     password: string
 }
 
+export interface RegisterFormDTO {
+    phone: string
+    nickname: string
+    username: string
+    password: string
+    confirmPassword?: string
+}
+
 export interface UserSimpleInfoVO {
     id: number
     nickname: string

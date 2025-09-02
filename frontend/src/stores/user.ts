@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia';
-import type {LoginFormDTO} from "@/types/UserTypes";
-import {login} from "@/api/user.ts";
+import type {LoginFormDTO, RegisterFormDTO} from "@/types/UserTypes";
+import {login, register} from "@/api/user.ts";
 
 export const useUserStore = defineStore('user', {
     state: () => ({
@@ -14,6 +14,16 @@ export const useUserStore = defineStore('user', {
                 this.isLogged = true;
             } catch (error) {
                 console.log('登录失败', error);
+            }
+        },
+
+        async register(registerForm: RegisterFormDTO) {
+            try {
+                const token = await register(registerForm);
+                localStorage.setItem('token', token);
+                this.isLogged = true;
+            } catch (error) {
+                console.log('注册失败', error);
             }
         },
 

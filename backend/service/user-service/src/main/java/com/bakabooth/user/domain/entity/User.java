@@ -20,18 +20,22 @@ public class User {
     @TableField(value = "email")
     private String email;
 
+    @TableField(value = "username")
+    private String username;
+
     @TableField(value = "password")
     private String password;
 
     @TableField(value = "nickname")
     private String nickname;
 
-    @TableField(value = "avatar_file")
-    private String avatarFile;
+    @TableField(value = "avatar_file_id")
+    private Long avatarFileId;
 
     @TableField(value = "created_at")
     private Instant createdAt;
 
     @TableField(value = "updated_at")
     private Instant updatedAt;
+
 }
