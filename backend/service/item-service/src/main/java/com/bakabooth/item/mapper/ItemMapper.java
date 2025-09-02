@@ -10,13 +10,15 @@ import java.util.List;
 
 public interface ItemMapper extends BaseMapper<Item> {
 
-    default List<Item> getItemListByShopId(Long shopId) {
+    default List<Item> getItemListByShopIdAndState(Long shopId, String state) {
         return selectList(
                 new LambdaQueryWrapper<Item>()
-                        .eq(Item::getShopId, shopId));
+                        .eq(Item::getShopId, shopId)
+                        .eq(!"all".equals(state), Item::getState, state)
+        );
     }
 
-    default void updateItem( Long itemId, ItemEditFormVO vo) {
+    default void updateItem(Long itemId, ItemEditFormVO vo) {
         update(null, new LambdaUpdateWrapper<Item>()
                 .eq(Item::getId, itemId)
                 .set(Item::getState, vo.getState())

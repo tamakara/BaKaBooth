@@ -30,7 +30,7 @@ public class Item {
     public Item(Long shopId) {
         this.shopId = shopId;
         this.state = "private";
-        this.name = "";
+        this.name = "未命名";
         this.description = "";
         this.favorite = 0L;
     }

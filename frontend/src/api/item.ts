@@ -12,8 +12,8 @@ export async function updateItem(itemId: string, formData: ItemEditFormVO): Prom
 }
 
 
-export async function getItemManageVO(): Promise<Array<ItemManageVO>> {
-    const response = await axiosInstance.get<Array<ItemManageVO>>('/item/vo/item-manage');
+export async function getItemManageVO(state: string): Promise<Array<ItemManageVO>> {
+    const response = await axiosInstance.get<Array<ItemManageVO>>('/item/vo/item-manage', {params: {state}});
     return response.data;
 }
 

@@ -11,7 +11,7 @@ public interface ItemService {
 
     void updateItem(Long shopId, Long itemId,ItemEditFormVO itemEditFormVO);
 
-    List<ItemManageVO> getItemManageVO(Long userId,Long shopId);
+    List<ItemManageVO> getItemManageVO(Long userId,Long shopId,String status);
 
     ItemEditFormVO getItemEditFormVO(Long shopId, Long itemId);
 
