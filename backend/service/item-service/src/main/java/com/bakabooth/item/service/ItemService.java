@@ -7,13 +7,11 @@ import java.util.List;
 
 public interface ItemService {
 
-    Long createItem(Long shopId);
+    Long createItem(Long userId);
 
-    void updateItem(Long shopId, Long itemId,ItemEditFormVO itemEditFormVO);
+    void updateItem(Long userId, Long itemId,ItemEditFormVO itemEditFormVO);
 
-    List<ItemManageVO> getItemManageVO(Long userId,Long shopId,String status);
+    List<ItemManageVO> getItemManageVO(Long userId,String status);
 
-    ItemEditFormVO getItemEditFormVO(Long shopId, Long itemId);
-
-
+    ItemEditFormVO getItemEditFormVO(Long userId, Long itemId);
 }

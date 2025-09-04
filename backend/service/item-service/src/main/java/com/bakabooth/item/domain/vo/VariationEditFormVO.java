@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class VariationsEditFormVO {
+public class VariationEditFormVO {
     private String name;
     private Double price;
     private Long stock;

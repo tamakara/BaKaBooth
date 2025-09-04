@@ -1,4 +1,4 @@
-package com.bakabooth.shop.domain.vo;
+package com.bakabooth.user.domain.vo;
 
 import lombok.Data;
 

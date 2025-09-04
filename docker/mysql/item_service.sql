@@ -7,12 +7,13 @@ USE item_service_db;
 CREATE TABLE `item`
 (
     `id`          BIGINT       NOT NULL AUTO_INCREMENT,
-    `shop_id`     BIGINT       NOT NULL,
+    `user_id`     BIGINT       NOT NULL,
     `state`       VARCHAR(255) NOT NULL,
     `name`        VARCHAR(255) NOT NULL,
     `description` TEXT         NOT NULL,
     `favorite`    BIGINT       NOT NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY (`id`, `user_id`)
 ) DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE `image`

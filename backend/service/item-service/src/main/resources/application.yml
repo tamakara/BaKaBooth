@@ -14,7 +14,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 server:
-  port: 8083
+  port: 8082
 
 mybatis-plus:
   type-aliases-package: com.bakabooth.user.domain.entity

@@ -7,6 +7,7 @@ import com.bakabooth.user.domain.vo.UserSimpleInfoVO;
 
 public interface UserService {
     String login(LoginFormDTO loginFormDTO);
+
     String register(RegisterFormDTO registerFormDTO);
 
     UserSimpleInfoVO getUserSimpleInfoVO(Long userId);

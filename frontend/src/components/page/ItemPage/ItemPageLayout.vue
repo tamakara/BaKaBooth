@@ -33,20 +33,6 @@
             </div>
           </template>
         </ColLayout>
-
-        <RowLayout class="additional-content">
-          <div class="item-tags-section">
-            <slot name="item-tag-list"/>
-          </div>
-        </RowLayout>
-
-        <el-divider class="section-divider"/>
-
-        <RowLayout class="shop-section">
-          <div class="shop-items-section">
-            <slot name="shop-items"/>
-          </div>
-        </RowLayout>
       </ContentLayout>
     </template>
   </BaseLayout>

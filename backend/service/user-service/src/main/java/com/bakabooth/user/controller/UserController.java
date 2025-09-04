@@ -24,7 +24,7 @@ public class UserController {
         return ResponseEntity.ok(token);
     }
 
-    @Operation(summary = "登录")
+    @Operation(summary = "注册")
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterFormDTO registerFormDTO) {
         String token = userService.register(registerFormDTO);

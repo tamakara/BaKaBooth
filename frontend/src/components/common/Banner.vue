@@ -4,9 +4,9 @@
       <!-- Logo区域 -->
       <div class="logo-section">
         <el-button
-          class="logo-btn"
-          type="text"
-          @click="goToRoute('home')"
+            class="logo-btn"
+            type="text"
+            @click="goToRoute('home')"
         >
           <span class="logo-text">BaKaBooth</span>
         </el-button>
@@ -15,19 +15,19 @@
       <!-- 搜索区域 -->
       <div class="search-section">
         <el-input
-          v-model="searchQuery"
-          class="search-input"
-          type="text"
-          placeholder="搜索商品"
-          clearable
-          @keyup.enter="handleSearch"
+            v-model="searchQuery"
+            class="search-input"
+            type="text"
+            placeholder="搜索商品"
+            clearable
+            @keyup.enter="handleSearch"
         >
           <template #suffix>
             <el-button
-              class="search-btn"
-              :icon="SearchIcon"
-              @click="handleSearch"
-              text
+                class="search-btn"
+                :icon="SearchIcon"
+                @click="handleSearch"
+                text
             />
           </template>
         </el-input>
@@ -38,80 +38,96 @@
         <!-- 导航按钮组 -->
         <div class="nav-buttons">
           <el-button
-            class="nav-btn"
-            :icon="BellIcon"
-            @click="goToRoute('messages')"
-            text
-            circle
-            size="large"
+              class="nav-btn"
+              :icon="BellIcon"
+              @click="goToRoute('messages')"
+              text
+              circle
+              size="large"
           />
           <el-button
-            class="nav-btn"
-            :icon="StarIcon"
-            @click="goToRoute('favorites')"
-            text
-            circle
-            size="large"
+              class="nav-btn"
+              :icon="StarIcon"
+              @click="goToRoute('favorites')"
+              text
+              circle
+              size="large"
           />
           <el-button
-            class="nav-btn"
-            :icon="ShoppingCartIcon"
-            @click="goToRoute('cart')"
-            text
-            circle
-            size="large"
+              class="nav-btn"
+              :icon="ShoppingCartIcon"
+              @click="goToRoute('cart')"
+              text
+              circle
+              size="large"
           />
         </div>
 
         <!-- 用户区域 -->
         <div class="user-section">
           <el-dropdown
-            v-if="userStore.isLogged"
-            @command="handleCommand"
-            trigger="click"
-            placement="bottom-end"
+              v-if="userStore.isLogged"
+              @command="handleCommand"
+              trigger="click"
+              placement="bottom-end"
           >
             <div class="user-info">
               <el-text class="user-nickname">{{ nickname }}</el-text>
               <el-avatar
-                class="user-avatar"
-                :src="avatarUrl"
-                :size="36"
+                  class="user-avatar"
+                  :src="avatarUrl"
+                  :size="36"
               />
             </div>
 
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item command="followed-shops">
-                  <el-icon><StarIcon /></el-icon>
+                  <el-icon>
+                    <StarIcon/>
+                  </el-icon>
                   关注的店铺
                 </el-dropdown-item>
                 <el-dropdown-item command="favorites">
-                  <el-icon><HeartIcon /></el-icon>
+                  <el-icon>
+                    <HeartIcon/>
+                  </el-icon>
                   收藏的商品
                 </el-dropdown-item>
                 <el-dropdown-item command="purchased">
-                  <el-icon><ShoppingBagIcon /></el-icon>
+                  <el-icon>
+                    <ShoppingBagIcon/>
+                  </el-icon>
                   已购买的商品
                 </el-dropdown-item>
                 <el-dropdown-item command="orders">
-                  <el-icon><DocumentIcon /></el-icon>
+                  <el-icon>
+                    <DocumentIcon/>
+                  </el-icon>
                   历史订单
                 </el-dropdown-item>
                 <el-dropdown-item command="shop-manage" divided>
-                  <el-icon><BuildingStorefrontIcon /></el-icon>
+                  <el-icon>
+                    <BuildingStorefrontIcon/>
+                  </el-icon>
                   店铺管理
                 </el-dropdown-item>
                 <el-dropdown-item command="item-manage">
-                  <el-icon><CubeIcon /></el-icon>
+                  <el-icon>
+                    <CubeIcon/>
+                  </el-icon>
                   商品管理
                 </el-dropdown-item>
                 <el-dropdown-item command="settings" divided>
-                  <el-icon><CogIcon /></el-icon>
+                  <el-icon>
+                    <CogIcon/>
+                  </el-icon>
                   账号设定
                 </el-dropdown-item>
                 <el-dropdown-item command="logout">
-                  <el-icon><ArrowRightOnRectangleIcon /></el-icon>
+                  <el-icon>
+                    <ArrowRightOnRectangleIcon/>
+                  </el-icon>
                   登出
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -119,10 +135,10 @@
           </el-dropdown>
 
           <el-button
-            v-else
-            class="login-btn"
-            type="primary"
-            @click="handleAvatarClick"
+              v-else
+              class="login-btn"
+              type="primary"
+              @click="handleAvatarClick"
           >
             登录
           </el-button>
@@ -133,8 +149,8 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { ref, onMounted } from 'vue'
+import {useRouter} from 'vue-router'
+import {ref, onMounted} from 'vue'
 import {
   StarIcon,
   ShoppingCartIcon,
@@ -149,8 +165,8 @@ import {
   ArrowRightOnRectangleIcon
 } from '@heroicons/vue/24/outline'
 
-import { useUserStore } from "@/stores/user.ts"
-import { getUserSimpleInfo } from "@/api/user.ts"
+import {useUserStore} from "@/stores/user.ts"
+import {getUserSimpleInfo} from "@/api/user.ts"
 
 // 响应式数据
 const router = useRouter()
@@ -161,7 +177,7 @@ const avatarUrl = ref('')
 
 // 方法
 const goToRoute = (routeName: string) => {
-  router.push({ name: routeName })
+  router.push({name: routeName})
 }
 
 const handleSearch = () => {
@@ -169,14 +185,14 @@ const handleSearch = () => {
     // 实现搜索逻辑
     router.push({
       name: 'search',
-      query: { q: searchQuery.value.trim() }
+      query: {q: searchQuery.value.trim()}
     })
   }
 }
 
 const handleAvatarClick = () => {
   if (!userStore.isLogged) {
-    router.push({ name: 'login' })
+    router.push({name: 'login'})
   }
 }
 
@@ -205,7 +221,7 @@ const handleCommand = (command: string) => {
       break
     case 'logout':
       userStore.logout()
-      router.push({ name: 'home' })
+      router.push({name: 'home'})
       break
   }
 }
@@ -215,8 +231,8 @@ onMounted(async () => {
   if (userStore.isLogged) {
     try {
       const userInfo = await getUserSimpleInfo()
-      nickname.value = userInfo.nickname || '用户'
-      avatarUrl.value = userInfo.avatarUrl || ''
+      nickname.value = userInfo.nickname
+      avatarUrl.value = userInfo.avatarUrl
     } catch (error) {
       console.error('获取用户信息失败:', error)
     }

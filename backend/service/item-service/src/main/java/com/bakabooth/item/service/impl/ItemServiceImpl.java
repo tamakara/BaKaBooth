@@ -4,7 +4,6 @@ import com.bakabooth.item.converter.ItemConverter;
 import com.bakabooth.item.domain.entity.*;
 import com.bakabooth.item.domain.vo.ItemEditFormVO;
 import com.bakabooth.item.domain.vo.ItemManageVO;
-import com.bakabooth.item.domain.vo.VariationsEditFormVO;
 import com.bakabooth.item.mapper.*;
 import com.bakabooth.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +24,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public Long createItem(Long shopId) {
-        Item item = new Item(shopId);
+    public Long createItem(Long userId) {
+        Item item = new Item(userId);
         itemMapper.insert(item);
         variationMapper.insert(new Variation(item.getId()));
 
@@ -35,9 +34,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public void updateItem(Long shopId, Long itemId, ItemEditFormVO itemEditFormVO) {
+    public void updateItem(Long userId, Long itemId, ItemEditFormVO itemEditFormVO) {
         Item item = itemMapper.selectById(itemId);
-        if (!item.getShopId().equals(shopId))
+        if (!item.getUserId().equals(userId))
             throw new RuntimeException("没有权限");
 
         itemMapper.updateItem(itemId, itemEditFormVO);
@@ -52,8 +51,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemManageVO> getItemManageVO(Long userId, Long shopId, String state) {
-        List<Item> itemList = itemMapper.getItemListByShopIdAndState(shopId,state);
+    public List<ItemManageVO> getItemManageVO(Long userId, String state) {
+        List<Item> itemList = itemMapper.getItemListByUserIdAndState(userId,state);
         return itemList
                 .stream()
                 .map(item -> itemConverter.toItemManageVO(userId, item))
@@ -61,9 +60,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemEditFormVO getItemEditFormVO(Long shopId, Long itemId) {
+    public ItemEditFormVO getItemEditFormVO(Long userId, Long itemId) {
         Item item = itemMapper.selectById(itemId);
-        if (item == null || item.getShopId().longValue() != shopId.longValue())
+        if (item == null || item.getUserId().longValue() != userId.longValue())
             throw new RuntimeException("获取商品信息失败");
 
         List<Image> images = imageMapper.selectImagesByItemId(itemId);

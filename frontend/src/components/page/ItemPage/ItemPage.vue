@@ -125,9 +125,7 @@
           质保一个月
         </div>
       </div>
-
     </template>
-
 
   </ItemPageLayout>
 </template>

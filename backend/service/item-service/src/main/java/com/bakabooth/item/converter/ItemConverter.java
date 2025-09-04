@@ -28,10 +28,12 @@ public class ItemConverter {
         ItemManageVO vo = new ItemManageVO();
         BeanUtils.copyProperties(item, vo);
 
-        Image cover = imageMapper.selectImagesByItemId(item.getId()).get(0);
-        FileDTO fileDTO = fileClient.getFileUrl(userId, cover.getFileId()).getBody();
-        if (fileDTO == null) throw new RuntimeException("获取封面图片失败");
-        vo.setCoverUrl(fileDTO.getUrl());
+        List<Image> images = imageMapper.selectImagesByItemId(item.getId());
+        if (!images.isEmpty()) {
+            FileDTO fileDTO = fileClient.getFileUrl(userId, images.get(0).getFileId()).getBody();
+            if (fileDTO == null) throw new RuntimeException("获取封面图片失败");
+            vo.setCoverUrl(fileDTO.getUrl());
+        }
 
         List<Variation> variations = variationMapper.selectVariationsByItemId(item.getId());
         vo.setVariations(variations);

@@ -11,5 +11,5 @@ public class ItemEditFormVO {
     private String description;
     private List<Long> images;
     private List<String> tags;
-    private List<VariationsEditFormVO> variations;
+    private List<VariationEditFormVO> variations;
 }

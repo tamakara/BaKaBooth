@@ -1,13 +1,11 @@
-package com.bakabooth.shop.domain.entity;
+package com.bakabooth.user.domain.entity;
 
-import com.bakabooth.shop.domain.vo.ShopInfoVO;
+import com.bakabooth.user.domain.vo.ShopInfoVO;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-
-import java.time.Instant;
 
 @Data
 @TableName("shop")

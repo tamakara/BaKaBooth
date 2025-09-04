@@ -2,14 +2,18 @@ package com.bakabooth.user.service.impl;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.bakabooth.common.client.ShopClient;
+import com.bakabooth.common.client.FileClient;
+import com.bakabooth.common.domain.dto.FileDTO;
 import com.bakabooth.common.domain.dto.UserDTO;
 import com.bakabooth.user.config.JwtProperties;
 import com.bakabooth.user.domain.dto.LoginFormDTO;
 import com.bakabooth.user.domain.dto.RegisterFormDTO;
+import com.bakabooth.user.domain.entity.Shop;
 import com.bakabooth.user.domain.entity.User;
 import com.bakabooth.user.domain.vo.UserSimpleInfoVO;
+import com.bakabooth.user.mapper.ShopMapper;
 import com.bakabooth.user.mapper.UserMapper;
+import com.bakabooth.user.service.ShopService;
 import com.bakabooth.user.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +29,8 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     private final JwtProperties jwtProperties;
     private final UserMapper userMapper;
-    private final ShopClient shopClient;
+    private final ShopMapper shopMapper;
+    private final FileClient fileClient;
 
     @Override
     @Transactional
@@ -42,17 +47,15 @@ public class UserServiceImpl implements UserService {
         if (user == null) throw new RuntimeException("手机号或密码错误");
 
         String userId = user.getId().toString();
-        String shopId = user.getShopId().toString();
         String jti = UUID.randomUUID().toString();
         Algorithm algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
 
         return JWT.create()
-                .withExpiresAt(Instant
-                        .now()
-                        .plusSeconds(jwtProperties.getExpiration())
+                .withExpiresAt(
+                        Instant.now()
+                                .plusSeconds(jwtProperties.getExpiration())
                 )
-                .withClaim("userId", userId)
-                .withClaim("shopId", shopId)
+                .withSubject(userId)
                 .withClaim("jti", jti)
                 .sign(algorithm);
     }
@@ -69,15 +72,13 @@ public class UserServiceImpl implements UserService {
         user.setUsername(registerFormDTO.getNickname());
         user.setPassword(registerFormDTO.getPassword());
         user.setNickname(registerFormDTO.getNickname());
-        user.setAvatarFileId(1L);
+        user.setAvatarFileId(0L);
         userMapper.insert(user);
 
         Long userId = user.getId();
-        Long shopId = shopClient.create(userId).getBody();
-        if (shopId == null) throw new RuntimeException("店铺创建失败");
 
-        user.setShopId(shopId);
-        userMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getId, userId));
+        Shop shop = new Shop(userId);
+        shopMapper.insert(shop);
 
         String jti = UUID.randomUUID().toString();
         Algorithm algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
@@ -87,8 +88,7 @@ public class UserServiceImpl implements UserService {
                         .now()
                         .plusSeconds(jwtProperties.getExpiration())
                 )
-                .withClaim("userId", userId.toString())
-                .withClaim("shopId", shopId.toString())
+                .withSubject(userId.toString())
                 .withClaim("jti", jti)
                 .sign(algorithm);
     }
@@ -102,6 +102,11 @@ public class UserServiceImpl implements UserService {
 
         UserSimpleInfoVO vo = new UserSimpleInfoVO();
         BeanUtils.copyProperties(user, vo);
+        if (user.getAvatarFileId() != 0) {
+            FileDTO avatar = fileClient.getFileUrl(userId, user.getAvatarFileId()).getBody();
+            if (avatar == null) throw new RuntimeException("头像文件不存在");
+            vo.setAvatarUrl(avatar.getUrl());
+        }
 
         return vo;
     }

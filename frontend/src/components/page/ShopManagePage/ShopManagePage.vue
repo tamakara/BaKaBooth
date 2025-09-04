@@ -33,18 +33,20 @@
     <template #dashboard-header-right>
       <div class="shop-actions">
         <el-button
-          type="info"
-          plain
-          @click="handleShopSettings"
-          class="action-button"
+            type="info"
+            plain
+            @click="handleShopSettings"
+            class="action-button"
         >
-          <el-icon class="mr-2"><CogIcon /></el-icon>
+          <el-icon class="mr-2">
+            <CogIcon/>
+          </el-icon>
           店铺设置
         </el-button>
         <el-button
-          :type="shopData.isPublic ? 'warning' : 'success'"
-          @click="handleToggleStatus"
-          class="action-button"
+            :type="shopData.isPublic ? 'warning' : 'success'"
+            @click="handleToggleStatus"
+            class="action-button"
         >
           <el-icon class="mr-2">
             <EyeIcon v-if="!shopData.isPublic"/>
@@ -58,7 +60,9 @@
     <template #dashboard-pane-left>
       <div class="revenue-section">
         <h3 class="section-title">
-          <el-icon class="title-icon"><CurrencyDollarIcon /></el-icon>
+          <el-icon class="title-icon">
+            <CurrencyDollarIcon/>
+          </el-icon>
           收益概览
         </h3>
         <div class="revenue-stats">
@@ -81,47 +85,61 @@
     <template #dashboard-pane-right>
       <div class="management-nav">
         <h3 class="section-title">
-          <el-icon class="title-icon"><Squares2X2Icon /></el-icon>
+          <el-icon class="title-icon">
+            <Squares2X2Icon/>
+          </el-icon>
           管理功能
         </h3>
 
         <div class="nav-grid">
           <div class="nav-card" @click="goToRoute('shop-manage-item')">
             <div class="nav-card-icon">
-              <el-icon size="24"><ShoppingBagIcon/></el-icon>
+              <el-icon size="24">
+                <ShoppingBagIcon/>
+              </el-icon>
             </div>
             <div class="nav-card-content">
               <h4>商品管理</h4>
               <p>管理您的商品信息</p>
             </div>
             <div class="nav-card-arrow">
-              <el-icon><ChevronRightIcon /></el-icon>
+              <el-icon>
+                <ChevronRightIcon/>
+              </el-icon>
             </div>
           </div>
 
           <div class="nav-card" @click="goToRoute('shop-orders')">
             <div class="nav-card-icon">
-              <el-icon size="24"><DocumentTextIcon/></el-icon>
+              <el-icon size="24">
+                <DocumentTextIcon/>
+              </el-icon>
             </div>
             <div class="nav-card-content">
               <h4>订单管理</h4>
               <p>查看和处理订单</p>
             </div>
             <div class="nav-card-arrow">
-              <el-icon><ChevronRightIcon /></el-icon>
+              <el-icon>
+                <ChevronRightIcon/>
+              </el-icon>
             </div>
           </div>
 
           <div class="nav-card" @click="goToRoute('shop-revenue')">
             <div class="nav-card-icon">
-              <el-icon size="24"><ChartBarIcon/></el-icon>
+              <el-icon size="24">
+                <ChartBarIcon/>
+              </el-icon>
             </div>
             <div class="nav-card-content">
               <h4>收益管理</h4>
               <p>查看收益统计</p>
             </div>
             <div class="nav-card-arrow">
-              <el-icon><ChevronRightIcon /></el-icon>
+              <el-icon>
+                <ChevronRightIcon/>
+              </el-icon>
             </div>
           </div>
         </div>
@@ -221,7 +239,8 @@ function handleToggleStatus() {
 }
 
 .action-button {
-  height: 36px;
+  height: 42px;
+  padding: 0 16px;
   font-size: 14px;
 }
 

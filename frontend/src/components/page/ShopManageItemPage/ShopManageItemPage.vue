@@ -2,9 +2,9 @@
   <ShopManageItemPageLayout>
     <template #actions-left>
       <el-radio-group v-model="currentState" class="state-filter">
-        <el-radio-button label="All" value="all"/>
-        <el-radio-button label="Public" value="public"/>
-        <el-radio-button label="Private" value="private"/>
+        <el-radio-button label="所有" value="all"/>
+        <el-radio-button label="公开" value="public"/>
+        <el-radio-button label="隐藏" value="private"/>
       </el-radio-group>
     </template>
     <template #actions-right>
@@ -36,7 +36,7 @@
                 class="item-image"
             />
             <div class="item-details">
-              <div class="item-state">{{ item.state }}</div>
+              <div class="item-state">{{ item.state ? '公开' : '隐藏' }}</div>
               <div class="item-name">{{ item.name }}</div>
               <div class="item-url">http://localhost:5173/item/{{ item.id }}</div>
             </div>
@@ -265,14 +265,6 @@ watch(currentState, async (newState) => {
   font-weight: 600;
   font-size: 14px;
   line-height: 1.2;
-}
-
-.state-filter {
-  height: 42px;
-}
-
-.state-filter :deep(.el-radio-button) {
-  height: 42px;
 }
 
 .state-filter :deep(.el-radio-button__inner) {

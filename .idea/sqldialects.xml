@@ -4,7 +4,6 @@
     <file url="file://$PROJECT_DIR$/docker/mysql/file_service.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/docker/mysql/item_service.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/docker/mysql/nacos.sql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/docker/mysql/shop_service.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/docker/mysql/user_service.sql" dialect="MySQL" />
   </component>
 </project>

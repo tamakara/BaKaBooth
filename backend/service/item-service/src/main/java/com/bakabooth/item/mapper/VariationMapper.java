@@ -1,9 +1,8 @@
 package com.bakabooth.item.mapper;
 
 import com.bakabooth.item.domain.entity.Variation;
-import com.bakabooth.item.domain.vo.VariationsEditFormVO;
+import com.bakabooth.item.domain.vo.VariationEditFormVO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,10 +18,10 @@ public interface VariationMapper extends BaseMapper<Variation> {
     }
 
     @Transactional
-    default void updateVariations(Long itemId, List<VariationsEditFormVO> variations) {
+    default void updateVariations(Long itemId, List<VariationEditFormVO> variations) {
         delete(new LambdaQueryWrapper<Variation>().eq(Variation::getItemId, itemId));
         for (int index = 0; index < variations.size(); index++) {
-            VariationsEditFormVO vo = variations.get(index);
+            VariationEditFormVO vo = variations.get(index);
 
             Variation variation = new Variation();
             variation.setItemId(itemId);

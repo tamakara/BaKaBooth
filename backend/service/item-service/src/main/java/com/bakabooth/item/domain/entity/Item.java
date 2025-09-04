@@ -12,8 +12,8 @@ public class Item {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @TableField(value = "shop_id")
-    private Long shopId;
+    @TableField(value = "user_id")
+    private Long userId;
 
     @TableField(value = "state")
     private String state;
@@ -27,8 +27,8 @@ public class Item {
     @TableField(value = "favorite")
     private Long favorite;
 
-    public Item(Long shopId) {
-        this.shopId = shopId;
+    public Item(Long userId) {
+        this.userId = userId;
         this.state = "private";
         this.name = "未命名";
         this.description = "";

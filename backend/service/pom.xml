@@ -15,7 +15,6 @@
     <modules>
         <module>user-service</module>
         <module>item-service</module>
-        <module>shop-service</module>
         <module>file-service</module>
         <module>pay-service</module>
     </modules>

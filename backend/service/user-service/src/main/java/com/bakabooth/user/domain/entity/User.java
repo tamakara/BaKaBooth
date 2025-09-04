@@ -11,9 +11,6 @@ public class User {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @TableField(value = "shop_id")
-    private Long shopId;
-
     @TableField(value = "phone")
     private String phone;
 
