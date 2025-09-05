@@ -1,7 +1,7 @@
 package com.bakabooth.user.service;
 
-import com.bakabooth.user.domain.vo.ShopInfoVO;
+import com.bakabooth.user.domain.vo.ShopManagePageVO;
 
 public interface ShopService {
-    ShopInfoVO getShopInfo(Long userId);
+    ShopManagePageVO ShopManagePageVO(Long userId);
 }

@@ -16,3 +16,11 @@ export interface UserSimpleInfoVO {
     nickname: string
     avatarUrl: string
 }
+
+export interface ShopManagePageVO {
+    userId: number
+    name: string
+    description: string
+    followers: number
+    state: string
+}

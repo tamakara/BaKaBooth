@@ -1,6 +1,6 @@
 package com.bakabooth.user.controller;
 
-import com.bakabooth.user.domain.vo.ShopInfoVO;
+import com.bakabooth.user.domain.vo.ShopManagePageVO;
 import com.bakabooth.user.service.ShopService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +13,11 @@ public class ShopController {
     private final ShopService shopService;
 
     @Operation(summary = "获取店铺信息")
-    @GetMapping("/shop/info")
-    public ResponseEntity<ShopInfoVO> getShopInfo(@RequestHeader("X-USER-ID") Long userId) {
-        ShopInfoVO shopInfoVO = shopService.getShopInfo(userId);
-        return ResponseEntity.ok(shopInfoVO);
+    @GetMapping("/vo/shop-manage-page")
+    public ResponseEntity<ShopManagePageVO> getShopManagePageVO(
+            @RequestHeader("X-USER-ID") Long userId
+    ) {
+        ShopManagePageVO shopManagePageVO = shopService.ShopManagePageVO(userId);
+        return ResponseEntity.ok(shopManagePageVO);
     }
-
 }

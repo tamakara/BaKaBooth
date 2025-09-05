@@ -1,6 +1,5 @@
 package com.bakabooth.user.domain.entity;
 
-import com.bakabooth.user.domain.vo.ShopInfoVO;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -33,17 +32,5 @@ public class Shop {
         this.state = "private";
         this.name = "未命名";
         this.description = "请设置店铺描述";
-    }
-
-    public ShopInfoVO toShopInfoVO() {
-        ShopInfoVO vo = new ShopInfoVO();
-
-        vo.setShopId(this.id);
-        vo.setName(this.name);
-        vo.setDescription(this.description);
-        vo.setFollower(this.follower);
-        vo.setState(this.state);
-
-        return vo;
     }
 }

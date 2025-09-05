@@ -3,10 +3,10 @@ package com.bakabooth.user.domain.vo;
 import lombok.Data;
 
 @Data
-public class ShopInfoVO {
-    private Long shopId;
+public class ShopManagePageVO {
+    private Long userId;
     private String name;
     private String description;
-    private Long follower;
     private String state;
+    private Long follower;
 }
