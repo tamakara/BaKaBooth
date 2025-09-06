@@ -84,39 +84,39 @@
               <el-dropdown-menu>
                 <el-dropdown-item command="followed-shops">
                   <el-icon>
+                    <HomeIcon/>
+                  </el-icon>
+                  个人主页
+                </el-dropdown-item>
+                <el-dropdown-item command="shop-manage">
+                  <el-icon>
+                    <BuildingStorefrontIcon/>
+                  </el-icon>
+                  店铺管理
+                </el-dropdown-item>
+                <el-dropdown-item command="item-manage" >
+                  <el-icon>
+                    <CubeIcon/>
+                  </el-icon>
+                  商品管理
+                </el-dropdown-item>
+                <el-dropdown-item command="followed-shops" divided>
+                  <el-icon>
                     <StarIcon/>
                   </el-icon>
-                  关注的店铺
+                  关注用户
                 </el-dropdown-item>
                 <el-dropdown-item command="favorites">
                   <el-icon>
                     <HeartIcon/>
                   </el-icon>
-                  收藏的商品
-                </el-dropdown-item>
-                <el-dropdown-item command="purchased">
-                  <el-icon>
-                    <ShoppingBagIcon/>
-                  </el-icon>
-                  已购买的商品
+                  收藏商品
                 </el-dropdown-item>
                 <el-dropdown-item command="orders">
                   <el-icon>
                     <DocumentIcon/>
                   </el-icon>
                   历史订单
-                </el-dropdown-item>
-                <el-dropdown-item command="shop-manage" divided>
-                  <el-icon>
-                    <BuildingStorefrontIcon/>
-                  </el-icon>
-                  店铺管理
-                </el-dropdown-item>
-                <el-dropdown-item command="item-manage">
-                  <el-icon>
-                    <CubeIcon/>
-                  </el-icon>
-                  商品管理
                 </el-dropdown-item>
                 <el-dropdown-item command="settings" divided>
                   <el-icon>
@@ -157,7 +157,7 @@ import {
   BellIcon,
   MagnifyingGlassIcon as SearchIcon,
   HeartIcon,
-  ShoppingBagIcon,
+  HomeIcon,
   DocumentIcon,
   BuildingStorefrontIcon,
   CubeIcon,

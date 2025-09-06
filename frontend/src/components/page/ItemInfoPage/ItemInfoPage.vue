@@ -1,5 +1,5 @@
 <template>
-  <ItemPageLayout>
+  <ItemInfoPageLayout>
     <template #item-image>
       <div class="item-image-wrapper">
         <ImageSlider/>
@@ -127,11 +127,11 @@
       </div>
     </template>
 
-  </ItemPageLayout>
+  </ItemInfoPageLayout>
 </template>
 
 <script setup lang="ts">
-import ItemPageLayout from './ItemPageLayout.vue';
+import ItemInfoPageLayout from './ItemInfoPageLayout.vue';
 import {useRoute} from 'vue-router';
 import ImageSlider from "@/components/common/ImageSlider.vue";
 import ItemVariation from "@/components/common/ItemVariation.vue";

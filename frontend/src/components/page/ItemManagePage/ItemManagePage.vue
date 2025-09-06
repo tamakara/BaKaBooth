@@ -1,10 +1,10 @@
 <template>
-  <ShopManageItemPageLayout>
+  <ItemManagePageLayout>
     <template #actions-left>
       <el-radio-group v-model="currentState" class="state-filter">
-        <el-radio-button label="所有" value="all"/>
-        <el-radio-button label="公开" value="public"/>
-        <el-radio-button label="隐藏" value="private"/>
+        <el-radio-button label="在卖" value="public"/>
+        <el-radio-button label="草稿" value="draft"/>
+        <el-radio-button label="已下架" value="prive"/>
       </el-radio-group>
     </template>
     <template #actions-right>
@@ -87,11 +87,11 @@
         </div>
       </div>
     </template>
-  </ShopManageItemPageLayout>
+  </ItemManagePageLayout>
 </template>
 
 <script setup lang="ts">
-import ShopManageItemPageLayout from "@/components/page/ShopManageItemPage/ShopManageItemPageLayout.vue";
+import ItemManagePageLayout from "@/components/page/ItemManagePage/ItemManagePageLayout.vue";
 import {onMounted, ref, watch} from "vue";
 import type {ItemManageVO} from "@/types/ItemTypes.d.ts";
 import {CloudArrowDownIcon, PlusIcon} from "@heroicons/vue/24/outline";

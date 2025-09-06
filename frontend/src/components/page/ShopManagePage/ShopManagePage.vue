@@ -3,59 +3,69 @@
     <template #dashboard-header-left>
       <div class="shop-header">
         <div class="shop-info">
-          <div class="shop-status">
-            <el-tag :type="getStatusType(shopManagePageData.state)">
+          <!-- 店铺信息统一区域 -->
+          <div class="shop-info-grid">
+            <!-- 店铺状态 -->
+            <div class="info-item">
               <el-icon>
                 <EyeIcon v-if="shopManagePageData.state === 'public'"/>
-                <EyeSlashIcon v-else/>
+                <EyeSlashIcon v-else-if="shopManagePageData.state === 'private'"/>
+                <ExclamationTriangleIcon v-else-if="shopManagePageData.state === 'blocked'"/>
               </el-icon>
-              {{ getStatusText(shopManagePageData.state) }}
-            </el-tag>
-          </div>
-
-          <div class="shop-name-section">
-            <h1 class="shop-name">{{ shopManagePageData.name || '未命名店铺' }}</h1>
-          </div>
-
-          <div class="shop-description" v-if="shopManagePageData.description">
-            {{ shopManagePageData.description }}
-          </div>
-
-          <div class="shop-details">
-            <div class="detail-item">
-              <el-icon>
-                <LinkIcon/>
-              </el-icon>
-              <el-link :href="shopUrl" target="_blank" type="primary" :underline="false">
-                {{ shopUrl }}
-              </el-link>
+              <span :class="['status-text', `status-${shopManagePageData.state}`]">
+                {{ getStatusText(shopManagePageData.state) }}
+              </span>
             </div>
-            <div class="detail-item">
+            <!-- 关注者数量 -->
+            <div class="info-item">
               <el-icon>
                 <UserPlusIcon/>
               </el-icon>
               <span>{{ formatNumber(shopManagePageData.followers) }} 关注者</span>
             </div>
           </div>
+
+          <!-- 被封禁提示 -->
+          <div v-if="shopManagePageData.state === 'blocked'" class="blocked-notice">
+            <el-alert
+                title="店铺已被封禁"
+                type="error"
+                :closable="false"
+                show-icon>
+              <template #default>
+                您的店铺因违反平台规定已被封禁，无法设为公开状态。如有疑问请联系客服。
+              </template>
+            </el-alert>
+          </div>
+
+          <!-- 店铺描述 -->
+          <div class="shop-description" v-if="shopManagePageData.description">
+            {{ shopManagePageData.description }}
+          </div>
         </div>
 
         <div class="shop-actions">
-          <el-button type="default" plain @click="handleShopSettings">
-            <el-icon>
-              <CogIcon/>
-            </el-icon>
-            设置
-          </el-button>
           <el-button
-              :type="shopManagePageData.state === 'public' ? 'warning' : 'success'"
               @click="handleToggleStatus"
               :loading="statusLoading"
+              :disabled="shopManagePageData.state === 'blocked'"
+              :type="shopManagePageData.state === 'blocked' ? 'danger' : 'primary'"
           >
             <el-icon>
               <EyeSlashIcon v-if="shopManagePageData.state === 'public'"/>
-              <EyeIcon v-else/>
+              <EyeIcon v-else-if="shopManagePageData.state === 'private'"/>
+              <ExclamationTriangleIcon v-else-if="shopManagePageData.state === 'blocked'"/>
             </el-icon>
-            {{ shopManagePageData.state === 'public' ? '设为私有' : '设为公开' }}
+            {{
+              shopManagePageData.state === 'blocked' ? '已封禁' :
+              shopManagePageData.state === 'public' ? '设为私有' : '设为公开'
+            }}
+          </el-button>
+          <el-button type="default" plain @click="handleEditDescription">
+            <el-icon>
+              <DocumentTextIcon/>
+            </el-icon>
+            设置店铺描述
           </el-button>
         </div>
       </div>
@@ -77,7 +87,7 @@
           </div>
           <div class="stat-item">
             <div class="stat-value">¥{{ revenueData.month }}</div>
-            <div class="stat-label">本月收益</div>
+            <div class="stat-label">本月收入</div>
           </div>
           <div class="stat-item">
             <div class="stat-value">¥{{ revenueData.total }}</div>
@@ -159,7 +169,7 @@
               </el-icon>
             </div>
             <div class="nav-content">
-              <div class="nav-title">收益分析</div>
+              <div class="nav-title">收益管理</div>
               <div class="nav-desc">本月 +¥{{ revenueData.month }}</div>
             </div>
             <el-icon class="nav-arrow">
@@ -183,23 +193,7 @@
           </div>
         </div>
 
-        <div class="actions-section">
-          <div class="actions-title">快捷操作</div>
-          <div class="actions-buttons">
-            <el-button type="primary" @click="goToRoute('shop-manage-item')" size="small">
-              <el-icon>
-                <PlusIcon/>
-              </el-icon>
-              添加商品
-            </el-button>
-            <el-button type="success" @click="goToRoute('shop-orders')" size="small">
-              <el-icon>
-                <TruckIcon/>
-              </el-icon>
-              处理订单
-            </el-button>
-          </div>
-        </div>
+
       </div>
     </template>
   </ShopManagePageLayout>
@@ -220,10 +214,8 @@ import {
   DocumentTextIcon,
   ChartBarIcon,
   ChevronRightIcon,
-  LinkIcon,
   ChartPieIcon,
-  PlusIcon,
-  TruckIcon
+  ExclamationTriangleIcon
 } from '@heroicons/vue/24/outline';
 import ShopManagePageLayout from '@/components/page/ShopManagePage/ShopManagePageLayout.vue';
 import {getShopManagePageVO} from '@/api/user.ts';
@@ -265,11 +257,16 @@ const formatNumber = (num: number): string => {
 };
 
 const getStatusText = (state: string): string => {
-  return state === 'public' ? '公开中' : '私密中';
-};
-
-const getStatusType = (state: string): 'success' | 'danger' => {
-  return state === 'public' ? 'success' : 'danger';
+  switch (state) {
+    case 'public':
+      return '公开中';
+    case 'private':
+      return '私密中';
+    case 'blocked':
+      return '已封禁';
+    default:
+      return '未知状态';
+  }
 };
 
 const generateShopUrl = (userId: number): string => {
@@ -288,10 +285,16 @@ const handleShopSettings = () => {
 };
 
 const handleToggleStatus = async () => {
+  // 如果店铺被封禁，不允许切换状态
+  if (shopManagePageData.value.state === 'blocked') {
+    ElMessage.error('店铺已被封禁，无法修改状态');
+    return;
+  }
+
   const action = isPublicShop.value ? '设为私有' : '设为公开';
   const message = isPublicShop.value
       ? '设为私有后，其他用户将无法访问您的店铺。确定要继续吗？'
-      : '设为公开后，其他用户可以访问您的店铺。确定要继续吗？';
+      : '设为公开后其他用户可以访问您的店铺。确定要继续吗？';
 
   try {
     await ElMessageBox.confirm(message, `确认${action}`, {
@@ -309,9 +312,43 @@ const handleToggleStatus = async () => {
       statusLoading.value = false;
 
       ElMessage.success(
-          `店铺已${newState === 'public' ? '设为公开' : '设为私有'}`
+          newState === 'public' ? '营业中' : '闭店中'
       );
     }, 1000);
+
+  } catch {
+    // 用户取消操作
+  }
+};
+
+const handleEditDescription = async () => {
+  try {
+    const { value: description } = await ElMessageBox.prompt(
+      '请输入店铺描述',
+      '设置店铺描述',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputType: 'textarea',
+        inputValue: shopManagePageData.value.description,
+        inputPlaceholder: '请输入店铺描述...',
+        inputValidator: (value: string) => {
+          if (value && value.length > 500) {
+            return '描述不能超过500个字符';
+          }
+          return true;
+        },
+        inputErrorMessage: '描述格式不正确'
+      }
+    );
+
+    // 更新描述
+    shopManagePageData.value.description = description || '';
+
+    // TODO: 调用API保存描述
+    // await updateShopDescription(shopManagePageData.value.userId, description);
+
+    ElMessage.success('店铺描述已更新');
 
   } catch {
     // 用户取消操作
@@ -361,19 +398,35 @@ onMounted(() => {
   gap: 20px;
 }
 
-.shop-name-section {
+/* 店铺状态和名称区域 */
+.shop-status-wrapper {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.shop-name {
-  font-size: 28px;
-  font-weight: 700;
-  color: #1f2937;
-  line-height: 1.2;
-  margin: 0;
+.shop-status :deep(.el-tag) {
+  align-self: flex-start;
+  height: 32px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.shop-status :deep(.el-tag .el-icon) {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+}
+
+/* 封禁提示 */
+.blocked-notice {
+  margin: 4px 0;
+}
+
+.blocked-notice :deep(.el-alert) {
+  border-radius: 8px;
 }
 
 .shop-description {
@@ -400,12 +453,18 @@ onMounted(() => {
   font-size: 14px;
   color: #4b5563;
   background: #f9fafb;
-  padding: 8px 12px;
-  border-radius: 6px;
+  padding: 10px 16px;
+  border-radius: 8px;
   border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
 }
 
-.detail-item .el-icon {
+.detail-item:hover {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.detail-item :deep(.el-icon) {
   width: 18px;
   height: 18px;
   color: #6b7280;
@@ -413,60 +472,135 @@ onMounted(() => {
 
 /* 操作按钮 */
 .shop-actions {
-  min-width: 240px;
+  min-width: 260px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
-.shop-actions .el-button {
+.shop-actions :deep(.el-button) {
   width: 100%;
   justify-content: center;
-  height: 40px;
-  font-size: 14px;
+  height: 44px;
+  font-size: 15px;
   font-weight: 600;
   border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
-/* 快捷操作区域 */
-.actions-section {
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid #e5e7eb;
+.shop-actions :deep(.el-button:disabled) {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-.actions-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #4b5563;
-  margin-bottom: 16px;
+/* 店铺信息网格 */
+.shop-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
 }
 
-.actions-buttons {
+.info-item {
   display: flex;
-  gap: 12px;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #4b5563;
+  background: #f9fafb;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+  min-height: 48px;
+  justify-content: flex-start;
 }
 
-.actions-buttons .el-button {
-  flex: 1;
-  height: 36px;
-  font-size: 13px;
-  border-radius: 6px;
+.info-item:hover {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 标签样式 */
-.shop-status .el-tag {
-  height: 28px;
-  padding: 0 12px;
-  font-size: 13px;
+.info-item :deep(.el-icon) {
+  width: 18px;
+  height: 18px;
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.info-item :deep(.el-link) {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* 状态项统一样式 */
+.status-item {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 12px 16px;
+  justify-content: flex-start;
+}
+
+.status-item:hover {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.status-item :deep(.el-tag) {
+  height: auto;
+  padding: 4px 12px;
+  font-size: 14px;
   font-weight: 500;
   border-radius: 6px;
+  border: none;
+  margin: 0;
 }
 
-.shop-status .el-tag .el-icon {
+.status-item :deep(.el-tag .el-icon) {
   width: 16px;
   height: 16px;
   margin-right: 6px;
+  color: inherit;
+}
+
+/* 状态文本样式 */
+.status-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-public {
+  color: #16a34a;
+}
+
+.status-private {
+  color: #f59e0b;
+}
+
+.status-blocked {
+  color: #dc2626;
+}
+
+/* 状态项图标颜色 */
+.info-item:has(.status-public) :deep(.el-icon) {
+  color: #16a34a !important;
+}
+
+.info-item:has(.status-private) :deep(.el-icon) {
+  color: #f59e0b !important;
+}
+
+.info-item:has(.status-blocked) :deep(.el-icon) {
+  color: #dc2626 !important;
+}
+
+/* 关注者数量样式 */
+.info-item span:not(.status-text) {
+  font-weight: 500;
+  color: #1f2937;
 }
 
 /* 响应式设计 */
@@ -474,16 +608,6 @@ onMounted(() => {
   .shop-header {
     flex-direction: column;
     gap: 24px;
-  }
-
-  .shop-name-section {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
-  .shop-name {
-    font-size: 24px;
   }
 
   .shop-details {
@@ -494,11 +618,19 @@ onMounted(() => {
 
   .shop-actions {
     width: 100%;
+    min-width: unset;
   }
 
-  .actions-buttons {
-    flex-direction: column;
-    gap: 8px;
+  .shop-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .shop-actions :deep(.el-button) {
+    height: 40px;
+    font-size: 14px;
   }
 }
 </style>
