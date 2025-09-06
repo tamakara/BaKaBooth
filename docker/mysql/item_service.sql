@@ -11,7 +11,7 @@ CREATE TABLE `item`
     `state`       VARCHAR(255) NOT NULL,
     `name`        VARCHAR(255) NOT NULL,
     `description` TEXT         NOT NULL,
-    `favorite`    BIGINT       NOT NULL,
+    `favorites`   BIGINT       NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`id`, `user_id`)
 ) DEFAULT CHARSET = utf8mb4;
@@ -43,6 +43,7 @@ CREATE TABLE `variation`
     `item_id`     BIGINT       NOT NULL,
     `order_index` INTEGER      NOT NULL,
     `name`        VARCHAR(255) NOT NULL,
+    `type`        VARCHAR(255) NOT NULL,
     `price`       DOUBLE       NOT NULL,
     `stock`       BIGINT       NOT NULL,
     PRIMARY KEY (`id`),

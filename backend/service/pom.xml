@@ -17,6 +17,7 @@
         <module>item-service</module>
         <module>file-service</module>
         <module>pay-service</module>
+        <module>order-service</module>
     </modules>
 
     <dependencies>

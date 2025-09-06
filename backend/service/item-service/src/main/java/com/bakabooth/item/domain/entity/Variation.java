@@ -26,6 +26,9 @@ public class Variation {
     @TableField(value = "name")
     private String name;
 
+    @TableField(value = "type")
+    private String type;
+
     @TableField(value = "price")
     private Double price;
 
@@ -36,6 +39,7 @@ public class Variation {
         this.itemId = itemId;
         this.orderIndex = 0;
         this.name = "默认";
+        this.type = "digital";
         this.price = 0.0;
         this.stock = 0L;
     }

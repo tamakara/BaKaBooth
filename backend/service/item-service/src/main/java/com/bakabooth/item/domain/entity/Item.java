@@ -24,14 +24,14 @@ public class Item {
     @TableField(value = "description")
     private String description;
 
-    @TableField(value = "favorite")
-    private Long favorite;
+    @TableField(value = "favorites")
+    private Long favorites;
 
     public Item(Long userId) {
         this.userId = userId;
         this.state = "private";
         this.name = "未命名";
         this.description = "";
-        this.favorite = 0L;
+        this.favorites = 0L;
     }
 }

@@ -37,20 +37,20 @@ public class ItemManagerController {
     }
 
     @Operation(summary = "获取商品编辑表单信息")
-    @GetMapping("/vo/item-edit-form/{item_id}")
+    @GetMapping("/vo/item-edit-form/{itemId}")
     public ResponseEntity<ItemEditFormVO> getItemEditFormVO(
             @RequestHeader("X-USER-ID") Long userId,
-            @PathVariable("item_id") Long itemId
+            @PathVariable("itemId") Long itemId
     ) {
         ItemEditFormVO itemEditFormVO = itemService.getItemEditFormVO(userId, itemId);
         return ResponseEntity.ok(itemEditFormVO);
     }
 
     @Operation(summary = "更新商品信息")
-    @PutMapping("/update/{item_id}")
+    @PutMapping("/update/{itemId}")
     public ResponseEntity<Void> updateItem(
             @RequestHeader("X-USER-ID") Long userId,
-            @PathVariable("item_id") Long itemId,
+            @PathVariable("itemId") Long itemId,
             @RequestBody ItemEditFormVO itemEditFormVO
     ) {
         itemService.updateItem(userId, itemId, itemEditFormVO);

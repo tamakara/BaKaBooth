@@ -22,14 +22,14 @@
 
 <script setup lang="ts">
 import {defineProps, computed} from 'vue';
-import type {ItemDisplayVO} from "@/types/ItemTypes.d.ts";
+import type {ItemCardVO} from "@/types/ItemTypes.d.ts";
 import ItemCard from "@/components/common/ItemCard.vue";
 
 const props = defineProps<{
   maxRows: number;
   maxColumns: number;
   gap: number;
-  items: ItemDisplayVO[];
+  items: ItemCardVO[];
 }>();
 
 const columns = computed(() => Math.min(props.items.length, props.maxColumns));

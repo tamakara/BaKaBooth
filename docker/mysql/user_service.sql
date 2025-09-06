@@ -4,6 +4,7 @@ GRANT ALL PRIVILEGES ON user_service_db.* TO 'user_service_user'@'%';
 FLUSH PRIVILEGES;
 
 USE user_service_db;
+
 CREATE TABLE `user`
 (
     `id`             BIGINT       NOT NULL AUTO_INCREMENT,
@@ -20,14 +21,6 @@ CREATE TABLE `user`
     UNIQUE KEY `idx_email` (`email`)
 ) DEFAULT CHARSET = utf8mb4;
 
-INSERT INTO `user` (`phone`, `email`, `username`, `password`, `nickname`, `avatar_file_id`)
-VALUES (11111111111,
-        'test@test.test',
-        'testtest',
-        'testtest',
-        'test',
-        1);
-
 CREATE TABLE `shop`
 (
     `id`          BIGINT       NOT NULL AUTO_INCREMENT,
@@ -35,12 +28,7 @@ CREATE TABLE `shop`
     `state`       VARCHAR(255) NOT NULL,
     `name`        VARCHAR(255) NOT NULL,
     `description` VARCHAR(255) NOT NULL,
-    `follower`    BIGINT DEFAULT 0,
+    `followers`    BIGINT DEFAULT 0,
     PRIMARY KEY (`id`),
     UNIQUE KEY `idx_user_id` (`user_id`)
 ) DEFAULT CHARSET = utf8mb4;
-INSERT INTO `shop` (`user_id`, `state`, `name`, `description`)
-VALUES (1,
-        'private',
-        'test',
-        'test');

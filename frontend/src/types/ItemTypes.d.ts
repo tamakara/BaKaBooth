@@ -13,7 +13,7 @@ export interface ItemManageVO {
     }>
 }
 
-export interface ItemDisplayVO {
+export interface ItemCardVO {
     itemId: string
     itemName: string
     shopId: number
@@ -38,4 +38,29 @@ export interface ItemEditFormVO {
     images: number[]
     tags: string[]
     variations: VariationsEditFormVO[]
+}
+
+export interface ItemVO {
+    userId: number
+    name: string
+    description: string
+    favorites: string
+    imageUrls: string[]
+    tags: string[]
+    variations: VariationVO[]
+}
+
+export interface VariationVO {
+    name: string
+    type: string
+    price: number
+}
+
+export interface ShopVO {
+    userId: number
+    name: string
+    state: string
+    description: string
+    followers: number
+    avatarUrl: string
 }

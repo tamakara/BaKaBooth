@@ -42,12 +42,12 @@
 
 <script setup lang="ts">
 import {ref} from 'vue'
-import type {ItemDisplayVO} from "@/types/ItemTypes.d.ts"
+import type {ItemCardVO} from "@/types/ItemTypes.d.ts"
 import HomePageLayout from "@/components/page/HomePage/HomePageLayout.vue";
 import ItemGrid from "@/components/common/ItemGrid.vue";
 import {StarIcon, FireIcon} from "@heroicons/vue/24/outline";
 
-const newItems = ref<ItemDisplayVO[]>([
+const newItems = ref<ItemCardVO[]>([
   {
     itemId: '1',
     itemName: '你好你好��好你你好你好你好你好好你好你好你好你好你好你好你好',

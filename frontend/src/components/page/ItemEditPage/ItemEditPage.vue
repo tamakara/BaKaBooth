@@ -25,7 +25,7 @@
               v-model:file-list="imagesFiles"
               action="http://localhost:8080/file/upload"
               :headers="uploadHeaders"
-              :data="{ isPublic: false }"
+              :data="{ isPublic: true }"
               name="file"
               list-type="picture-card"
               :on-success="handleImageSuccess"

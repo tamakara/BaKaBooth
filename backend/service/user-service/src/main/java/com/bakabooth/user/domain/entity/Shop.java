@@ -24,13 +24,14 @@ public class Shop {
     @TableField(value = "description")
     private String description;
 
-    @TableField(value = "follower")
-    private Long follower;
+    @TableField(value = "followers")
+    private Long followers;
 
     public Shop(Long userId) {
         this.userId = userId;
         this.state = "private";
         this.name = "未命名";
         this.description = "请设置店铺描述";
+        this.followers = 0L;
     }
 }

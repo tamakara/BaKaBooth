@@ -4,6 +4,7 @@ import com.bakabooth.item.converter.ItemConverter;
 import com.bakabooth.item.domain.entity.*;
 import com.bakabooth.item.domain.vo.ItemEditFormVO;
 import com.bakabooth.item.domain.vo.ItemManageVO;
+import com.bakabooth.item.domain.vo.ItemVO;
 import com.bakabooth.item.mapper.*;
 import com.bakabooth.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +56,7 @@ public class ItemServiceImpl implements ItemService {
         List<Item> itemList = itemMapper.getItemListByUserIdAndState(userId,state);
         return itemList
                 .stream()
-                .map(item -> itemConverter.toItemManageVO(userId, item))
+                .map(itemConverter::toItemManageVO)
                 .toList();
     }
 
@@ -70,5 +71,19 @@ public class ItemServiceImpl implements ItemService {
         List<Variation> variations = variationMapper.selectVariationsByItemId(itemId);
 
         return itemConverter.toItemEditFormVO(item, images, tags, variations);
+    }
+
+    @Override
+    public ItemVO getItemVO(Long userId, Long itemId) {
+        Item item = itemMapper.selectById(itemId);
+        if (item == null || item.getUserId().longValue() != userId.longValue())
+            throw new RuntimeException("获取商品信息失败");
+
+        List<Image> images = imageMapper.selectImagesByItemId(itemId);
+        List<Tag> tags = tagMapper.selectTagsByItemId(itemId);
+        List<Variation> variations = variationMapper.selectVariationsByItemId(itemId);
+        
+
+        return itemConverter.toItemVO(item, images, tags, variations);
     }
 }

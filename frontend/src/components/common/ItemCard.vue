@@ -49,14 +49,14 @@
 </template>
 
 <script setup lang="ts">
-import type {ItemDisplayVO} from '@/types/ItemTypes.d.ts';
+import type {ItemCardVO} from '@/types/ItemTypes.d.ts';
 import {HeartIcon as HeartOutlineIcon} from '@heroicons/vue/24/outline'
 import {HeartIcon as HeartSolidIcon} from '@heroicons/vue/24/solid'
 import {ref} from "vue";
 import {useRouter} from "vue-router";
 
 const props = defineProps<{
-  item: ItemDisplayVO;
+  item: ItemCardVO;
 }>();
 
 const router = useRouter();

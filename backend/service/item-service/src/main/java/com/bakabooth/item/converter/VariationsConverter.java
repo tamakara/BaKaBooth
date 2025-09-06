@@ -3,6 +3,7 @@ package com.bakabooth.item.converter;
 import com.bakabooth.item.domain.entity.File;
 import com.bakabooth.item.domain.entity.Variation;
 import com.bakabooth.item.domain.vo.VariationEditFormVO;
+import com.bakabooth.item.domain.vo.VariationVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,12 @@ public class VariationsConverter {
         VariationEditFormVO vo = new VariationEditFormVO();
         BeanUtils.copyProperties(variation, vo);
         vo.setFiles(files.stream().map(File::getFileId).toList());
+        return vo;
+    }
+
+    public VariationVO toVariationVO(Variation variation) {
+        VariationVO vo = new VariationVO();
+        BeanUtils.copyProperties(variation, vo);
         return vo;
     }
 }

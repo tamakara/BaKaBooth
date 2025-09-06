@@ -19,11 +19,13 @@ import BaseLayout from "@/components/common/layout/BaseLayout.vue";
   display: flex;
   flex-direction: column;
 }
+
 main {
   display: flex;
   justify-content: center;
   padding: 20px;
 }
+
 .content {
   max-width: 800px;
   width: 100%;

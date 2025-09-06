@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class VariationInfoVO {
+public class VariationVO {
     private String name;
     private Double type;
     private Double price;
