@@ -25,7 +25,7 @@ const routes: RouteRecordRaw[] = [
     {path: '/shop/:id', name: 'shop', component: ShopPage},
 
     {path: '/shop/manage', name: 'shop-manage', component: ShopManagePage},
-    {path: '/shop/manage/item', name: 'shop-manage-item', component: ItemManagePage},
+    {path: '/item/manage', name: 'item-manage', component: ItemManagePage},
 
     {path: '/checkout/:id', name: 'checkout', component: CheckoutPage},
     {path: '/orders/:id', name: 'orders', component: OrdersPage},

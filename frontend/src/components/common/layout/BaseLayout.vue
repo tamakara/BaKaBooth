@@ -24,7 +24,16 @@
 }
 
 .header {
-  height: auto;
+  height: auto !important;
+  padding: 0 !important;
+  line-height: normal !important;
+  overflow: hidden !important;
+}
+
+.header :deep(.banner) {
+  height: 60px !important;
+  min-height: 60px !important;
+  max-height: 60px !important;
 }
 
 .main {

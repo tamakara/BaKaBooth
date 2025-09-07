@@ -132,62 +132,62 @@
         </h3>
 
         <div class="nav-list">
-          <div class="nav-item" @click="goToRoute('shop-manage-item')">
-            <div class="nav-icon">
+          <div class="page-nav-item" @click="goToRoute('shop-manage-item')">
+            <div class="page-nav-icon">
               <el-icon>
                 <ShoppingBagIcon/>
               </el-icon>
             </div>
-            <div class="nav-content">
-              <div class="nav-title">商品管理</div>
-              <div class="nav-desc">{{ formatNumber(analyticsData.totalProducts) }} 件商品</div>
+            <div class="page-nav-content">
+              <div class="page-nav-title">商品管理</div>
+              <div class="page-nav-desc">{{ formatNumber(analyticsData.totalProducts) }} 件商品</div>
             </div>
-            <el-icon class="nav-arrow">
+            <el-icon class="page-nav-arrow">
               <ChevronRightIcon/>
             </el-icon>
           </div>
 
-          <div class="nav-item" @click="goToRoute('shop-orders')">
-            <div class="nav-icon">
+          <div class="page-nav-item" @click="goToRoute('shop-orders')">
+            <div class="page-nav-icon">
               <el-icon>
                 <DocumentTextIcon/>
               </el-icon>
             </div>
-            <div class="nav-content">
-              <div class="nav-title">订单管理</div>
-              <div class="nav-desc">{{ formatNumber(analyticsData.pendingOrders) }} 待处理</div>
+            <div class="page-nav-content">
+              <div class="page-nav-title">订单管理</div>
+              <div class="page-nav-desc">{{ formatNumber(analyticsData.pendingOrders) }} 待处理</div>
             </div>
-            <el-icon class="nav-arrow">
+            <el-icon class="page-nav-arrow">
               <ChevronRightIcon/>
             </el-icon>
           </div>
 
-          <div class="nav-item" @click="goToRoute('shop-revenue')">
-            <div class="nav-icon">
+          <div class="page-nav-item" @click="goToRoute('shop-revenue')">
+            <div class="page-nav-icon">
               <el-icon>
                 <ChartBarIcon/>
               </el-icon>
             </div>
-            <div class="nav-content">
-              <div class="nav-title">收益管理</div>
-              <div class="nav-desc">本月 +¥{{ revenueData.month }}</div>
+            <div class="page-nav-content">
+              <div class="page-nav-title">收益管理</div>
+              <div class="page-nav-desc">本月 +¥{{ revenueData.month }}</div>
             </div>
-            <el-icon class="nav-arrow">
+            <el-icon class="page-nav-arrow">
               <ChevronRightIcon/>
             </el-icon>
           </div>
 
-          <div class="nav-item" @click="handleShopSettings">
-            <div class="nav-icon">
+          <div class="page-nav-item" @click="handleShopSettings">
+            <div class="page-nav-icon">
               <el-icon>
                 <CogIcon/>
               </el-icon>
             </div>
-            <div class="nav-content">
-              <div class="nav-title">店铺设置</div>
-              <div class="nav-desc">个性化配置</div>
+            <div class="page-nav-content">
+              <div class="page-nav-title">店铺设置</div>
+              <div class="page-nav-desc">个性化配置</div>
             </div>
-            <el-icon class="nav-arrow">
+            <el-icon class="page-nav-arrow">
               <ChevronRightIcon/>
             </el-icon>
           </div>

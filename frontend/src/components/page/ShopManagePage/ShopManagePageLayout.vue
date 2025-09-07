@@ -156,7 +156,7 @@ import ContentLayout from "@/components/common/layout/ContentLayout.vue";
   gap: 16px;
 }
 
-:deep(.nav-item) {
+:deep(.page-nav-item) {
   display: flex;
   align-items: center;
   padding: 18px;
@@ -168,13 +168,13 @@ import ContentLayout from "@/components/common/layout/ContentLayout.vue";
   gap: 14px;
 }
 
-:deep(.nav-item:hover) {
+:deep(.page-nav-item:hover) {
   background: #f1f5f9;
   border-color: #3b82f6;
   transform: translateX(2px);
 }
 
-:deep(.nav-icon) {
+:deep(.page-nav-icon) {
   width: 40px;
   height: 40px;
   background: #3b82f6;
@@ -186,25 +186,25 @@ import ContentLayout from "@/components/common/layout/ContentLayout.vue";
   flex-shrink: 0;
 }
 
-:deep(.nav-content) {
+:deep(.page-nav-content) {
   flex: 1;
   min-width: 0;
 }
 
-:deep(.nav-title) {
+:deep(.page-nav-title) {
   font-size: 15px;
   font-weight: 600;
   color: #1e293b;
   margin-bottom: 3px;
 }
 
-:deep(.nav-desc) {
+:deep(.page-nav-desc) {
   font-size: 13px;
   color: #64748b;
   line-height: 1.4;
 }
 
-:deep(.nav-arrow) {
+:deep(.page-nav-arrow) {
   color: #9ca3af;
   transition: all 0.2s ease;
   flex-shrink: 0;
@@ -212,13 +212,13 @@ import ContentLayout from "@/components/common/layout/ContentLayout.vue";
   height: 18px;
 }
 
-:deep(.nav-item:hover .nav-arrow) {
+:deep(.page-nav-item:hover .page-nav-arrow) {
   color: #3b82f6;
   transform: translateX(3px);
 }
 
-/* 按钮样式 */
-:deep(.el-button) {
+/* 按钮样�� - 限制在卡片内容区域 */
+:deep(.card .el-button) {
   height: 36px;
   padding: 0 16px;
   font-size: 13px;
@@ -226,29 +226,29 @@ import ContentLayout from "@/components/common/layout/ContentLayout.vue";
   font-weight: 500;
 }
 
-:deep(.el-button--large) {
+:deep(.card .el-button--large) {
   height: 40px;
   padding: 0 20px;
   font-size: 14px;
 }
 
-:deep(.el-button--small) {
+:deep(.card .el-button--small) {
   height: 28px;
   padding: 0 12px;
   font-size: 12px;
 }
 
-:deep(.el-icon) {
+:deep(.card .el-icon) {
   width: 16px;
   height: 16px;
 }
 
-:deep(.el-button .el-icon) {
+:deep(.card .el-button .el-icon) {
   margin-right: 4px;
 }
 
-/* 标签样式 */
-:deep(.el-tag) {
+/* 标签样式 - 限制在卡片内容区域 */
+:deep(.card .el-tag) {
   height: 24px;
   padding: 0 8px;
   font-size: 12px;

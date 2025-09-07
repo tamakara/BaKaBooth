@@ -43,7 +43,6 @@ CREATE TABLE `variation`
     `item_id`     BIGINT       NOT NULL,
     `order_index` INTEGER      NOT NULL,
     `name`        VARCHAR(255) NOT NULL,
-    `type`        VARCHAR(255) NOT NULL,
     `price`       DOUBLE       NOT NULL,
     `stock`       BIGINT       NOT NULL,
     PRIMARY KEY (`id`),
