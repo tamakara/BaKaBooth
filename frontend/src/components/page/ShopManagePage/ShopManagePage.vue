@@ -8,12 +8,12 @@
             <!-- 店铺状态 -->
             <div class="info-item">
               <el-icon>
-                <EyeIcon v-if="shopManagePageData.state === 'public'"/>
-                <EyeSlashIcon v-else-if="shopManagePageData.state === 'private'"/>
-                <ExclamationTriangleIcon v-else-if="shopManagePageData.state === 'blocked'"/>
+                <EyeIcon v-if="shopManageData.state === 'public'"/>
+                <EyeSlashIcon v-else-if="shopManageData.state === 'private'"/>
+                <ExclamationTriangleIcon v-else-if="shopManageData.state === 'blocked'"/>
               </el-icon>
-              <span :class="['status-text', `status-${shopManagePageData.state}`]">
-                {{ getStatusText(shopManagePageData.state) }}
+              <span :class="['status-text', `status-${shopManageData.state}`]">
+                {{ getStatusText(shopManageData.state) }}
               </span>
             </div>
             <!-- 关注者数量 -->
@@ -21,12 +21,12 @@
               <el-icon>
                 <UserPlusIcon/>
               </el-icon>
-              <span>{{ formatNumber(shopManagePageData.followers) }} 关注者</span>
+              <span>{{ formatNumber(shopManageData.followers) }} 关注者</span>
             </div>
           </div>
 
           <!-- 被封禁提示 -->
-          <div v-if="shopManagePageData.state === 'blocked'" class="blocked-notice">
+          <div v-if="shopManageData.state === 'blocked'" class="blocked-notice">
             <el-alert
                 title="店铺已被封禁"
                 type="error"
@@ -39,8 +39,8 @@
           </div>
 
           <!-- 店铺描述 -->
-          <div class="shop-description" v-if="shopManagePageData.description">
-            {{ shopManagePageData.description }}
+          <div class="shop-description" v-if="shopManageData.description">
+            {{ shopManageData.description }}
           </div>
         </div>
 
@@ -48,17 +48,17 @@
           <el-button
               @click="handleToggleStatus"
               :loading="statusLoading"
-              :disabled="shopManagePageData.state === 'blocked'"
-              :type="shopManagePageData.state === 'blocked' ? 'danger' : 'primary'"
+              :disabled="shopManageData.state === 'blocked'"
+              :type="shopManageData.state === 'blocked' ? 'danger' : 'primary'"
           >
             <el-icon>
-              <EyeSlashIcon v-if="shopManagePageData.state === 'public'"/>
-              <EyeIcon v-else-if="shopManagePageData.state === 'private'"/>
-              <ExclamationTriangleIcon v-else-if="shopManagePageData.state === 'blocked'"/>
+              <EyeSlashIcon v-if="shopManageData.state === 'public'"/>
+              <EyeIcon v-else-if="shopManageData.state === 'private'"/>
+              <ExclamationTriangleIcon v-else-if="shopManageData.state === 'blocked'"/>
             </el-icon>
             {{
-              shopManagePageData.state === 'blocked' ? '已封禁' :
-              shopManagePageData.state === 'public' ? '设为私有' : '设为公开'
+              shopManageData.state === 'blocked' ? '已封禁' :
+                  shopManageData.state === 'public' ? '设为私有' : '设为公开'
             }}
           </el-button>
           <el-button type="default" plain @click="handleEditDescription">
@@ -132,7 +132,7 @@
         </h3>
 
         <div class="nav-list">
-          <div class="page-nav-item" @click="goToRoute('shop-manage-item')">
+          <div class="page-nav-item" @click="goToRoute('item-manage')">
             <div class="page-nav-icon">
               <el-icon>
                 <ShoppingBagIcon/>
@@ -147,7 +147,7 @@
             </el-icon>
           </div>
 
-          <div class="page-nav-item" @click="goToRoute('shop-orders')">
+          <div class="page-nav-item" @click="goToRoute('orders')">
             <div class="page-nav-icon">
               <el-icon>
                 <DocumentTextIcon/>
@@ -162,7 +162,7 @@
             </el-icon>
           </div>
 
-          <div class="page-nav-item" @click="goToRoute('shop-revenue')">
+          <div class="page-nav-item" @click="goToRoute('revenue')">
             <div class="page-nav-icon">
               <el-icon>
                 <ChartBarIcon/>
@@ -219,20 +219,14 @@ import {
 } from '@heroicons/vue/24/outline';
 import ShopManagePageLayout from '@/components/page/ShopManagePage/ShopManagePageLayout.vue';
 import {getShopManagePageVO} from '@/api/user.ts';
-import type {ShopManagePageVO} from '@/types/UserTypes';
+import type {ShopManageVO} from '@/types/UserTypes';
 
 // 响应式数据
 const router = useRouter();
 const shopUrl = ref('');
 const statusLoading = ref(false);
 
-const shopManagePageData = ref<ShopManagePageVO>({
-  userId: 0,
-  name: '',
-  description: '',
-  followers: 0,
-  state: 'private'
-});
+const shopManageData = ref<ShopManageVO>({});
 
 const revenueData = ref({
   day: '1,234.56',
@@ -248,7 +242,7 @@ const analyticsData = ref({
 });
 
 // 计算属性
-const isPublicShop = computed(() => shopManagePageData.value.state === 'public');
+const isOpening = computed(() => shopManageData.value.state === 'opening');
 
 // 工具函数
 const formatNumber = (num: number): string => {
@@ -258,10 +252,10 @@ const formatNumber = (num: number): string => {
 
 const getStatusText = (state: string): string => {
   switch (state) {
-    case 'public':
-      return '公开中';
-    case 'private':
-      return '私密中';
+    case 'opening':
+      return '营业中';
+    case 'closed':
+      return '闭店中';
     case 'blocked':
       return '已封禁';
     default:
@@ -286,13 +280,13 @@ const handleShopSettings = () => {
 
 const handleToggleStatus = async () => {
   // 如果店铺被封禁，不允许切换状态
-  if (shopManagePageData.value.state === 'blocked') {
+  if (shopManageData.value.state === 'blocked') {
     ElMessage.error('店铺已被封禁，无法修改状态');
     return;
   }
 
-  const action = isPublicShop.value ? '设为私有' : '设为公开';
-  const message = isPublicShop.value
+  const action = isOpening.value ? '设为私有' : '设为公开';
+  const message = isOpening.value
       ? '设为私有后，其他用户将无法访问您的店铺。确定要继续吗？'
       : '设为公开后其他用户可以访问您的店铺。确定要继续吗？';
 
@@ -307,8 +301,8 @@ const handleToggleStatus = async () => {
 
     // 模拟API调用
     setTimeout(() => {
-      const newState = isPublicShop.value ? 'private' : 'public';
-      shopManagePageData.value.state = newState;
+      const newState = isOpening.value ? 'private' : 'public';
+      shopManageData.value.state = newState;
       statusLoading.value = false;
 
       ElMessage.success(
@@ -323,30 +317,30 @@ const handleToggleStatus = async () => {
 
 const handleEditDescription = async () => {
   try {
-    const { value: description } = await ElMessageBox.prompt(
-      '请输入店铺描述',
-      '设置店铺描述',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        inputType: 'textarea',
-        inputValue: shopManagePageData.value.description,
-        inputPlaceholder: '请输入店铺描述...',
-        inputValidator: (value: string) => {
-          if (value && value.length > 500) {
-            return '描述不能超过500个字符';
-          }
-          return true;
-        },
-        inputErrorMessage: '描述格式不正确'
-      }
+    const {value: description} = await ElMessageBox.prompt(
+        '请输入店铺描述',
+        '设置店铺描述',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputType: 'textarea',
+          inputValue: shopManageData.value.description,
+          inputPlaceholder: '请输入店铺描述...',
+          inputValidator: (value: string) => {
+            if (value && value.length > 500) {
+              return '描述不能超过500个字符';
+            }
+            return true;
+          },
+          inputErrorMessage: '描述格式不正确'
+        }
     );
 
     // 更新描述
-    shopManagePageData.value.description = description || '';
+    shopManageData.value.description = description || '';
 
     // TODO: 调用API保存描述
-    // await updateShopDescription(shopManagePageData.value.userId, description);
+    // await updateShopDescription(shopManageData.value.userId, description);
 
     ElMessage.success('店铺描述已更新');
 
@@ -358,8 +352,8 @@ const handleEditDescription = async () => {
 // 初始化数据
 const initializeData = async () => {
   try {
-    shopManagePageData.value = await getShopManagePageVO();
-    shopUrl.value = generateShopUrl(shopManagePageData.value.userId);
+    shopManageData.value = await getShopManagePageVO();
+    shopUrl.value = generateShopUrl(shopManageData.value.userId);
 
     // 模拟加载分析数据
     // TODO: 从API获取真实数据

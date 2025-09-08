@@ -44,7 +44,7 @@
               placement="bottom-end"
           >
             <div class="user-info">
-              <el-text class="user-nickname">{{ nickname }}</el-text>
+              <el-text class="username">{{ username }}</el-text>
               <el-avatar
                   class="user-avatar"
                   :src="avatarUrl"
@@ -169,7 +169,7 @@ import {getUserSimpleInfo} from "@/api/user.ts"
 const router = useRouter()
 const userStore = useUserStore()
 const searchQuery = ref('')
-const nickname = ref('')
+const username = ref('')
 const avatarUrl = ref('')
 
 const handleSearch = () => {
@@ -222,12 +222,11 @@ const goToRoute = (routeName: string) => {
   router.push({name: routeName})
 }
 
-// ���命周期
 onMounted(async () => {
   if (userStore.isLogged) {
     try {
       const userInfo = await getUserSimpleInfo()
-      nickname.value = userInfo.nickname
+      username.value = userInfo.username
       avatarUrl.value = userInfo.avatarUrl
     } catch (error) {
       console.error('获取用户信息失败:', error)
@@ -548,7 +547,7 @@ onMounted(async () => {
     height: 36px;
   }
 
-  .user-nickname {
+  .username {
     display: none;
   }
 

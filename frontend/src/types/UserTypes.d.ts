@@ -5,22 +5,26 @@ export interface LoginFormDTO {
 
 export interface RegisterFormDTO {
     phone: string
-    nickname: string
-    username: string
     password: string
     confirmPassword?: string
 }
 
 export interface UserSimpleInfoVO {
     id: number
-    nickname: string
+    username: string
     avatarUrl: string
 }
 
-export interface ShopManagePageVO {
-    userId: number
-    name: string
+export interface ShopManageVO {
+    state: string
     description: string
     followers: number
+}
+
+export interface SellerVO {
+    username: string
     state: string
+    description: string
+    followers: number
+    avatarUrl: string
 }

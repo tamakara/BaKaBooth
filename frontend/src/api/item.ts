@@ -1,5 +1,5 @@
 import axiosInstance from "@/api/index.ts";
-import type {ItemEditFormVO, ItemManageVO, ItemVO, ShopVO} from "@/types/ItemTypes";
+import type {ItemEditFormVO, ItemManageVO, ItemVO} from "@/types/ItemTypes";
 
 export async function createItem(): Promise<number> {
     const response = await axiosInstance.post<number>('/item/create');
@@ -27,8 +27,3 @@ export async function getItemVO(itemId: string): Promise<ItemVO> {
     return response.data;
 }
 
-
-export async function getShopVO(shopId: string): Promise<ShopVO> {
-    const response = await axiosInstance.get<ShopVO>(`/user/vo/item/${shopId}`);
-    return response.data;
-}

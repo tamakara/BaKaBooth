@@ -4,18 +4,17 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.bakabooth.common.client.FileClient;
 import com.bakabooth.common.domain.dto.FileDTO;
-import com.bakabooth.common.domain.dto.UserDTO;
 import com.bakabooth.user.config.JwtProperties;
+import com.bakabooth.user.converter.UserConverter;
 import com.bakabooth.user.domain.dto.LoginFormDTO;
 import com.bakabooth.user.domain.dto.RegisterFormDTO;
-import com.bakabooth.user.domain.entity.Shop;
 import com.bakabooth.user.domain.entity.User;
+import com.bakabooth.user.domain.vo.SellerVO;
+import com.bakabooth.user.domain.vo.ShopManageVO;
 import com.bakabooth.user.domain.vo.UserSimpleInfoVO;
-import com.bakabooth.user.mapper.ShopMapper;
 import com.bakabooth.user.mapper.UserMapper;
-import com.bakabooth.user.service.ShopService;
 import com.bakabooth.user.service.UserService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     private final JwtProperties jwtProperties;
     private final UserMapper userMapper;
-    private final ShopMapper shopMapper;
+    private final UserConverter userConverter;
     private final FileClient fileClient;
 
     @Override
@@ -63,22 +62,20 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public String register(RegisterFormDTO registerFormDTO) {
-        if (registerFormDTO.getPhone() == null || registerFormDTO.getPassword() == null || registerFormDTO.getNickname() == null) {
-            throw new RuntimeException("手机号或密码或或用户昵称不能为空");
+        if (registerFormDTO.getPhone() == null || registerFormDTO.getPassword() == null) {
+            throw new RuntimeException("手机号或密码或或用户名不能为空");
         }
 
         User user = new User();
         user.setPhone(registerFormDTO.getPhone());
-        user.setUsername(registerFormDTO.getNickname());
         user.setPassword(registerFormDTO.getPassword());
-        user.setNickname(registerFormDTO.getNickname());
-        user.setAvatarFileId(0L);
         userMapper.insert(user);
 
         Long userId = user.getId();
-
-        Shop shop = new Shop(userId);
-        shopMapper.insert(shop);
+        userMapper.update(new LambdaUpdateWrapper<User>()
+                .eq(User::getId, userId)
+                .set(User::getUsername, "用户" + userId)
+        );
 
         String jti = UUID.randomUUID().toString();
         Algorithm algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
@@ -112,14 +109,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserDTO(Long userId) {
+    public ShopManageVO getShopManageVO(Long userId) {
         User user = userMapper.selectById(userId);
+        return userConverter.toShopManagePageVO(user);
+    }
 
-        if (user == null) throw new RuntimeException("用户不存在");
-
-        UserDTO dto = new UserDTO();
-        BeanUtils.copyProperties(user, dto);
-
-        return dto;
+    @Override
+    public SellerVO getSellerUserVO(Long sellerUserId) {
+        User user = userMapper.selectById(sellerUserId);
+        return userConverter.toSellerUserVO(user);
     }
 }

@@ -8,14 +8,14 @@
 
     <template #item-text>
       <div class="item-text">
-        {{ item.description }}
+        {{ itemData.description }}
       </div>
     </template>
 
     <template #item-header>
       <div class="shop-avatar-name" @click="console.log('fuck')">
         <el-avatar :size="24">Y</el-avatar>
-        <div class="shop-name">{{ item.shop.name }}</div>
+        <div class="shop-name">{{ sellerUserData.name }}</div>
         <el-button
             text
             @click="console.log('star')"
@@ -26,14 +26,14 @@
           </el-icon>
         </el-button>
       </div>
-      <div class="item-title">{{ item.name }}</div>
+      <div class="item-title">{{ itemData.name }}</div>
       <div class="item-buttons">
         <div class="item-buttons-left">
           <el-button class="item-button-favorite">
             <el-icon size="24" style="margin-right: 3px">
               <HeartIcon/>
             </el-icon>
-            {{ item.favorites }}
+            {{ itemData.favorites }}
           </el-button>
         </div>
         <div class="item-buttons-right">
@@ -62,13 +62,13 @@
       <el-divider/>
       <div
           class="item-variations"
-          v-for="(i, index) in [item,item,item]"
+          v-for="(variation, index) in itemData.variations"
           :key="index"
       >
         <ItemVariation
-            :name="i.variation.name"
-            :type="i.variation.type"
-            :price="i.variation.price"
+            :name="variation.name"
+            :type="variation.type"
+            :price="`${variation.price}`"
         />
         <el-divider/>
       </div>
@@ -147,18 +147,20 @@ import {
 } from '@heroicons/vue/24/outline'
 import {onMounted, ref} from "vue";
 import {getItemVO} from "@/api/item.ts";
-import type {ItemVO, ShopVO} from "@/types/ItemTypes";
+import type {ItemVO} from "@/types/ItemTypes";
+import {getSellerUserVO} from "@/api/user.ts";
+import type {SellerUserVO} from "@/types/UserTypes";
 
 const route = useRoute();
 
 const itemData = ref<ItemVO>({})
-const shopData = ref<ShopVO>({})
+const sellerUserData = ref<SellerUserVO>({})
 
 onMounted(async () => {
   const itemId = route.params.id as string;
   itemData.value = await getItemVO(itemId)
-  const shopId = itemData.value.userId as string
-  shopData.value = await getShopVO(shopId)
+  const sellerUserId = itemData.value.userId as string
+  sellerUserData.value = await getSellerUserVO(sellerUserId)
 })
 
 

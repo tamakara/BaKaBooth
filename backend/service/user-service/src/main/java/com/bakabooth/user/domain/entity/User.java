@@ -14,17 +14,23 @@ public class User {
     @TableField(value = "phone")
     private String phone;
 
-    @TableField(value = "email")
-    private String email;
-
     @TableField(value = "username")
     private String username;
 
     @TableField(value = "password")
     private String password;
 
-    @TableField(value = "nickname")
-    private String nickname;
+    @TableField(value = "email")
+    private String email;
+
+    @TableField(value = "state")
+    private String state;
+
+    @TableField(value = "description")
+    private String description;
+
+    @TableField(value = "followers")
+    private Long followers;
 
     @TableField(value = "avatar_file_id")
     private Long avatarFileId;
@@ -34,5 +40,12 @@ public class User {
 
     @TableField(value = "updated_at")
     private Instant updatedAt;
+
+    public User() {
+        this.state = "closed";
+        this.description = "";
+        this.followers = 0L;
+        this.avatarFileId = 0L;
+    }
 
 }

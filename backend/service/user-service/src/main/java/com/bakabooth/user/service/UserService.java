@@ -1,8 +1,9 @@
 package com.bakabooth.user.service;
 
-import com.bakabooth.common.domain.dto.UserDTO;
 import com.bakabooth.user.domain.dto.LoginFormDTO;
 import com.bakabooth.user.domain.dto.RegisterFormDTO;
+import com.bakabooth.user.domain.vo.SellerVO;
+import com.bakabooth.user.domain.vo.ShopManageVO;
 import com.bakabooth.user.domain.vo.UserSimpleInfoVO;
 
 public interface UserService {
@@ -12,5 +13,7 @@ public interface UserService {
 
     UserSimpleInfoVO getUserSimpleInfoVO(Long userId);
 
-    UserDTO getUserDTO(Long userId);
+    ShopManageVO getShopManageVO(Long userId);
+
+    SellerVO getSellerUserVO(Long sellerUserId);
 }

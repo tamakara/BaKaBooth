@@ -56,11 +56,3 @@ export interface VariationVO {
     price: number
 }
 
-export interface ShopVO {
-    userId: number
-    name: string
-    state: string
-    description: string
-    followers: number
-    avatarUrl: string
-}

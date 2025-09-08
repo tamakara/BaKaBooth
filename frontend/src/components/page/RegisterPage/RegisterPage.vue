@@ -27,30 +27,6 @@
             />
           </el-form-item>
 
-          <el-form-item prop="username" class="form-item">
-            <el-input
-                v-model="registerForm.username"
-                type="text"
-                :prefix-icon="UserIcon"
-                placeholder="请输入用户名"
-                clearable
-                maxlength="20"
-                class="register-input"
-            />
-          </el-form-item>
-
-          <el-form-item prop="nickname" class="form-item">
-            <el-input
-                v-model="registerForm.nickname"
-                type="text"
-                :prefix-icon="IdentificationIcon"
-                placeholder="请输入昵称"
-                clearable
-                maxlength="20"
-                class="register-input"
-            />
-          </el-form-item>
-
           <el-form-item prop="password" class="form-item">
             <el-input
                 v-model="registerForm.password"
@@ -132,12 +108,9 @@ import {
   DevicePhoneMobileIcon,
   LockClosedIcon,
   ArrowLeftIcon,
-  IdentificationIcon,
-  UserIcon
 } from "@heroicons/vue/24/outline";
 import {useUserStore} from "@/stores/user.ts";
 import type {RegisterFormDTO} from "@/types/UserTypes";
-
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -146,8 +119,6 @@ const ruleFormRef = ref<FormInstance>()
 const registerLoading = ref(false)
 const registerForm = ref<RegisterFormDTO>({
   phone: '',
-  nickname: '',
-  username: '',
   password: '',
   confirmPassword: ''
 });
@@ -167,15 +138,6 @@ const rules = reactive<FormRules<RegisterFormDTO>>({
   phone: [
     {required: true, message: '请输入手机号', trigger: 'blur'},
     {pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur'}
-  ],
-  nickname: [
-    {required: true, message: '请输入昵称', trigger: 'blur'},
-    {min: 1, max: 20, message: '昵称长度为1-20个字符', trigger: 'blur'}
-  ],
-  username: [
-    {required: true, message: '请输入用户名', trigger: 'blur'},
-    {min: 2, max: 20, message: '用户名长度为2-20个字符', trigger: 'blur'},
-    {pattern: /^[a-zA-Z0-9_\u4e00-\u9fa5]+$/, message: '用户名只能包含字母、数字、下划线和中文', trigger: 'blur'}
   ],
   password: [
     {required: true, message: '请输入密码', trigger: 'blur'},
