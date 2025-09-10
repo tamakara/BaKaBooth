@@ -9,4 +9,5 @@ public class VariationVO {
     private String name;
     private Double type;
     private Double price;
+    private Long stock;
 }

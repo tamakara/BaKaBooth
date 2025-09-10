@@ -24,9 +24,11 @@ public class UserConverter {
         SellerVO vo = new SellerVO();
         BeanUtils.copyProperties(user, vo);
 
-        FileDTO fileDTO = fileClient.getFileUrl(0L, user.getAvatarFileId()).getBody();
-        if (fileDTO == null) throw new RuntimeException("获取url失败");
-        vo.setAvatarUrl(fileDTO.getUrl());
+        if(user.getAvatarFileId()!=0) {
+            FileDTO fileDTO = fileClient.getFileUrl(0L, user.getAvatarFileId()).getBody();
+            if (fileDTO == null) throw new RuntimeException("获取url失败");
+            vo.setAvatarUrl(fileDTO.getUrl());
+        }
 
         return vo;
     }

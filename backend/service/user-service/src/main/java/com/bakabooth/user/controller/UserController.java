@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @Operation(summary = "获取卖家信息")
-    @GetMapping("/user/vo/seller-user/{sellerUserId}")
+    @GetMapping("/vo/seller-user/{sellerUserId}")
     public ResponseEntity<SellerVO> getSellerUserVO(@PathVariable("sellerUserId") Long sellerUserId) {
         SellerVO sellerUserVO = userService.getSellerUserVO(sellerUserId);
         return ResponseEntity.ok(sellerUserVO);

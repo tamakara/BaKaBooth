@@ -1,6 +1,6 @@
-import type {LoginFormDTO, RegisterFormDTO, ShopManagePageVO, UserSimpleInfoVO} from "@/types/UserTypes";
+import type {LoginFormDTO, RegisterFormDTO, ShopManageVO, UserSimpleInfoVO} from "@/types/UserTypes";
 import axiosInstance from "@/api/index.ts";
-import type {SellerUserVO} from "@/types/UserTypes";
+import type {SellerVO} from "@/types/UserTypes";
 
 export async function login(data: LoginFormDTO): Promise<string> {
     const response = await axiosInstance.post<string>('/user/login', data);
@@ -17,12 +17,12 @@ export async function getUserSimpleInfo(): Promise<UserSimpleInfoVO> {
     return response.data;
 }
 
-export async function getShopManagePageVO(): Promise<ShopManagePageVO> {
-    const response = await axiosInstance.get<ShopManagePageVO>('/user/vo/shop-manage-page');
+export async function getShopManagePageVO(): Promise<ShopManageVO> {
+    const response = await axiosInstance.get<ShopManageVO>('/user/vo/shop-manage-page');
     return response.data;
 }
 
-export async function getSellerUserVO(userId: string): Promise<SellerUserVO> {
-    const response = await axiosInstance.get<SellerUserVO>(`/user/vo/seller-user/${userId}`);
+export async function getSellerUserVO(userId: string): Promise<SellerVO> {
+    const response = await axiosInstance.get<SellerVO>(`/user/vo/seller-user/${userId}`);
     return response.data;
 }
