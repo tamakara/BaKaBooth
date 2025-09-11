@@ -53,7 +53,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemManageVO> getItemManageVO(Long userId, String state) {
-        List<Item> itemList = itemMapper.getItemListByUserIdAndState(userId,state);
+        List<Item> itemList = itemMapper.getItemListByUserIdAndState(userId, state);
         return itemList
                 .stream()
                 .map(itemConverter::toItemManageVO)
@@ -76,13 +76,12 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemVO getItemVO(Long userId, Long itemId) {
         Item item = itemMapper.selectById(itemId);
-        if (item == null || item.getUserId().longValue() != userId.longValue())
+        if (item == null)
             throw new RuntimeException("获取商品信息失败");
 
         List<Image> images = imageMapper.selectImagesByItemId(itemId);
         List<Tag> tags = tagMapper.selectTagsByItemId(itemId);
         List<Variation> variations = variationMapper.selectVariationsByItemId(itemId);
-        
 
         return itemConverter.toItemVO(item, images, tags, variations);
     }

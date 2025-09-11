@@ -110,7 +110,7 @@
     </template>
 
     <template #item-variations>
-      <el-divider />
+
       <div v-if="loading">
         <el-skeleton v-for="i in 2" :key="i" animated>
           <template #template>
@@ -124,12 +124,43 @@
           v-for="(variation, index) in itemData.variations"
           :key="index"
         >
-          <ItemVariation
-            :name="variation.name"
-            :type="variation.type"
-            :price="`${variation.price}`"
-            :stock="variation.stock"
-          />
+          <div class="variation-container">
+            <div class="variation-header">
+              <div class="variation-info">
+                <h4 class="variation-name">{{ variation.name }}</h4>
+              </div>
+              <div class="variation-price">
+                <span class="price-currency">¥</span>
+                <span class="price-amount">{{ formatPrice(variation.price) }}</span>
+              </div>
+            </div>
+
+            <div class="variation-details">
+              <div class="variation-stock">
+                <span class="stock-label">库存：</span>
+                <span class="stock-count" :class="{ 'low-stock': variation.stock < 10, 'out-of-stock': variation.stock === 0 }">
+                  {{ variation.stock > 0 ? `${variation.stock}件` : '缺货' }}
+                </span>
+              </div>
+
+              <div class="variation-actions">
+                <el-button
+                  type="danger"
+                  size="default"
+                  class="buy-now-button"
+                  @click="handleBuyNow(variation)"
+                  :disabled="variation.stock === 0"
+                >
+                  <el-icon class="button-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H3.75m0 0v-.375c0-.621.504-1.125 1.125-1.125m0 0h9.75m-9.75 0h9.75m0 0h-.375c.621 0 1.125.504 1.125 1.125v.375M3.75 3.75h.375c.621 0 1.125.504 1.125 1.125v.375m0 0h9.75v-.375c0-.621.504-1.125 1.125-1.125h.375M3.75 3.75v9.75M20.25 3.75v9.75M3.75 13.5h16.5" />
+                    </svg>
+                  </el-icon>
+                  {{ variation.stock === 0 ? '缺货' : '立即购买' }}
+                </el-button>
+              </div>
+            </div>
+          </div>
           <el-divider />
         </div>
         <div v-if="!itemData.variations?.length" class="no-variations">
@@ -147,20 +178,6 @@
           商品信息
         </div>
         <div class="item-terms-content">
-          <div class="info-item">
-            <span class="info-label">商品标签：</span>
-            <div v-if="itemData.tags?.length">
-              <el-tag
-                v-for="tag in itemData.tags"
-                :key="tag"
-                size="small"
-                style="margin-right: 5px"
-              >
-                {{ tag }}
-              </el-tag>
-            </div>
-            <span v-else>暂无标签</span>
-          </div>
           <div class="info-item">
             <span class="info-label">商品状态：</span>
             <span>在售</span>
@@ -214,6 +231,35 @@
           <div class="info-item">
             <span class="info-label">客服支持：</span>
             <span>在线客服 9:00-18:00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 商品标签移动到底部 -->
+      <div class="item-tags">
+        <div class="item-terms-title">
+          <el-icon>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z" />
+            </svg>
+          </el-icon>
+          商品标签
+        </div>
+        <div class="item-terms-content">
+          <div class="tags-container">
+            <el-tag
+              v-for="tag in itemData.tags"
+              :key="tag"
+              size="default"
+              type="info"
+              effect="light"
+              class="tag-item"
+              v-if="itemData.tags?.length"
+            >
+              {{ tag }}
+            </el-tag>
+            <span v-if="!itemData.tags?.length" class="no-tags">暂无标签</span>
           </div>
         </div>
       </div>
@@ -281,7 +327,7 @@ const fetchData = async () => {
 
   } catch (error) {
     console.error('获取数据失败:', error);
-    ElMessage.error('获取商品信息失败，请稍后重试');
+    ElMessage.error('获取商品信息失败，请稍后��试');
     // 可选择跳转到错误页面或返回上一页
     // router.back();
   } finally {
@@ -340,7 +386,7 @@ const handleShareClick = async () => {
         url: window.location.href
       });
     } else {
-      // 复制链���到剪贴板
+      // 复制链接到剪贴板
       await navigator.clipboard.writeText(window.location.href);
       ElMessage.success('链接已复制到剪贴板');
     }
@@ -370,7 +416,18 @@ const handleReportClick = async () => {
   }
 };
 
-// 工具函数（移除未使用的formatDate函数）
+const handleBuyNow = (variation: any) => {
+  if (loading.value || variation.stock === 0) return;
+  // TODO: 实现立即购买逻辑
+  ElMessage.info(`准备购买：${variation.name} - ${variation.type}`);
+  // router.push(`/checkout?itemId=${itemId.value}&variationName=${variation.name}`);
+};
+
+// 工具函数
+const formatPrice = (price: number | string) => {
+  const numPrice = typeof price === 'string' ? parseFloat(price) : price;
+  return numPrice.toFixed(2);
+};
 
 // 生命周期
 onMounted(() => {
@@ -394,6 +451,10 @@ onMounted(() => {
   overflow-wrap: break-word; /* 现代浏览器支持 */
   max-width: 100%; /* 限制最大宽度 */
   box-sizing: border-box; /* 包含padding和border */
+  flex: 1; /* 撑满剩余空间 */
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* 允许内容收缩 */
 }
 
 .shop-avatar-name {
@@ -427,6 +488,8 @@ onMounted(() => {
   overflow-wrap: break-word;
   max-width: 100%;
   box-sizing: border-box;
+  margin: 20px 0; /* 增大上下间距 */
+  padding: 12px 0; /* 添加内边距 */
 }
 
 .item-buttons {
@@ -557,5 +620,132 @@ onMounted(() => {
   max-width: 100%;
   box-sizing: border-box;
   overflow: hidden; /* 防止溢出 */
+}
+
+/* 变体信息样式 */
+.variation-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #e4e7ed;
+}
+
+.variation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.variation-info {
+  flex: 1;
+}
+
+.variation-name {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0 0 4px 0;
+  color: #2c3e50;
+}
+
+.variation-type {
+  font-size: 14px;
+  color: #7f8c8d;
+  background-color: #ecf0f1;
+  padding: 2px 8px;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.variation-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: #e74c3c;
+  text-align: right;
+}
+
+.price-currency {
+  font-size: 14px;
+  vertical-align: super;
+}
+
+.price-amount {
+  font-size: 24px;
+}
+
+.variation-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.variation-stock {
+  flex: 1;
+}
+
+.stock-label {
+  font-size: 14px;
+  color: #666;
+  margin-right: 4px;
+}
+
+.stock-count {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.low-stock {
+  color: #e67e22;
+}
+
+.out-of-stock {
+  color: #e74c3c;
+}
+
+.variation-actions {
+  flex-shrink: 0;
+}
+
+.buy-now-button {
+  width: 120px; /* 缩小按钮宽度 */
+  height: 36px; /* 缩小按钮高度 */
+  font-size: 14px; /* 缩小字体 */
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 0 12px;
+}
+
+/* 按钮图标样式 */
+.button-icon {
+  margin-right: 4px; /* 减小图标间距 */
+  vertical-align: middle;
+  width: 16px; /* 设置图标大小 */
+  height: 16px;
+}
+
+/* 商品标签样式 */
+.item-tags {
+  margin-top: 24px;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag-item {
+  padding: 8px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.no-tags {
+  font-size: 14px;
+  color: #909399;
+  padding: 8px 0;
 }
 </style>

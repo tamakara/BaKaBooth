@@ -11,7 +11,7 @@ CREATE TABLE `user`
     `username`       VARCHAR(255) DEFAULT NULL,
     `password`       VARCHAR(255) NOT NULL,
     `email`          VARCHAR(255) DEFAULT NULL,
-    `state`      VARCHAR(255) NOT NULL,
+    `state`          VARCHAR(255) NOT NULL,
     `description`    VARCHAR(255) NOT NULL,
     `followers`      BIGINT       DEFAULT 0,
     `avatar_file_id` BIGINT       NOT NULL,

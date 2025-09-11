@@ -62,6 +62,9 @@ import RowLayout from "@/components/common/layout/RowLayout.vue";
 .left-panel {
   padding: 24px;
   background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .right-panel {
@@ -79,6 +82,9 @@ import RowLayout from "@/components/common/layout/RowLayout.vue";
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .item-header-section {
