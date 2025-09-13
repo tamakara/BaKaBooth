@@ -149,7 +149,7 @@
               </div>
             </div>
           </div>
-          <el-divider/>
+
         </div>
         <div v-if="!itemVO.variations?.length" class="no-variations">
           暂无商品规格信息

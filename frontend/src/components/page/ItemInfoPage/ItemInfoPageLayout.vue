@@ -5,8 +5,9 @@
     </template>
     <template #main>
       <ContentLayout class="item-page-layout">
-        <ColLayout class="main-content">
-          <template #left>
+        <!-- 直接集成ColLayout的功能，不使用gap -->
+        <div class="main-content">
+          <div class="left-column">
             <div class="left-panel">
               <div class="item-image-section">
                 <slot name="item-image"/>
@@ -15,8 +16,8 @@
                 <slot name="item-text"/>
               </div>
             </div>
-          </template>
-          <template #right>
+          </div>
+          <div class="right-column">
             <div class="right-panel">
               <div class="item-header-section">
                 <slot name="item-header"/>
@@ -30,8 +31,8 @@
                 <slot name="item-terms"/>
               </div>
             </div>
-          </template>
-        </ColLayout>
+          </div>
+        </div>
 
         <div class="seller-info-section">
           <div class="seller-info-wrapper">
@@ -47,7 +48,6 @@
 import BaseLayout from "@/components/common/layout/BaseLayout.vue";
 import Banner from "@/components/common/Banner.vue";
 import ContentLayout from "@/components/common/layout/ContentLayout.vue";
-import ColLayout from "@/components/common/layout/ColLayout.vue";
 </script>
 
 <style scoped>
@@ -57,6 +57,8 @@ import ColLayout from "@/components/common/layout/ColLayout.vue";
 }
 
 .main-content {
+  width: 100%;
+  display: flex;
   background: white;
   border-radius: 8px 8px 0 0;
   box-shadow: none;
@@ -64,8 +66,17 @@ import ColLayout from "@/components/common/layout/ColLayout.vue";
   margin-bottom: 0;
 }
 
+.left-column {
+  flex: 0 0 550px; /* 固定左侧宽度，不收缩不放大 */
+  min-width: 550px;
+}
+
+.right-column {
+  flex: 1; /* 右侧占剩余所有空间 */
+  min-width: 0; /* 允许内容收缩 */
+}
+
 .left-panel {
-  padding: 24px;
   background: #fafafa;
   display: flex;
   flex-direction: column;
@@ -80,14 +91,8 @@ import ColLayout from "@/components/common/layout/ColLayout.vue";
   min-width: 0;
 }
 
-.item-image-section {
-  margin-bottom: 24px;
-}
-
 .item-description-section {
   background: white;
-  border-radius: 8px;
-  padding: 20px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   flex: 1;
   display: flex;
@@ -124,10 +129,41 @@ import ColLayout from "@/components/common/layout/ColLayout.vue";
   width: 100%;
 }
 
+/* 响应式处理 - 集成ColLayout的响应式逻辑 */
+@media (max-width: 1200px) {
+  .main-content {
+    flex-direction: column;
+  }
+
+  .left-column {
+    flex: none;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .right-column {
+    flex: none;
+    width: 100%;
+  }
+
+  .left-panel,
+  .right-panel {
+    padding: 16px;
+  }
+
+  .item-description-section,
+  .item-info-section {
+    padding: 16px;
+  }
+
+  .seller-info-wrapper {
+    padding: 16px;
+  }
+}
+
 /* === 商品内容样式 === */
 /* 商品图片区域 */
 :deep(.item-image-wrapper) {
-  width: 550px;
   height: 550px;
   background-color: #ebedf2;
   flex-shrink: 0;
@@ -155,10 +191,6 @@ import ColLayout from "@/components/common/layout/ColLayout.vue";
 }
 
 /* 商品头部区域 - 保持朴素样式 */
-:deep(.item-header-container) {
-  padding: 20px;
-}
-
 :deep(.item-title) {
   font-size: 24px;
   font-weight: 700;
@@ -203,7 +235,6 @@ import ColLayout from "@/components/common/layout/ColLayout.vue";
 }
 
 :deep(.favorite-count) {
-  background: rgba(0, 0, 0, 0.05);
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 13px;
@@ -327,7 +358,6 @@ import ColLayout from "@/components/common/layout/ColLayout.vue";
 :deep(.item-delivery),
 :deep(.item-service),
 :deep(.item-tags) {
-  margin-bottom: 20px;
   background: white;
   border-radius: 8px;
   padding: 16px;
@@ -601,24 +631,7 @@ import ColLayout from "@/components/common/layout/ColLayout.vue";
 
 /* 响应式设计 */
 @media (max-width: 768px) {
-  .left-panel,
-  .right-panel {
-    padding: 16px;
-  }
 
-  .item-description-section,
-  .item-info-section {
-    padding: 16px;
-  }
-
-  .seller-info-wrapper {
-    padding: 16px;
-  }
-
-  :deep(.item-image-wrapper) {
-    width: 100%;
-    height: 300px;
-  }
 
   :deep(.item-title) {
     font-size: 20px;
