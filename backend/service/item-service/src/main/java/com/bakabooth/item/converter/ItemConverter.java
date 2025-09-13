@@ -6,10 +6,8 @@ import com.bakabooth.item.domain.entity.*;
 import com.bakabooth.item.domain.vo.ItemEditFormVO;
 import com.bakabooth.item.domain.vo.ItemManageVO;
 import com.bakabooth.item.domain.vo.ItemVO;
-import com.bakabooth.item.mapper.FileMapper;
 import com.bakabooth.item.mapper.ImageMapper;
 import com.bakabooth.item.mapper.VariationMapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
@@ -22,7 +20,6 @@ public class ItemConverter {
     private final VariationsConverter variationsConverter;
     private final VariationMapper variationMapper;
     private final ImageMapper imageMapper;
-    private final FileMapper fileMapper;
     private final FileClient fileClient;
 
     public ItemManageVO toItemManageVO(Item item) {
@@ -46,12 +43,7 @@ public class ItemConverter {
         BeanUtils.copyProperties(item, vo);
         vo.setImages(images.stream().map(Image::getFileId).toList());
         vo.setTags(tags.stream().map(Tag::getName).toList());
-        vo.setVariations(variations.stream().map(variation -> {
-            List<File> files = fileMapper.selectList(
-                    new LambdaQueryWrapper<File>()
-                            .eq(File::getVariationId, variation.getId()));
-            return variationsConverter.toVariationsEditFormVO(variation, files);
-        }).toList());
+        vo.setVariations(variations.stream().map(variationsConverter::toVariationsEditFormVO).toList());
         return vo;
     }
 

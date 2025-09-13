@@ -48,13 +48,3 @@ CREATE TABLE `variation`
     PRIMARY KEY (`id`),
     UNIQUE KEY (`item_id`, `order_index`)
 ) DEFAULT CHARSET = utf8mb4;
-
-CREATE TABLE `file`
-(
-    `id`           BIGINT  NOT NULL AUTO_INCREMENT,
-    `variation_id` BIGINT  NOT NULL,
-    `file_id`      BIGINT  NOT NULL,
-    `order_index`  INTEGER NOT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE KEY (`variation_id`, `order_index`)
-) DEFAULT CHARSET = utf8mb4;

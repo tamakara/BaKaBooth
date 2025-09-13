@@ -26,5 +26,4 @@ public class OrderController {
         Long orderId = orderService.createOrder(userId, itemId, quantity);
         return ResponseEntity.ok(orderId);
     }
-
 }

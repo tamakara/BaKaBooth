@@ -28,7 +28,6 @@ export interface VariationsEditFormVO {
     name: string
     price: number
     stock: number
-    files: number[]
 }
 
 export interface ItemEditFormVO {

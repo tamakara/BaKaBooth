@@ -13,7 +13,6 @@ CREATE TABLE `order`
     `payment_method` VARCHAR(255) NOT NULL,
     `payment_amount` DOUBLE       NOT NULL,
     `created_at`     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `updated_at`     TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`user_id`, `item_id`)
 ) DEFAULT CHARSET = utf8mb4;

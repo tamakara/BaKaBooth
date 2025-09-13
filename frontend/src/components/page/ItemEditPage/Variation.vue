@@ -49,80 +49,28 @@
           />
         </el-form-item>
       </div>
-
-      <el-form-item label="商品文件" class="variation-file">
-        <el-upload
-            :file-list="files"
-            @update:file-list="updateFiles"
-            class="file-upload"
-            action="http://localhost:8080/file/upload"
-            :headers="uploadHeaders"
-            name="file"
-            :on-success="handleFileSuccess"
-            :on-remove="handleFileRemove"
-        >
-          <el-button type="primary" size="large" class="upload-file-btn">
-            <el-icon class="mr-2">
-              <PlusIcon/>
-            </el-icon>
-            上传文件
-          </el-button>
-          <template #tip>
-            <div class="file-upload-tip">
-              剩余容量 666GB / 888GB
-            </div>
-          </template>
-        </el-upload>
-      </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { PlusIcon } from "@heroicons/vue/24/outline";
-import { useUserStore } from "@/stores/user.ts";
-import type { VariationsEditFormVO } from "@/types/ItemTypes";
-import type { UploadUserFile } from "element-plus";
-import type { FileVO } from "@/types/FileTypes.ts";
+import type {VariationsEditFormVO} from "@/types/ItemTypes";
 
-interface Props {
-  variation: VariationsEditFormVO;
+const props = defineProps<{
   index: number;
-  files: UploadUserFile[];
   canDelete: boolean;
-}
-
-const props = defineProps<Props>();
+  variation: VariationsEditFormVO;
+}>();
 
 const emit = defineEmits<{
   remove: [index: number];
-  fileSuccess: [response: FileVO, file: any];
   updateVariation: [index: number, field: keyof VariationsEditFormVO, value: any];
-  updateFiles: [index: number, files: UploadUserFile[]];
 }>();
-
-const userStore = useUserStore();
-
-const uploadHeaders = computed(() => ({
-  Authorization: 'Bearer ' + userStore.token
-}));
-
-function handleFileSuccess(response: FileVO, file: any) {
-  emit('fileSuccess', response, file);
-}
-
-function handleFileRemove(_uploadFile: any, uploadFiles: any) {
-  emit('updateFiles', props.index, uploadFiles);
-}
 
 function updateVariation(field: keyof VariationsEditFormVO, value: any) {
   emit('updateVariation', props.index, field, value);
 }
 
-function updateFiles(files: UploadUserFile[]) {
-  emit('updateFiles', props.index, files);
-}
 </script>
 
 <style scoped>

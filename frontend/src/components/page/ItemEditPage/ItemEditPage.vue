@@ -96,7 +96,9 @@
                 size="default"
                 @click="showTagInput"
             >
-              <el-icon><PlusIcon/></el-icon>
+              <el-icon>
+                <PlusIcon/>
+              </el-icon>
               添加标签
             </el-button>
           </div>
@@ -110,7 +112,6 @@
                 :key="index"
                 :variation="variation"
                 :index="index"
-                :files="variationFiles[index]"
                 :can-delete="formData.variations.length > 1"
                 @remove="removeVariation"
                 @file-success="handleFileSuccess"
@@ -124,7 +125,9 @@
                 class="add-variation-btn"
                 @click="addVariation"
             >
-              <el-icon class="mr-2"><PlusIcon/></el-icon>
+              <el-icon class="mr-2">
+                <PlusIcon/>
+              </el-icon>
               添加版本
             </el-button>
           </div>
@@ -142,15 +145,15 @@
 <script setup lang="ts">
 import ItemEditPageLayout from "./ItemEditPageLayout.vue";
 import Variation from "./Variation.vue";
-import { ref, computed, nextTick, watch, onMounted } from "vue";
-import { PlusIcon } from "@heroicons/vue/24/outline";
-import type { ItemEditFormVO } from "@/types/ItemTypes";
-import { getItemEditFormVO, updateItem } from "@/api/item.ts";
-import { useRoute, useRouter } from "vue-router";
-import { useUserStore } from "@/stores/user.ts";
-import type { UploadUserFile } from "element-plus";
-import { getFileVO } from "@/api/file.ts";
-import type { FileVO } from "@/types/FileTypes.ts";
+import {ref, computed, nextTick, watch, onMounted} from "vue";
+import {PlusIcon} from "@heroicons/vue/24/outline";
+import type {ItemEditFormVO, VariationsEditFormVO} from "@/types/ItemTypes";
+import {getItemEditFormVO, updateItem} from "@/api/item.ts";
+import {useRoute, useRouter} from "vue-router";
+import {useUserStore} from "@/stores/user.ts";
+import type {UploadUserFile} from "element-plus";
+import {getFileVO} from "@/api/file.ts";
+import type {FileVO} from "@/types/FileTypes.ts";
 
 // 路由和状态
 const route = useRoute();
@@ -164,7 +167,7 @@ const formData = ref<ItemEditFormVO>({
   description: '',
   images: [],
   tags: [],
-  variations: [{ name: '', price: 0.00, stock: 10, files: [] }]
+  variations: [{name: '', price: 0.00, stock: 10}]
 });
 
 const imagesFiles = ref<UploadUserFile[]>([]);
@@ -195,15 +198,7 @@ watch(() => route.params.id, async (itemId) => {
 // 监听文件变化，同步到表单数据
 watch(() => imagesFiles.value, (files) => {
   formData.value.images = files.map(file => file.uid as number);
-}, { deep: true });
-
-watch(() => variationFiles.value, (files) => {
-  formData.value.variations.forEach((variation, index) => {
-    if (files[index]) {
-      variation.files = files[index].map(file => file.uid as number);
-    }
-  });
-}, { deep: true });
+}, {deep: true});
 
 // 数据加载
 async function loadItemData() {
@@ -220,22 +215,6 @@ async function loadItemData() {
             url: fileVO.url
           } as UploadUserFile;
         })
-    );
-
-    // 加载版本文件
-    variationFiles.value = await Promise.all(
-        formData.value.variations.map(async variation =>
-            Promise.all(
-                variation.files.map(async fileId => {
-                  const fileVO = await getFileVO(fileId);
-                  return {
-                    name: fileVO.name,
-                    uid: fileId,
-                    url: fileVO.url
-                  } as UploadUserFile;
-                })
-            )
-        )
     );
   } catch (error) {
     console.error('加载商品数据失败:', error);
@@ -272,7 +251,6 @@ function addVariation() {
     name: '',
     price: 0.00,
     stock: 10,
-    files: []
   });
   variationFiles.value.push([]);
 }
