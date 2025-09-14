@@ -26,3 +26,8 @@ export async function getSellerUserVO(userId: string): Promise<SellerVO> {
     const response = await axiosInstance.get<SellerVO>(`/user/vo/seller-user/${userId}`);
     return response.data;
 }
+
+export async function favoriteItem(itemId: string): Promise<number> {
+    const response = await axiosInstance.post<number>(`/user/favorite/${itemId}`);
+    return response.data;
+}

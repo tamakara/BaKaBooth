@@ -5,7 +5,6 @@
     </template>
     <template #main>
       <ContentLayout class="item-page-layout">
-        <!-- 直接集成ColLayout的功能，不使用gap -->
         <div class="main-content">
           <div class="left-column">
             <div class="left-panel">
@@ -375,7 +374,7 @@ import ContentLayout from "@/components/common/layout/ContentLayout.vue";
 }
 
 :deep(.item-terms-content) {
-  padding-left: 28px;
+  padding-left: 14px;
 }
 
 :deep(.info-item) {

@@ -43,7 +43,7 @@ export interface ItemVO {
     userId: number
     name: string
     description: string
-    favorites: string
+    favorites: number
     imageUrls: string[]
     tags: string[]
     variations: VariationVO[]

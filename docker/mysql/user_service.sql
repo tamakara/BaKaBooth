@@ -21,3 +21,12 @@ CREATE TABLE `user`
     UNIQUE KEY `idx_username` (`username`),
     UNIQUE KEY `idx_phone` (`phone`)
 ) DEFAULT CHARSET = utf8mb4;
+
+CREATE TABLE `favorite`
+(
+    `id`      BIGINT NOT NULL AUTO_INCREMENT,
+    `user_id` BIGINT NOT NULL,
+    `item_id` BIGINT NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY (`user_id`, `item_id`)
+) DEFAULT CHARSET = utf8mb4;

@@ -47,7 +47,7 @@
                 <HeartIcon :class="{ 'favorited': isFavorited }"/>
               </el-icon>
               <span class="favorite-text">收藏</span>
-              <span class="favorite-count">{{ itemVO.favorites || 0 }}</span>
+              <span class="favorite-count">{{ itemVO.favorites }}</span>
             </el-button>
           </div>
           <div class="item-buttons-right">
@@ -401,12 +401,14 @@ const handleStarClick = async () => {
 const handleFavoriteClick = async () => {
   try {
     favoriteLoading.value = true;
+
     // TODO: 实现收藏/取消收藏逻辑
+
     isFavorited.value = !isFavorited.value;
 
-    // ��新收藏数量
-    const currentFavorites = parseInt(itemVO.value.favorites) || 0;
-    itemVO.value.favorites = (currentFavorites + (isFavorited.value ? 1 : -1)).toString();
+    // 新收藏数量
+    const currentFavorites = itemVO.value.favorites;
+    itemVO.value.favorites = currentFavorites + (isFavorited.value ? 1 : -1)
 
     ElMessage.success(isFavorited.value ? '收藏成功' : '已取消收藏');
   } catch (error) {
