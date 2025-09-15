@@ -27,11 +27,27 @@ public class Item {
     @TableField(value = "favorites")
     private Long favorites;
 
+    @TableField(value = "delivery_time")
+    private String deliveryTime;
+
+    @TableField(value = "shipping_details")
+    private String shippingDetails;
+
+    @TableField(value = "return_policy")
+    private String returnPolicy;
+
+    @TableField(value = "warranty_period")
+    private String warrantyPeriod;
+
     public Item(Long userId) {
         this.userId = userId;
         this.state = "private";
         this.name = "未命名";
         this.description = "";
         this.favorites = 0L;
+        this.deliveryTime = "";
+        this.shippingDetails = "";
+        this.returnPolicy = "";
+        this.warrantyPeriod = "";
     }
 }

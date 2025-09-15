@@ -12,4 +12,8 @@ public class ItemEditFormVO {
     private List<Long> images;
     private List<String> tags;
     private List<VariationEditFormVO> variations;
+    private String deliveryTime;
+    private String shippingDetails;
+    private String returnPolicy;
+    private String warrantyPeriod;
 }

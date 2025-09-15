@@ -6,12 +6,16 @@ FLUSH PRIVILEGES;
 USE item_service_db;
 CREATE TABLE `item`
 (
-    `id`          BIGINT       NOT NULL AUTO_INCREMENT,
-    `user_id`     BIGINT       NOT NULL,
-    `state`       VARCHAR(255) NOT NULL,
-    `name`        VARCHAR(255) NOT NULL,
-    `description` TEXT         NOT NULL,
-    `favorites`   BIGINT       NOT NULL,
+    `id`               BIGINT       NOT NULL AUTO_INCREMENT,
+    `user_id`          BIGINT       NOT NULL,
+    `state`            VARCHAR(255) NOT NULL,
+    `name`             VARCHAR(255) NOT NULL,
+    `description`      TEXT         NOT NULL,
+    `favorites`        BIGINT       NOT NULL,
+    `delivery_time`    VARCHAR(255) NOT NULL,
+    `shipping_details` VARCHAR(255) NOT NULL,
+    `return_policy`    VARCHAR(255) NOT NULL,
+    `warranty_period`  VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`id`, `user_id`)
 ) DEFAULT CHARSET = utf8mb4;

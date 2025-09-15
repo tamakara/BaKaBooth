@@ -24,6 +24,10 @@ public interface ItemMapper extends BaseMapper<Item> {
                 .set(Item::getState, vo.getState())
                 .set(Item::getName, vo.getName())
                 .set(Item::getDescription, vo.getDescription())
+                .set(Item::getDeliveryTime, vo.getDeliveryTime())
+                .set(Item::getShippingDetails, vo.getShippingDetails())
+                .set(Item::getReturnPolicy, vo.getReturnPolicy())
+                .set(Item::getWarrantyPeriod, vo.getWarrantyPeriod())
         );
     }
 

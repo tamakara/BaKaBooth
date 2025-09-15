@@ -169,11 +169,11 @@
         <div class="item-terms-content">
           <div class="info-item">
             <span class="info-label">发货时间：</span>
-            <span>3天内</span>
+            <span>{{ itemVO.deliveryTime }}</span>
           </div>
           <div class="info-item">
             <span class="info-label">运费说明：</span>
-            <span>包邮</span>
+            <span>{{ itemVO.shippingDetails }}</span>
           </div>
         </div>
         <div class="item-terms-title">
@@ -185,11 +185,11 @@
         <div class="item-terms-content">
           <div class="info-item">
             <span class="info-label">退换政策：</span>
-            <span>不支持退货</span>
+            <span>{{ itemVO.returnPolicy }}</span>
           </div>
           <div class="info-item">
             <span class="info-label">质保期限：</span>
-            <span>1周</span>
+            <span>{{ itemVO.warrantyPeriod }}</span>
           </div>
         </div>
         <div class="item-terms-title">
@@ -336,7 +336,7 @@ import {
 import {onMounted, ref, computed} from "vue";
 import {ElMessage, ElMessageBox} from 'element-plus';
 import {getItemVO} from "@/api/item.ts";
-import {favoriteItem, getFavoriteItemCount, getSellerUserVO, isFavorite, unFavoriteItem} from "@/api/user.ts";
+import {favoriteItem, getFavoriteItemCount, getSellerUserVO, unFavoriteItem} from "@/api/user.ts";
 import type {ItemVO} from "@/types/ItemTypes";
 import type {SellerVO} from "@/types/UserTypes";
 
@@ -371,10 +371,9 @@ const fetchData = async () => {
     // TODO: 检查用户是否收藏/关注
     // isFavorited.value = await checkIfFavorited(itemId.value);
     // isFollowed.value = await checkIfFollowed(sellerUserData.value.id);
-
   } catch (error) {
     console.error('获取数据失败:', error);
-    ElMessage.error('获取商品信息失败，请稍后��试');
+    ElMessage.error('获取商品信息失败，请稍后再试');
     // 可选择跳转到错误页面或返回上一页
     // router.back();
   } finally {

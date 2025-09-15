@@ -13,4 +13,8 @@ public class ItemVO {
     private List<String> imageUrls;
     private List<String> tags;
     private List<VariationVO> variations;
+    private String deliveryTime;
+    private String shippingDetails;
+    private String returnPolicy;
+    private String warrantyPeriod;
 }

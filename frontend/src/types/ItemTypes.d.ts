@@ -37,6 +37,10 @@ export interface ItemEditFormVO {
     images: number[]
     tags: string[]
     variations: VariationsEditFormVO[]
+    deliveryTime: string
+    shippingDetails: string
+    returnPolicy: string
+    warrantyPeriod: string
 }
 
 export interface ItemVO {
@@ -47,6 +51,10 @@ export interface ItemVO {
     imageUrls: string[]
     tags: string[]
     variations: VariationVO[]
+    deliveryTime: string
+    shippingDetails: string
+    returnPolicy: string
+    warrantyPeriod: string
 }
 
 export interface VariationVO {
