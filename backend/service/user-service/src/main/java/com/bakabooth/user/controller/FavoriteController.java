@@ -13,16 +13,6 @@ import org.springframework.web.bind.annotation.*;
 public class FavoriteController {
     private final FavoriteService favoriteService;
 
-    @Operation(summary = "收藏商品")
-    @PostMapping("/favorite/{itemId}")
-    public ResponseEntity<Boolean> favoriteItem(
-            @RequestHeader("X-USER-ID") Long userId,
-            @PathVariable("itemId") Long itemId
-    ) {
-        Boolean isFavorite = favoriteService.favoriteItem(userId, itemId);
-        return ResponseEntity.ok(isFavorite);
-    }
-
     @Operation(summary = "获取收藏商品数量")
     @PostMapping("/favorite/count/{itemId}")
     public ResponseEntity<Long> getFavoriteItemCount(
@@ -31,6 +21,26 @@ public class FavoriteController {
     ) {
         Long favorites = favoriteService.getFavoriteCount(userId, itemId);
         return ResponseEntity.ok(favorites);
+    }
+
+    @Operation(summary = "收藏商品")
+    @PostMapping("/favorite/{itemId}")
+    public ResponseEntity<Void> favoriteItem(
+            @RequestHeader("X-USER-ID") Long userId,
+            @PathVariable("itemId") Long itemId
+    ) {
+        favoriteService.favoriteItem(userId, itemId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "取消收藏商品")
+    @PostMapping("/un-favorite/{itemId}")
+    public ResponseEntity<Void> unFavoriteItem(
+            @RequestHeader("X-USER-ID") Long userId,
+            @PathVariable("itemId") Long itemId
+    ) {
+        favoriteService.unFavoriteItem(userId, itemId);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "商品是否已收藏")

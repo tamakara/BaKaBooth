@@ -7,7 +7,7 @@ export async function login(data: LoginFormDTO): Promise<string> {
     return response.data;
 }
 
-export async function register(data:RegisterFormDTO): Promise<string> {
+export async function register(data: RegisterFormDTO): Promise<string> {
     const response = await axiosInstance.post<string>('/user/register', data);
     return response.data;
 }
@@ -27,16 +27,20 @@ export async function getSellerUserVO(userId: string): Promise<SellerVO> {
     return response.data;
 }
 
-export async function favoriteItem(itemId: string): Promise<boolean> {
-    const response = await axiosInstance.post<boolean>(`/user/favorite/${itemId}`);
-    return response.data;
-}
-
 export async function getFavoriteItemCount(itemId: string): Promise<number> {
     const response = await axiosInstance.post<number>(`/user/favorite/count/${itemId}`);
     return response.data;
 }
 
+export async function favoriteItem(itemId: string): Promise<void> {
+    const response = await axiosInstance.post<void>(`/user/favorite/${itemId}`);
+    return response.data;
+}
+
+export async function unFavoriteItem(itemId: string): Promise<void> {
+    const response = await axiosInstance.post<void>(`/user/un-favorite/${itemId}`);
+    return response.data;
+}
 
 export async function isFavorite(itemId: string): Promise<boolean> {
     const response = await axiosInstance.get<boolean>(`/user/favorite/${itemId}`);

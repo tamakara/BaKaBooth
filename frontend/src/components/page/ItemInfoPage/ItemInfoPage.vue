@@ -336,7 +336,7 @@ import {
 import {onMounted, ref, computed} from "vue";
 import {ElMessage, ElMessageBox} from 'element-plus';
 import {getItemVO} from "@/api/item.ts";
-import {favoriteItem, getFavoriteItemCount, getSellerUserVO, isFavorite} from "@/api/user.ts";
+import {favoriteItem, getFavoriteItemCount, getSellerUserVO, isFavorite, unFavoriteItem} from "@/api/user.ts";
 import type {ItemVO} from "@/types/ItemTypes";
 import type {SellerVO} from "@/types/UserTypes";
 
@@ -401,8 +401,17 @@ const handleStarClick = async () => {
 const handleFavoriteClick = async () => {
   try {
     favoriteLoading.value = true;
+
+    if (isFavorited.value) {
+      await unFavoriteItem(itemId.value);
+    } else {
+      await favoriteItem(itemId.value);
+    }
+
+    isFavorited.value = !isFavorited.value;
+
     itemVO.value.favorites = await getFavoriteItemCount(itemId.value);
-    isFavorited.value = await favoriteItem(itemId.value);
+
     ElMessage.success(isFavorited.value ? '收藏成功' : '已取消收藏');
   } catch (error) {
     ElMessage.error('操作失败，请稍后重试');

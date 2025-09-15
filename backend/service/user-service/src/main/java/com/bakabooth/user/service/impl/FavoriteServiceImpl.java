@@ -12,25 +12,25 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite> implements FavoriteService {
 
-
     @Override
     public Long getFavoriteCount(Long userId, Long itemId) {
         return count(new LambdaQueryWrapper<Favorite>().eq(Favorite::getUserId, userId).eq(Favorite::getItemId, itemId));
     }
 
     @Override
-    public Boolean favoriteItem(Long userId, Long itemId) {
-
+    public void favoriteItem(Long userId, Long itemId) {
         Favorite favorite = lambdaQuery().eq(Favorite::getUserId, userId).eq(Favorite::getItemId, itemId).one();
 
-        if (favorite == null) {
+        if (favorite == null)
             save(new Favorite(userId, itemId));
-            return true;
-        } else {
-            removeById(favorite.getId());
-            return false;
-        }
+    }
 
+    @Override
+    public void unFavoriteItem(Long userId, Long itemId) {
+        Favorite favorite = lambdaQuery().eq(Favorite::getUserId, userId).eq(Favorite::getItemId, itemId).one();
+
+        if (favorite != null)
+            removeById(favorite.getId());
     }
 
     @Override
