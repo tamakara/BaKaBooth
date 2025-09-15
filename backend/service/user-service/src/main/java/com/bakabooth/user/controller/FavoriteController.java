@@ -15,16 +15,31 @@ public class FavoriteController {
 
     @Operation(summary = "收藏商品")
     @PostMapping("/favorite/{itemId}")
-    public ResponseEntity<Long> favoriteItem(@RequestHeader("X-USER-ID") Long userId, @PathVariable("itemId") Long itemId) {
-        Long favorites = favoriteService.favoriteItem(userId, itemId);
+    public ResponseEntity<Boolean> favoriteItem(
+            @RequestHeader("X-USER-ID") Long userId,
+            @PathVariable("itemId") Long itemId
+    ) {
+        Boolean isFavorite = favoriteService.favoriteItem(userId, itemId);
+        return ResponseEntity.ok(isFavorite);
+    }
+
+    @Operation(summary = "获取收藏商品数量")
+    @PostMapping("/favorite/count/{itemId}")
+    public ResponseEntity<Long> getFavoriteItemCount(
+            @RequestHeader("X-USER-ID") Long userId,
+            @PathVariable("itemId") Long itemId
+    ) {
+        Long favorites = favoriteService.getFavoriteCount(userId, itemId);
         return ResponseEntity.ok(favorites);
     }
 
     @Operation(summary = "商品是否已收藏")
     @GetMapping("/favorite/{itemId}")
-    public ResponseEntity<Long> isFavorite(@RequestHeader("X-USER-ID") Long userId, @PathVariable("itemId") Long itemId) {
-        Long favorites = favoriteService.favoriteItem(userId, itemId);
-        return ResponseEntity.ok(favorites);
+    public ResponseEntity<Boolean> isFavorite(
+            @RequestHeader("X-USER-ID") Long userId,
+            @PathVariable("itemId") Long itemId
+    ) {
+        Boolean isFavorite = favoriteService.isFavorite(userId, itemId);
+        return ResponseEntity.ok(isFavorite);
     }
-
 }

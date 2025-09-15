@@ -27,7 +27,19 @@ export async function getSellerUserVO(userId: string): Promise<SellerVO> {
     return response.data;
 }
 
-export async function favoriteItem(itemId: string): Promise<number> {
-    const response = await axiosInstance.post<number>(`/user/favorite/${itemId}`);
+export async function favoriteItem(itemId: string): Promise<boolean> {
+    const response = await axiosInstance.post<boolean>(`/user/favorite/${itemId}`);
     return response.data;
 }
+
+export async function getFavoriteItemCount(itemId: string): Promise<number> {
+    const response = await axiosInstance.post<number>(`/user/favorite/count/${itemId}`);
+    return response.data;
+}
+
+
+export async function isFavorite(itemId: string): Promise<boolean> {
+    const response = await axiosInstance.get<boolean>(`/user/favorite/${itemId}`);
+    return response.data;
+}
+
