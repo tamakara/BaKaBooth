@@ -46,7 +46,7 @@
           </el-upload>
         </el-form-item>
 
-        <!-- 商品基本信息 -->
+        <!-- ���品基本信息 -->
         <el-form-item label="商品名称" prop="name" class="form-item">
           <el-input
               v-model="formData.name"
@@ -132,6 +132,52 @@
             </el-button>
           </div>
         </el-form-item>
+
+        <!-- 配送信息 -->
+        <el-form-item label="发货时间" prop="deliveryTime" class="form-item">
+          <el-input
+              v-model="formData.deliveryTime"
+              placeholder="请输入预计配送时间，如：3-7个工作日"
+              size="large"
+              maxlength="100"
+              show-word-limit
+          />
+        </el-form-item>
+
+        <el-form-item label="运费说明" prop="shippingDetails" class="form-item">
+          <el-input
+              v-model="formData.shippingDetails"
+              :rows="4"
+              type="textarea"
+              placeholder="请输入物流配送相关信息，如：包邮政策、配送范围、配送方式等..."
+              maxlength="300"
+              show-word-limit
+              resize="none"
+          />
+        </el-form-item>
+
+        <!-- 售后服务 -->
+        <el-form-item label="退换政策" prop="returnPolicy" class="form-item">
+          <el-input
+              v-model="formData.returnPolicy"
+              :rows="4"
+              type="textarea"
+              placeholder="请输入退换货政策，如：7天无理由退货、退货条件等..."
+              maxlength="300"
+              show-word-limit
+              resize="none"
+          />
+        </el-form-item>
+
+        <el-form-item label="质保期限" prop="warrantyPeriod" class="form-item">
+          <el-input
+              v-model="formData.warrantyPeriod"
+              placeholder="请输入保修期限，如：1年质保、终身维修等"
+              size="large"
+              maxlength="100"
+              show-word-limit
+          />
+        </el-form-item>
       </el-form>
     </template>
 
@@ -167,7 +213,11 @@ const formData = ref<ItemEditFormVO>({
   description: '',
   images: [],
   tags: [],
-  variations: [{name: '', price: 0.00, stock: 10}]
+  variations: [{name: '', price: 0.00, stock: 10}],
+  deliveryTime: '',
+  shippingDetails: '',
+  returnPolicy: '',
+  warrantyPeriod: ''
 });
 
 const imagesFiles = ref<UploadUserFile[]>([]);
