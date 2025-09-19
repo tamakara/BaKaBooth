@@ -4,13 +4,13 @@ import HomePage from '@/components/page/HomePage/HomePage.vue'
 import ItemInfoPage from '@/components/page/ItemInfoPage/ItemInfoPage.vue'
 import ShopPage from '@/components/page/ShopPage/ShopPage.vue'
 import CheckoutPage from '@/components/page/CheckoutPage/CheckoutPage.vue'
-import OrdersPage from '@/components/page/OrdersPage/OrdersPage.vue'
 import LoginPage from "@/components/page/LoginPage/LoginPage.vue";
 import RegisterPage from "@/components/page/RegisterPage/RegisterPage.vue";
 import FavoritesPage from "@/components/page/FavoritesPage/FavoritesPage.vue";
 import ShopManagePage from "@/components/page/ShopManagePage/ShopManagePage.vue";
 import ItemManagePage from "@/components/page/ItemManagePage/ItemManagePage.vue";
 import ItemEditPage from "@/components/page/ItemEditPage/ItemEditPage.vue";
+import OrderEditPage from "@/components/page/OrderEditPage/OrderEditPage.vue";
 
 const routes: RouteRecordRaw[] = [
     {path: '/', name: 'home', component: HomePage},
@@ -28,7 +28,7 @@ const routes: RouteRecordRaw[] = [
     {path: '/item/manage', name: 'item-manage', component: ItemManagePage},
 
     {path: '/checkout/:id', name: 'checkout', component: CheckoutPage},
-    {path: '/orders/:id', name: 'orders', component: OrdersPage},
+    {path: '/order/:id', name: 'order-edit', component: OrderEditPage},
 ]
 
 const router = createRouter({

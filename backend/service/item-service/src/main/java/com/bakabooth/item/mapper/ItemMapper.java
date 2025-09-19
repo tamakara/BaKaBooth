@@ -10,25 +10,25 @@ import java.util.List;
 
 public interface ItemMapper extends BaseMapper<Item> {
 
-    default List<Item> getItemListByUserIdAndState(Long userId, String state) {
+    default List<Item> getItemListByUserIdAndStateCode(Long userId, Integer stateCode) {
         return selectList(
                 new LambdaQueryWrapper<Item>()
                         .eq(Item::getUserId, userId)
-                        .eq(!"all".equals(state), Item::getState, state)
+                        .eq(Item::getStateCode, stateCode)
         );
     }
 
     default void updateItem(Long itemId, ItemEditFormVO vo) {
+
         update(null, new LambdaUpdateWrapper<Item>()
                 .eq(Item::getId, itemId)
-                .set(Item::getState, vo.getState())
+                .set(Item::getStateCode, vo.getStateCode())
                 .set(Item::getName, vo.getName())
                 .set(Item::getDescription, vo.getDescription())
                 .set(Item::getDeliveryTime, vo.getDeliveryTime())
                 .set(Item::getShippingDetails, vo.getShippingDetails())
                 .set(Item::getReturnPolicy, vo.getReturnPolicy())
-                .set(Item::getWarrantyPeriod, vo.getWarrantyPeriod())
-        );
+                .set(Item::getWarrantyPeriod, vo.getWarrantyPeriod()));
     }
 
 }

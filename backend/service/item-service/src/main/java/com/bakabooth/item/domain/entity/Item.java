@@ -15,8 +15,9 @@ public class Item {
     @TableField(value = "user_id")
     private Long userId;
 
-    @TableField(value = "state")
-    private String state;
+    // 0-快照, 1-草稿, 2-在售, 3-已下架, 4-已售罄
+    @TableField(value = "state_code")
+    private Integer stateCode;
 
     @TableField(value = "name")
     private String name;
@@ -41,7 +42,7 @@ public class Item {
 
     public Item(Long userId) {
         this.userId = userId;
-        this.state = "private";
+        this.stateCode = 0;
         this.name = "未命名";
         this.description = "";
         this.favorites = 0L;

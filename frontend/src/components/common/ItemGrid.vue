@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import {defineProps, computed} from 'vue';
-import type {ItemCardVO} from "@/types/ItemTypes.d.ts";
+import type {ItemCardVO} from "@/types/item.d.ts";
 import ItemCard from "@/components/common/ItemCard.vue";
 
 const props = defineProps<{

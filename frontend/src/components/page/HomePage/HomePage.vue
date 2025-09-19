@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import {ref} from 'vue'
-import type {ItemCardVO} from "@/types/ItemTypes.d.ts"
+import type {ItemCardVO} from "@/types/item.d.ts"
 import HomePageLayout from "@/components/page/HomePage/HomePageLayout.vue";
 import ItemGrid from "@/components/common/ItemGrid.vue";
 import {StarIcon, FireIcon} from "@heroicons/vue/24/outline";

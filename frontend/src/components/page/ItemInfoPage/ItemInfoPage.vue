@@ -134,7 +134,7 @@
                     type="danger"
                     size="default"
                     class="buy-now-button"
-                    @click="handleBuyNow(variation)"
+                    @click="handleBuy(variation)"
                     :disabled="variation.stock === 0"
                 >
                   <el-icon class="button-icon">
@@ -337,8 +337,9 @@ import {onMounted, ref, computed} from "vue";
 import {ElMessage, ElMessageBox} from 'element-plus';
 import {getItemVO} from "@/api/item.ts";
 import {favoriteItem, getFavoriteItemCount, getSellerUserVO, unFavoriteItem} from "@/api/user.ts";
-import type {ItemVO} from "@/types/ItemTypes";
-import type {SellerVO} from "@/types/UserTypes";
+import type {ItemVO} from "@/types/item.d.ts";
+import type {SellerVO} from "@/types/user";
+import {createOrder} from "@/api/order.ts";
 
 const route = useRoute();
 const router = useRouter();
@@ -466,11 +467,10 @@ const handleReportClick = async () => {
   }
 };
 
-const handleBuyNow = (variation: any) => {
+const handleBuy = async (variation: any) => {
   if (loading.value || variation.stock === 0) return;
-  // TODO: 实现立即购买逻辑
-  ElMessage.info(`准备购买：${variation.name} - ${variation.type}`);
-  // router.push(`/checkout?itemId=${itemId.value}&variationName=${variation.name}`);
+  const orderId = await createOrder(variation.id)
+  router.push({name: 'order-edit', params: {id: orderId}});
 };
 
 // 工具函数

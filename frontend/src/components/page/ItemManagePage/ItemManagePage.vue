@@ -1,10 +1,10 @@
 <template>
   <ItemManagePageLayout>
     <template #actions-left>
-      <el-radio-group v-model="currentState" class="state-filter">
-        <el-radio-button label="在卖" value="public"/>
-        <el-radio-button label="草稿" value="draft"/>
-        <el-radio-button label="已下架" value="prive"/>
+      <el-radio-group v-model="currentStateCode" class="state-filter">
+        <el-radio-button label="在售" :value="2"/>
+        <el-radio-button label="草稿" :value="1"/>
+        <el-radio-button label="已下架" :value="3"/>
       </el-radio-group>
     </template>
     <template #actions-right>
@@ -36,7 +36,7 @@
                 class="item-image"
             />
             <div class="item-details">
-              <div class="item-state">{{ item.state ? '公开' : '隐藏' }}</div>
+              <div class="item-state">{{ item.state }}</div>
               <div class="item-name">{{ item.name }}</div>
               <div class="item-url">http://localhost:5173/item/{{ item.id }}</div>
             </div>
@@ -93,7 +93,7 @@
 <script setup lang="ts">
 import ItemManagePageLayout from "@/components/page/ItemManagePage/ItemManagePageLayout.vue";
 import {onMounted, ref, watch} from "vue";
-import type {ItemManageVO} from "@/types/ItemTypes.d.ts";
+import type {ItemManageVO} from "@/types/item.d.ts";
 import {CloudArrowDownIcon, PlusIcon} from "@heroicons/vue/24/outline";
 import {Edit} from "@element-plus/icons-vue";
 import {createItem, getItemManageVO} from "@/api/item.ts";
@@ -110,15 +110,15 @@ async function handleEditItem(itemId: number) {
   await router.push({name: 'item-edit', params: {id: itemId}})
 }
 
-const currentState = ref('all');
+const currentStateCode = ref(2);
 
 const items = ref<Array<ItemManageVO>>()
 
 onMounted(async () => {
-  items.value = await getItemManageVO(currentState.value)
+  items.value = await getItemManageVO(currentStateCode.value)
 })
 
-watch(currentState, async (newState) => {
+watch(currentStateCode, async (newState) => {
   items.value = await getItemManageVO(newState)
 })
 </script>

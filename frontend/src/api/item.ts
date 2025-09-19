@@ -1,5 +1,5 @@
 import axiosInstance from "@/api/index.ts";
-import type {ItemEditFormVO, ItemManageVO, ItemVO} from "@/types/ItemTypes";
+import type {ItemEditFormVO, ItemManageVO, ItemVO} from "@/types/item.d.ts";
 
 export async function createItem(): Promise<number> {
     const response = await axiosInstance.post<number>('/item/create');
@@ -12,8 +12,8 @@ export async function updateItem(itemId: string, formData: ItemEditFormVO): Prom
 }
 
 
-export async function getItemManageVO(state: string): Promise<Array<ItemManageVO>> {
-    const response = await axiosInstance.get<Array<ItemManageVO>>('/item/vo/item-manage', {params: {state}});
+export async function getItemManageVO(stateCode: number): Promise<Array<ItemManageVO>> {
+    const response = await axiosInstance.get<Array<ItemManageVO>>('/item/vo/item-manage', {params: {stateCode}});
     return response.data;
 }
 

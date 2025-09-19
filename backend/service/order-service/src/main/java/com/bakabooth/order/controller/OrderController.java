@@ -1,14 +1,13 @@
 package com.bakabooth.order.controller;
 
+import com.bakabooth.order.domain.vo.OrderEditFormVO;
+import com.bakabooth.order.domain.vo.OrderVO;
 import com.bakabooth.order.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "订单接口")
 @RestController
@@ -20,10 +19,19 @@ public class OrderController {
     @PostMapping("/create")
     public ResponseEntity<Long> createOrder(
             @RequestHeader("X-USER-ID") Long userId,
-            @RequestParam("itemId") Long itemId,
-            @RequestParam("quantity") Long quantity
+            @RequestBody OrderEditFormVO orderEditFormVO
     ) {
-        Long orderId = orderService.createOrder(userId, itemId, quantity);
+        Long orderId = orderService.createOrder(userId, orderEditFormVO);
         return ResponseEntity.ok(orderId);
+    }
+
+    @Operation(summary = "获取订单信息")
+    @GetMapping("/vo/order/{orderId}")
+    public ResponseEntity<OrderVO> getOrderVO(
+            @RequestHeader("X-USER-ID") Long userId,
+            @PathVariable("orderId") Long orderId
+    ) {
+        OrderVO vo = orderService.getOrderVO(userId, orderId);
+        return ResponseEntity.ok(vo);
     }
 }

@@ -1,9 +1,11 @@
 package com.bakabooth.order.domain.entity;
 
+import com.bakabooth.order.domain.vo.OrderEditFormVO;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 
 import java.time.Instant;
 
@@ -16,11 +18,8 @@ public class Order {
     @TableField(value = "user_id")
     private Long userId;
 
-    @TableField(value = "item_id")
-    private Long itemId;
-
-    @TableField(value = "item_price")
-    private Long itemPrice;
+    @TableField(value = "variation_id")
+    private Long variationId;
 
     @TableField(value = "quantity")
     private Long quantity;
@@ -29,22 +28,23 @@ public class Order {
     @TableField(value = "state_code")
     private Integer stateCode;
 
-    @TableField(value = "payment_method")
-    private Long paymentMethod;
+    @TableField(value = "pay_id")
+    private Long payId;
 
-    @TableField(value = "payment_amount")
-    private Double paymentAmount;
+    @TableField(value = "pay_method")
+    private Long payMethod;
 
-    @TableField(value = "delivery_method")
-    private Integer deliveryMethod;
+    @TableField(value = "pay_amount")
+    private Double payAmount;
 
     @TableField(value = "created_at")
     private Instant createdAt;
 
-    public Order(Long userId, Long itemId, Long quantity) {
-        this.userId = userId;
-        this.itemId = itemId;
-        this.quantity = quantity;
+    public Order(Long userId, OrderEditFormVO orderEditFormVO) {
         this.stateCode = 1;
+        this.userId = userId;
+        this.createdAt = Instant.now();
+        BeanUtils.copyProperties(orderEditFormVO, this);
     }
+
 }

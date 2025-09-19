@@ -219,7 +219,7 @@ import {
 } from '@heroicons/vue/24/outline';
 import ShopManagePageLayout from '@/components/page/ShopManagePage/ShopManagePageLayout.vue';
 import {getShopManagePageVO} from '@/api/user.ts';
-import type {ShopManageVO} from '@/types/UserTypes';
+import type {ShopManageVO} from '@/types/user';
 
 // 响应式数据
 const router = useRouter();

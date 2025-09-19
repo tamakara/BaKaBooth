@@ -1,5 +1,5 @@
 <template>
-  <OrdersPageLayout>
+  <OrderEditPageLayout>
     <template #content>
       <div class="order-list">
         <h2>历史订单</h2>
@@ -10,12 +10,12 @@
         </div>
       </div>
     </template>
-  </OrdersPageLayout>
+  </OrderEditPageLayout>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import OrdersPageLayout from './OrdersPageLayout.vue';
+import OrderEditPageLayout from './OrderEditPageLayout.vue';
 
 const orders = ref([
   { id: 1, product: '数字插画', status: '已完成' },

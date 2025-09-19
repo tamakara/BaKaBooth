@@ -26,6 +26,12 @@ public class ItemConverter {
         ItemManageVO vo = new ItemManageVO();
         BeanUtils.copyProperties(item, vo);
 
+        if (item.getStateCode() == 0) vo.setState("快照");
+        else if (item.getStateCode() == 1) vo.setState("草稿");
+        else if (item.getStateCode() == 2) vo.setState("在售");
+        else if (item.getStateCode() == 3) vo.setState("已下架");
+        else vo.setState("未知状态");
+
         List<Image> images = imageMapper.selectImagesByItemId(item.getId());
         if (!images.isEmpty()) {
             FileDTO fileDTO = fileClient.getFileUrl(0L, images.get(0).getFileId()).getBody();

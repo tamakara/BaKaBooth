@@ -1,6 +1,6 @@
-import type {LoginFormDTO, RegisterFormDTO, ShopManageVO, UserSimpleInfoVO} from "@/types/UserTypes";
+import type {LoginFormDTO, RegisterFormDTO, ShopManageVO, UserSimpleInfoVO} from "@/types/user";
 import axiosInstance from "@/api/index.ts";
-import type {SellerVO} from "@/types/UserTypes";
+import type {SellerVO} from "@/types/user";
 
 export async function login(data: LoginFormDTO): Promise<string> {
     const response = await axiosInstance.post<string>('/user/login', data);

@@ -31,7 +31,7 @@ export interface VariationsEditFormVO {
 }
 
 export interface ItemEditFormVO {
-    state: string
+    stateCode: number
     name: string
     description: string
     images: number[]
@@ -58,6 +58,7 @@ export interface ItemVO {
 }
 
 export interface VariationVO {
+    id: number
     name: string
     type: string
     price: number

@@ -30,9 +30,9 @@ public class ItemManagerController {
     @GetMapping("/vo/item-manage")
     public ResponseEntity<List<ItemManageVO>> getItemManageVO(
             @RequestHeader("X-USER-ID") Long userId,
-            @RequestParam("state") String state
+            @RequestParam("stateCode") Integer stateCode
     ) {
-        List<ItemManageVO> itemManageVOList = itemService.getItemManageVO(userId, state);
+        List<ItemManageVO> itemManageVOList = itemService.getItemManageVO(userId, stateCode);
         return ResponseEntity.ok(itemManageVOList);
     }
 

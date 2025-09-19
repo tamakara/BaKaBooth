@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import type {ItemCardVO} from '@/types/ItemTypes.d.ts';
+import type {ItemCardVO} from '@/types/item.d.ts';
 import {HeartIcon as HeartOutlineIcon} from '@heroicons/vue/24/outline'
 import {HeartIcon as HeartSolidIcon} from '@heroicons/vue/24/solid'
 import {ref} from "vue";

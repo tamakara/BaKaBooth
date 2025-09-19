@@ -6,6 +6,7 @@ import java.util.List;
 
 @Data
 public class VariationVO {
+    private Long id;
     private String name;
     private Double type;
     private Double price;

@@ -88,7 +88,7 @@
 import LoginPageLayout from "@/components/page/LoginPage/LoginPageLayout.vue";
 import {reactive, ref} from "vue";
 import {useRouter} from "vue-router";
-import type {LoginFormDTO} from "@/types/UserTypes";
+import type {LoginFormDTO} from "@/types/user";
 import type {FormInstance, FormRules} from "element-plus";
 import {useUserStore} from "@/stores/user.ts";
 import {DevicePhoneMobileIcon, LockClosedIcon, ArrowLeftIcon} from "@heroicons/vue/24/outline";

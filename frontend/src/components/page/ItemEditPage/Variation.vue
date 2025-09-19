@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import type {VariationsEditFormVO} from "@/types/ItemTypes";
+import type {VariationsEditFormVO} from "@/types/item.d.ts";
 
 const props = defineProps<{
   index: number;

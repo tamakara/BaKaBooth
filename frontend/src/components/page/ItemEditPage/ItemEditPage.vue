@@ -6,7 +6,7 @@
         <el-form-item label="商品状态" prop="state" class="form-item">
           <div class="state-switch-container">
             <el-switch
-                v-model="formData.state"
+                v-model="formData.stateCode"
                 active-text="公开"
                 inactive-text="不公开"
                 active-value="public"
@@ -14,7 +14,7 @@
                 size="large"
             />
             <div class="state-description">
-              {{ formData.state === 'public' ? '商品将在商店中公开显示' : '商品不会在商店中显示' }}
+              State Code: {{ formData.stateCode }}
             </div>
           </div>
         </el-form-item>
@@ -193,13 +193,13 @@ import ItemEditPageLayout from "./ItemEditPageLayout.vue";
 import Variation from "./Variation.vue";
 import {ref, computed, nextTick, watch, onMounted} from "vue";
 import {PlusIcon} from "@heroicons/vue/24/outline";
-import type {ItemEditFormVO, VariationsEditFormVO} from "@/types/ItemTypes";
+import type {ItemEditFormVO, VariationsEditFormVO} from "@/types/item.d.ts";
 import {getItemEditFormVO, updateItem} from "@/api/item.ts";
 import {useRoute, useRouter} from "vue-router";
 import {useUserStore} from "@/stores/user.ts";
 import type {UploadUserFile} from "element-plus";
 import {getFileVO} from "@/api/file.ts";
-import type {FileVO} from "@/types/FileTypes.ts";
+import type {FileVO} from "@/types/file.d.ts";
 
 // 路由和状态
 const route = useRoute();
@@ -208,7 +208,7 @@ const userStore = useUserStore();
 
 // 表单数据
 const formData = ref<ItemEditFormVO>({
-  state: 'private',
+  stateCode: 0,
   name: '',
   description: '',
   images: [],

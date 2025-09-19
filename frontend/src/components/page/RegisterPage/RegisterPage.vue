@@ -110,7 +110,7 @@ import {
   ArrowLeftIcon,
 } from "@heroicons/vue/24/outline";
 import {useUserStore} from "@/stores/user.ts";
-import type {RegisterFormDTO} from "@/types/UserTypes";
+import type {RegisterFormDTO} from "@/types/user";
 
 const router = useRouter()
 const userStore = useUserStore()

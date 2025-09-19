@@ -7,6 +7,7 @@ import com.bakabooth.item.domain.vo.ItemManageVO;
 import com.bakabooth.item.domain.vo.ItemVO;
 import com.bakabooth.item.mapper.*;
 import com.bakabooth.item.service.ItemService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ItemServiceImpl implements ItemService {
+public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements ItemService {
     private final ItemMapper itemMapper;
     private final ImageMapper imageMapper;
     private final TagMapper tagMapper;
@@ -39,6 +40,9 @@ public class ItemServiceImpl implements ItemService {
         if (!item.getUserId().equals(userId))
             throw new RuntimeException("没有权限");
 
+
+
+
         itemMapper.updateItem(itemId, itemEditFormVO);
         imageMapper.updateImages(itemId, itemEditFormVO.getImages());
         tagMapper.updateTags(itemId, itemEditFormVO.getTags());
@@ -46,8 +50,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemManageVO> getItemManageVO(Long userId, String state) {
-        List<Item> itemList = itemMapper.getItemListByUserIdAndState(userId, state);
+    public List<ItemManageVO> getItemManageVO(Long userId, Integer stateCode) {
+        List<Item> itemList = itemMapper.getItemListByUserIdAndStateCode(userId, stateCode);
         return itemList
                 .stream()
                 .map(itemConverter::toItemManageVO)

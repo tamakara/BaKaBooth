@@ -1,4 +1,4 @@
-import type {FileVO} from "@/types/FileTypes";
+import type {FileVO} from "@/types/file.d.ts";
 import axiosInstance from "@/api/index.ts";
 
 export async function getFileVO(fileId: number): Promise<FileVO> {
