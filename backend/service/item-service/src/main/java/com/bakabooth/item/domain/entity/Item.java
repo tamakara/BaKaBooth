@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.time.Instant;
+
 @Data
 @TableName("item")
 public class Item {
@@ -40,9 +42,12 @@ public class Item {
     @TableField(value = "warranty_period")
     private String warrantyPeriod;
 
+    @TableField(value = "created_at")
+    private Instant createdAt;
+
     public Item(Long userId) {
         this.userId = userId;
-        this.stateCode = 0;
+        this.stateCode = 1;
         this.name = "未命名";
         this.description = "";
         this.favorites = 0L;
@@ -50,5 +55,6 @@ public class Item {
         this.shippingDetails = "";
         this.returnPolicy = "";
         this.warrantyPeriod = "";
+        this.createdAt = Instant.now();
     }
 }

@@ -2,23 +2,6 @@
   <ItemEditPageLayout>
     <template #form>
       <el-form label-position="top" :model="formData" label-width="auto">
-        <!-- 商品状态 -->
-        <el-form-item label="商品状态" prop="state" class="form-item">
-          <div class="state-switch-container">
-            <el-switch
-                v-model="formData.stateCode"
-                active-text="公开"
-                inactive-text="不公开"
-                active-value="public"
-                inactive-value="private"
-                size="large"
-            />
-            <div class="state-description">
-              State Code: {{ formData.stateCode }}
-            </div>
-          </div>
-        </el-form-item>
-
         <!-- 商品图片 -->
         <el-form-item label="商品图片" prop="images" class="image-upload-item">
           <el-upload
@@ -46,7 +29,7 @@
           </el-upload>
         </el-form-item>
 
-        <!-- ���品基本信息 -->
+        <!-- 商品基本信息 -->
         <el-form-item label="商品名称" prop="name" class="form-item">
           <el-input
               v-model="formData.name"
@@ -184,6 +167,7 @@
     <template #action>
       <el-button class="action-btn cancel-btn" @click="handleBack">返回</el-button>
       <el-button type="primary" class="action-btn save-btn" @click="handleSave">保存</el-button>
+      <el-button type="primary" class="action-btn publish-btn" @click="handleSaveAndPublish">保存并上架</el-button>
     </template>
   </ItemEditPageLayout>
 </template>
@@ -346,10 +330,24 @@ function handleBack() {
 
 async function handleSave() {
   try {
+    // 设置状态为下架
+    formData.value.stateCode = 3;
     await updateItem(route.params.id as string, formData.value);
     // 可以添加成功提示
   } catch (error) {
     console.error('保存失败:', error);
+    // 可以添加错误提示
+  }
+}
+
+async function handleSaveAndPublish() {
+  try {
+    // 设置状态为上架
+    formData.value.stateCode = 2;
+    await updateItem(route.params.id as string, formData.value);
+    // 可以添加成功提示
+  } catch (error) {
+    console.error('保存并上架失败:', error);
     // 可以添加错误提示
   }
 }
@@ -366,6 +364,52 @@ async function handleSave() {
 .variations-container {
   display: flex;
   flex-direction: column;
+}
+
+/* 按钮样式优化 */
+.action-btn {
+  min-width: 100px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  margin-left: 12px;
+}
+
+.action-btn:first-child {
+  margin-left: 0;
+}
+
+.cancel-btn {
+  background-color: #f5f5f5;
+  border-color: #d9d9d9;
+  color: #666;
+}
+
+.cancel-btn:hover {
+  background-color: #e6e6e6;
+  border-color: #b3b3b3;
+  color: #333;
+}
+
+.save-btn {
+  background-color: #52c41a;
+  border-color: #52c41a;
+}
+
+.save-btn:hover {
+  background-color: #73d13d;
+  border-color: #73d13d;
+}
+
+.publish-btn {
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+.publish-btn:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
 }
 
 /* 标签对齐优化 */

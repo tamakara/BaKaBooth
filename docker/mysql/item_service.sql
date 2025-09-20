@@ -8,7 +8,7 @@ CREATE TABLE `item`
 (
     `id`               BIGINT       NOT NULL AUTO_INCREMENT,
     `user_id`          BIGINT       NOT NULL,
-    `state`            VARCHAR(255) NOT NULL,
+    `state_code`       VARCHAR(255) NOT NULL,
     `name`             VARCHAR(255) NOT NULL,
     `description`      TEXT         NOT NULL,
     `favorites`        BIGINT       NOT NULL,
@@ -16,6 +16,7 @@ CREATE TABLE `item`
     `shipping_details` VARCHAR(255) NOT NULL,
     `return_policy`    VARCHAR(255) NOT NULL,
     `warranty_period`  VARCHAR(255) NOT NULL,
+    `created_at`       TIMESTAMP    NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`id`, `user_id`)
 ) DEFAULT CHARSET = utf8mb4;
