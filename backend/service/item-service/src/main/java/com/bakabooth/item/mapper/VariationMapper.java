@@ -16,20 +16,4 @@ public interface VariationMapper extends BaseMapper<Variation> {
                         .orderByAsc(Variation::getOrderIndex)
         );
     }
-
-    @Transactional
-    default void updateVariations(Long itemId, List<VariationEditFormVO> variations) {
-        delete(new LambdaQueryWrapper<Variation>().eq(Variation::getItemId, itemId));
-        for (int index = 0; index < variations.size(); index++) {
-            VariationEditFormVO vo = variations.get(index);
-
-            Variation variation = new Variation();
-            variation.setItemId(itemId);
-            variation.setOrderIndex(index);
-            variation.setName(vo.getName());
-            variation.setPrice(vo.getPrice());
-            variation.setStock(vo.getStock());
-            insert(variation);
-        }
-    }
 }

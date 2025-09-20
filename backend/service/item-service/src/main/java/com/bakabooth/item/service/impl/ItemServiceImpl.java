@@ -5,10 +5,12 @@ import com.bakabooth.item.domain.entity.*;
 import com.bakabooth.item.domain.vo.ItemEditFormVO;
 import com.bakabooth.item.domain.vo.ItemManageVO;
 import com.bakabooth.item.domain.vo.ItemVO;
+import com.bakabooth.item.domain.vo.VariationEditFormVO;
 import com.bakabooth.item.mapper.*;
 import com.bakabooth.item.service.ItemService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,20 +41,56 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         Item item = itemMapper.selectById(itemId);
         if (!item.getUserId().equals(userId))
             throw new RuntimeException("没有权限");
+        lambdaUpdate()
+                .eq(Item::getId, itemId)
+                .set(Item::getStateCode, 0)
+                .update();
 
 
+        Item newItem = new Item(userId);
+        BeanUtils.copyProperties(itemEditFormVO, newItem);
+        save(newItem);
 
+        Long newItemId = newItem.getId();
 
-        itemMapper.updateItem(itemId, itemEditFormVO);
-        imageMapper.updateImages(itemId, itemEditFormVO.getImages());
-        tagMapper.updateTags(itemId, itemEditFormVO.getTags());
-        variationMapper.updateVariations(itemId, itemEditFormVO.getVariations());
+        List<Long> images = itemEditFormVO.getImages();
+        for (int index = 0; index < images.size(); index++) {
+            Image image = new Image();
+            image.setItemId(newItemId);
+            image.setFileId(images.get(index));
+            image.setOrderIndex(index);
+            imageMapper.insert(image);
+        }
+
+        List<String> tags = itemEditFormVO.getTags();
+        for (int index = 0; index < tags.size(); index++) {
+            Tag tag = new Tag();
+            tag.setItemId(newItemId);
+            tag.setName(tags.get(index));
+            tag.setOrderIndex(index);
+            tagMapper.insert(tag);
+        }
+
+        List<VariationEditFormVO> variations = itemEditFormVO.getVariations();
+        for (int index = 0; index < variations.size(); index++) {
+            VariationEditFormVO vo = variations.get(index);
+
+            Variation variation = new Variation();
+            variation.setItemId(newItemId);
+            variation.setOrderIndex(index);
+            variation.setName(vo.getName());
+            variation.setPrice(vo.getPrice());
+            variation.setStock(vo.getStock());
+            variationMapper.insert(variation);
+        }
     }
 
     @Override
     public List<ItemManageVO> getItemManageVO(Long userId, Integer stateCode) {
-        List<Item> itemList = itemMapper.getItemListByUserIdAndStateCode(userId, stateCode);
-        return itemList
+        return lambdaQuery()
+                .eq(Item::getUserId, userId)
+                .eq(!stateCode.equals(0), Item::getStateCode, stateCode)
+                .list()
                 .stream()
                 .map(itemConverter::toItemManageVO)
                 .toList();

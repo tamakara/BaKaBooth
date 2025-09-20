@@ -14,15 +14,4 @@ public interface TagMapper extends BaseMapper<Tag> {
                         .eq(Tag::getItemId, itemId)
         );
     }
-
-    default void updateTags(Long itemId, List<String> tags) {
-        delete(new LambdaQueryWrapper<Tag>().eq(Tag::getItemId, itemId));
-        for (int index = 0; index < tags.size(); index++) {
-            Tag tag = new Tag();
-            tag.setItemId(itemId);
-            tag.setName(tags.get(index));
-            tag.setOrderIndex(index);
-            insert(tag);
-        }
-    }
 }
