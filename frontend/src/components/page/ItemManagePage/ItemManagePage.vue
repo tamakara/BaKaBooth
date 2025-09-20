@@ -2,6 +2,7 @@
   <ItemManagePageLayout>
     <template #actions-left>
       <el-radio-group v-model="currentStateCode" class="state-filter">
+        <el-radio-button label="所有" :value="0"/>
         <el-radio-button label="在售" :value="2"/>
         <el-radio-button label="草稿" :value="1"/>
         <el-radio-button label="已下架" :value="3"/>
@@ -36,13 +37,26 @@
                 class="item-image"
             />
             <div class="item-details">
-              <div class="item-state">{{ item.state }}</div>
+              <div class="item-state">{{ getStateText(item.stateCode) }}</div>
               <div class="item-name">{{ item.name }}</div>
               <div class="item-url">http://localhost:5173/item/{{ item.id }}</div>
             </div>
           </div>
           <div class="item-actions">
             <el-button
+                v-if="item.stateCode === 2"
+                size="small"
+                type="warning"
+                @click="handleTakeOffItem(item.id)"
+                class="takeoff-button"
+            >
+              <el-icon style="margin-right: 4px">
+                <ArrowDown/>
+              </el-icon>
+              下架
+            </el-button>
+            <el-button
+                v-else
                 size="small"
                 type="primary"
                 @click="handleEditItem(item.id)"
@@ -95,11 +109,20 @@ import ItemManagePageLayout from "@/components/page/ItemManagePage/ItemManagePag
 import {onMounted, ref, watch} from "vue";
 import type {ItemManageVO} from "@/types/item.d.ts";
 import {CloudArrowDownIcon, PlusIcon} from "@heroicons/vue/24/outline";
-import {Edit} from "@element-plus/icons-vue";
+import {Edit, ArrowDown} from "@element-plus/icons-vue";
 import {createItem, getItemManageVO} from "@/api/item.ts";
 import {useRouter} from "vue-router";
 
 const router = useRouter()
+
+function getStateText(stateCode: number): string {
+  const stateMap: Record<number, string> = {
+    1: '草稿',
+    2: '在售',
+    3: '已下架'
+  }
+  return stateMap[stateCode] || '未知'
+}
 
 async function handleAddItem() {
   const itemId = await createItem()
@@ -110,7 +133,14 @@ async function handleEditItem(itemId: number) {
   await router.push({name: 'item-edit', params: {id: itemId}})
 }
 
-const currentStateCode = ref(2);
+async function handleTakeOffItem(itemId: number) {
+  // TODO: 实现下架逻辑，调用下架接口
+  console.log('下架商品:', itemId)
+  // 下架后刷新列表
+  items.value = await getItemManageVO(currentStateCode.value)
+}
+
+const currentStateCode = ref(0);
 
 const items = ref<Array<ItemManageVO>>()
 
@@ -204,6 +234,13 @@ watch(currentStateCode, async (newState) => {
 }
 
 .edit-button {
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.takeoff-button {
   height: 32px;
   padding: 0 16px;
   border-radius: 6px;

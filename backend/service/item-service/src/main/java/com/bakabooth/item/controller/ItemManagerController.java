@@ -48,12 +48,12 @@ public class ItemManagerController {
 
     @Operation(summary = "更新商品信息")
     @PutMapping("/update/{itemId}")
-    public ResponseEntity<Void> updateItem(
+    public ResponseEntity<Long> updateItem(
             @RequestHeader("X-USER-ID") Long userId,
             @PathVariable("itemId") Long itemId,
             @RequestBody ItemEditFormVO itemEditFormVO
     ) {
-        itemService.updateItem(userId, itemId, itemEditFormVO);
-        return ResponseEntity.ok().build();
+        Long newItemId = itemService.updateItem(userId, itemId, itemEditFormVO);
+        return ResponseEntity.ok(newItemId);
     }
 }

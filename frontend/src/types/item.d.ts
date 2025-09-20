@@ -1,7 +1,7 @@
 export interface ItemManageVO {
     id: number
     name: string
-    state: string,
+    stateCode: number,
     favorite: number
     coverUrl: string
 

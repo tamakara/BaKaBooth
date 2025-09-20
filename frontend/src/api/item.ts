@@ -6,8 +6,8 @@ export async function createItem(): Promise<number> {
     return response.data;
 }
 
-export async function updateItem(itemId: string, formData: ItemEditFormVO): Promise<void> {
-    const response = await axiosInstance.put<void>(`/item/update/${itemId}`, formData);
+export async function updateItem(itemId: string, formData: ItemEditFormVO): Promise<number> {
+    const response = await axiosInstance.put<number>(`/item/update/${itemId}`, formData);
     return response.data;
 }
 

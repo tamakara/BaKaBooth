@@ -12,7 +12,7 @@ public interface ItemService extends IService<Item> {
 
     Long createItem(Long userId);
 
-    void updateItem(Long userId, Long itemId, ItemEditFormVO itemEditFormVO);
+    Long updateItem(Long userId, Long itemId, ItemEditFormVO itemEditFormVO);
 
     List<ItemManageVO> getItemManageVO(Long userId, Integer stateCode);
 

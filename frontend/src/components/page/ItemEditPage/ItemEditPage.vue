@@ -166,8 +166,15 @@
 
     <template #action>
       <el-button class="action-btn cancel-btn" @click="handleBack">返回</el-button>
-      <el-button type="primary" class="action-btn save-btn" @click="handleSave">保存</el-button>
-      <el-button type="primary" class="action-btn publish-btn" @click="handleSaveAndPublish">保存并上架</el-button>
+      <!-- 草稿状态：显示保存草稿和保存并上架 -->
+      <template v-if="formData.stateCode === 1">
+        <el-button type="primary" class="action-btn save-btn" @click="handleSave">保存草稿</el-button>
+        <el-button type="primary" class="action-btn publish-btn" @click="handleSaveAndPublish">保存并上架</el-button>
+      </template>
+      <!-- 在售或下架状态：只显示保存按钮，不改变状态 -->
+      <template v-else>
+        <el-button type="primary" class="action-btn save-btn" @click="handleSaveOnly">保存</el-button>
+      </template>
     </template>
   </ItemEditPageLayout>
 </template>
@@ -330,9 +337,11 @@ function handleBack() {
 
 async function handleSave() {
   try {
-    // 设置状态为下架
-    formData.value.stateCode = 3;
-    await updateItem(route.params.id as string, formData.value);
+    // 设置状态为草稿
+    formData.value.stateCode = 1;
+    const newItemId = await updateItem(route.params.id as string, formData.value);
+    // 跳转到新的itemId页面
+    await router.push({name: 'item-edit', params: {id: newItemId}});
     // 可以添加成功提示
   } catch (error) {
     console.error('保存失败:', error);
@@ -344,10 +353,24 @@ async function handleSaveAndPublish() {
   try {
     // 设置状态为上架
     formData.value.stateCode = 2;
-    await updateItem(route.params.id as string, formData.value);
+    const newItemId = await updateItem(route.params.id as string, formData.value);
+    // 跳转到新的itemId页面
+    await router.push({name: 'item-edit', params: {id: newItemId}});
     // 可以添加成功提示
   } catch (error) {
     console.error('保存并上架失败:', error);
+    // 可以添加错误提示
+  }
+}
+
+async function handleSaveOnly() {
+  try {
+    const newItemId = await updateItem(route.params.id as string, formData.value);
+    // 跳转到新的itemId页面
+    await router.push({name: 'item-edit', params: {id: newItemId}});
+    // 可以添加成功提示
+  } catch (error) {
+    console.error('保存失败:', error);
     // 可以添加错误提示
   }
 }
