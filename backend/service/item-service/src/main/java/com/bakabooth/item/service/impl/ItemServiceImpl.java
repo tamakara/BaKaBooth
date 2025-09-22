@@ -1,13 +1,13 @@
 package com.bakabooth.item.service.impl;
 
-import com.bakabooth.item.converter.ItemConverter;
+import com.bakabooth.common.client.FileClient;
 import com.bakabooth.item.domain.entity.*;
 import com.bakabooth.item.domain.vo.ItemEditFormVO;
-import com.bakabooth.item.domain.vo.ItemManageVO;
 import com.bakabooth.item.domain.vo.ItemVO;
-import com.bakabooth.item.domain.vo.VariationEditFormVO;
 import com.bakabooth.item.mapper.*;
 import com.bakabooth.item.service.ItemService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -22,104 +22,149 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
     private final ItemMapper itemMapper;
     private final ImageMapper imageMapper;
     private final TagMapper tagMapper;
-    private final VariationMapper variationMapper;
-    private final ItemConverter itemConverter;
+    private final FileClient fileClient;
 
     @Override
     @Transactional
-    public Long createItem(Long userId) {
-        Item item = new Item(userId);
+    public Long createItem(Long userId, ItemEditFormVO formVO) {
+        Item item = new Item(userId, formVO);
         itemMapper.insert(item);
-        variationMapper.insert(new Variation(item.getId()));
-
         return item.getId();
     }
 
     @Override
     @Transactional
-    public Long updateItem(Long userId, Long itemId, ItemEditFormVO itemEditFormVO) {
+    public Boolean updateItem(Long userId, Long itemId, ItemEditFormVO itemEditFormVO) {
         Item item = itemMapper.selectById(itemId);
-        if (!item.getUserId().equals(userId))
+        if (!userId.equals(item.getUserId())) {
             throw new RuntimeException("没有权限");
-        lambdaUpdate()
-                .eq(Item::getId, itemId)
-                .set(Item::getStateCode, 0)
-                .update();
+        }
+        BeanUtils.copyProperties(itemEditFormVO, item);
+        updateById(item);
 
-        Item newItem = new Item(userId);
-        BeanUtils.copyProperties(itemEditFormVO, newItem);
-        save(newItem);
-
-        Long newItemId = newItem.getId();
-
+        imageMapper.delete(new LambdaQueryWrapper<Image>().eq(Image::getItemId, itemId));
         List<Long> images = itemEditFormVO.getImages();
         for (int index = 0; index < images.size(); index++) {
             Image image = new Image();
-            image.setItemId(newItemId);
+            image.setItemId(itemId);
             image.setFileId(images.get(index));
             image.setOrderIndex(index);
             imageMapper.insert(image);
         }
 
+        tagMapper.delete(new LambdaQueryWrapper<Tag>().eq(Tag::getItemId, itemId));
         List<String> tags = itemEditFormVO.getTags();
         for (int index = 0; index < tags.size(); index++) {
             Tag tag = new Tag();
-            tag.setItemId(newItemId);
+            tag.setItemId(itemId);
             tag.setName(tags.get(index));
             tag.setOrderIndex(index);
             tagMapper.insert(tag);
         }
 
-        List<VariationEditFormVO> variations = itemEditFormVO.getVariations();
-        for (int index = 0; index < variations.size(); index++) {
-            VariationEditFormVO vo = variations.get(index);
-
-            Variation variation = new Variation();
-            variation.setItemId(newItemId);
-            variation.setOrderIndex(index);
-            variation.setName(vo.getName());
-            variation.setPrice(vo.getPrice());
-            variation.setStock(vo.getStock());
-            variationMapper.insert(variation);
-        }
-
-        return newItemId;
+        return true;
     }
 
     @Override
-    public List<ItemManageVO> getItemManageVO(Long userId, Integer stateCode) {
-        return lambdaQuery()
-                .eq(Item::getUserId, userId)
-                .eq(!stateCode.equals(0), Item::getStateCode, stateCode)
-                .list()
+    @Transactional
+    public Boolean deleteItem(Long userId, Long itemId) {
+        Item item = itemMapper.selectById(itemId);
+        if (!userId.equals(item.getUserId())) {
+            throw new RuntimeException("没有权限");
+        }
+
+        int n = itemMapper.deleteById(itemId);
+        if (n != 1) {
+            throw new RuntimeException("删除商品失败");
+        }
+
+        return true;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ItemVO getItemVO(Long userId, Long itemId, Integer modeCode) {
+        Item item = itemMapper.selectById(itemId);
+
+        if (modeCode.equals(2) && !userId.equals(item.getUserId())) {
+            throw new RuntimeException("没有权限");
+        }
+
+        List<String> images = imageMapper
+                .selectImagesByItemId(itemId)
                 .stream()
-                .map(itemConverter::toItemManageVO)
+                .map(image -> fileClient.getFileUrl(image.getFileId()).getBody())
+                .toList();
+
+        List<String> tags = tagMapper
+                .selectTagsByItemId(itemId)
+                .stream()
+                .map(Tag::getName)
+                .toList();
+
+        return Item.toItemVO(item, modeCode, images, tags);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ItemVO> getItemVOList(Long userId, Long sellerId, Integer modeCode, Integer stateCode, Integer pageNo, Integer pageSize) {
+        if (modeCode.equals(2) && !userId.equals(sellerId)) {
+            throw new RuntimeException("没有权限");
+        }
+
+        Page<Item> page = new Page<>(pageNo, pageSize);
+
+        itemMapper.selectPage(page, new LambdaQueryWrapper<Item>()
+                .eq(Item::getUserId, userId)
+                .eq(stateCode != 0, Item::getStateCode, stateCode)
+        );
+
+        return page
+                .getRecords()
+                .stream()
+                .map(item -> getItemVO(userId, item.getId(), modeCode))
                 .toList();
     }
 
     @Override
-    public ItemEditFormVO getItemEditFormVO(Long userId, Long itemId) {
+    @Transactional
+    public Boolean takeDownItem(Long userId, Long itemId) {
         Item item = itemMapper.selectById(itemId);
-        if (item == null || item.getUserId().longValue() != userId.longValue())
-            throw new RuntimeException("获取商品信息失败");
+        if (!userId.equals(item.getUserId())) {
+            throw new RuntimeException("没有权限");
+        }
+        if (item.getStateCode() == 2) {
+            return true;
+        }
+        if (item.getStateCode() != 1) {
+            throw new RuntimeException("商品状态异常");
+        }
 
-        List<Image> images = imageMapper.selectImagesByItemId(itemId);
-        List<Tag> tags = tagMapper.selectTagsByItemId(itemId);
-        List<Variation> variations = variationMapper.selectVariationsByItemId(itemId);
+        lambdaUpdate()
+                .eq(Item::getUserId, userId)
+                .set(Item::getStateCode, 1);
 
-        return itemConverter.toItemEditFormVO(item, images, tags, variations);
+        return true;
     }
 
     @Override
-    public ItemVO getItemVO(Long userId, Long itemId) {
+    public Boolean takeUpItem(Long userId, Long itemId) {
         Item item = itemMapper.selectById(itemId);
-        if (item == null)
-            throw new RuntimeException("获取商品信息失败");
+        if (!userId.equals(item.getUserId())) {
+            throw new RuntimeException("没有权限");
+        }
+        if (item.getStateCode() == 1) {
+            return true;
+        }
+        if (item.getStateCode() != 2) {
+            throw new RuntimeException("商品状态异常");
+        }
 
-        List<Image> images = imageMapper.selectImagesByItemId(itemId);
-        List<Tag> tags = tagMapper.selectTagsByItemId(itemId);
-        List<Variation> variations = variationMapper.selectVariationsByItemId(itemId);
+        lambdaUpdate()
+                .eq(Item::getUserId, userId)
+                .set(Item::getStateCode, 2);
 
-        return itemConverter.toItemVO(item, images, tags, variations);
+        return null;
     }
+
 }

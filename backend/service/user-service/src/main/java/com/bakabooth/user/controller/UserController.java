@@ -2,9 +2,7 @@ package com.bakabooth.user.controller;
 
 import com.bakabooth.user.domain.dto.LoginFormDTO;
 import com.bakabooth.user.domain.dto.RegisterFormDTO;
-import com.bakabooth.user.domain.vo.SellerVO;
-import com.bakabooth.user.domain.vo.ShopManageVO;
-import com.bakabooth.user.domain.vo.UserSimpleInfoVO;
+import com.bakabooth.user.domain.vo.UserVO;
 import com.bakabooth.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,26 +31,17 @@ public class UserController {
     }
 
 
-    @Operation(summary = "获取简要用户信息")
-    @GetMapping("/vo/simple-info")
-    public ResponseEntity<UserSimpleInfoVO> getUserSimpleInfoVO(@RequestHeader("X-USER-ID") Long userId) {
-        UserSimpleInfoVO userSimpleInfoVO = userService.getUserSimpleInfoVO(userId);
-        return ResponseEntity.ok(userSimpleInfoVO);
-    }
-
-    @Operation(summary = "获取店铺管理信息")
-    @GetMapping("/vo/shop-manage-page")
-    public ResponseEntity<ShopManageVO> getShopManageVO(
-            @RequestHeader("X-USER-ID") Long userId
+    @Operation(summary = "获取用户信息")
+    @GetMapping("/vo/user")
+    public ResponseEntity<UserVO> getUserVO(
+            @RequestHeader("X-USER-ID") Long userId,
+            @RequestParam(name = "sellerId", required = false) Long sellerId,
+            // 0 - 简单, 1 - 详细, 2 - 全部
+            @RequestParam(name = "modeCode", defaultValue = "0") Integer modeCode
     ) {
-        ShopManageVO vo = userService.getShopManageVO(userId);
-        return ResponseEntity.ok(vo);
+        if (sellerId == null) sellerId = userId;
+        UserVO userVO = userService.getUserVO(userId,sellerId,modeCode);
+        return ResponseEntity.ok(userVO);
     }
 
-    @Operation(summary = "获取卖家信息")
-    @GetMapping("/vo/seller-user/{sellerUserId}")
-    public ResponseEntity<SellerVO> getSellerUserVO(@PathVariable("sellerUserId") Long sellerUserId) {
-        SellerVO sellerUserVO = userService.getSellerUserVO(sellerUserId);
-        return ResponseEntity.ok(sellerUserVO);
-    }
 }

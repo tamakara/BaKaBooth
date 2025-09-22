@@ -1,5 +1,6 @@
 package com.bakabooth.item.controller;
 
+import com.bakabooth.item.domain.vo.ItemEditFormVO;
 import com.bakabooth.item.domain.vo.ItemVO;
 import com.bakabooth.item.service.ItemService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -8,20 +9,90 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "商品接口")
 @RestController
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemService itemService;
 
+    @Operation(summary = "创建商品")
+    @PostMapping("/create")
+    public ResponseEntity<Long> createItem(
+            @RequestHeader("X-USER-ID") Long userId,
+            @RequestBody ItemEditFormVO itemEditFormVO
+    ) {
+        Long itemId = itemService.createItem(userId, itemEditFormVO);
+        return ResponseEntity.ok(itemId);
+    }
+
+    @Operation(summary = "更新商品信息")
+    @PutMapping("/update/{itemId}")
+    public ResponseEntity<Boolean> updateItem(
+            @RequestHeader("X-USER-ID") Long userId,
+            @PathVariable("itemId") Long itemId,
+            @RequestBody ItemEditFormVO itemEditFormVO
+    ) {
+        Boolean isUpdate = itemService.updateItem(userId, itemId, itemEditFormVO);
+        return ResponseEntity.ok(isUpdate);
+    }
+
+    @Operation(summary = "删除商品")
+    @DeleteMapping("/delete/{itemId}")
+    public ResponseEntity<Boolean> deleteItem(
+            @RequestHeader("X-USER-ID") Long userId,
+            @PathVariable("itemId") Long itemId
+    ) {
+        Boolean isDelete = itemService.deleteItem(userId, itemId);
+        return ResponseEntity.ok(isDelete);
+    }
+
     @Operation(summary = "获取商品信息")
     @GetMapping("/vo/item/{itemId}")
     public ResponseEntity<ItemVO> getItemVO(
             @RequestHeader("X-USER-ID") Long userId,
-            @PathVariable("itemId") Long itemId
+            @PathVariable("itemId") Long itemId,
+            //0 - 简单, 1 - 详细, 2 - 全部
+            @RequestParam(name = "modeCode", defaultValue = "1") Integer modeCode
     ) {
-        ItemVO vo = itemService.getItemVO(userId, itemId);
+        ItemVO vo = itemService.getItemVO(userId, itemId, modeCode);
         return ResponseEntity.ok(vo);
     }
 
+    @Operation(summary = "获取商品信息列表")
+    @GetMapping("/vo/items")
+    public ResponseEntity<List<ItemVO>> getItemVOList(
+            @RequestHeader("X-USER-ID") Long userId,
+            @RequestParam(name = "modeCode", required = false) Long sellerId,
+            //0 - 简单, 1 - 详细, 2 - 全部
+            @RequestParam(name = "modeCode", defaultValue = "0") Integer modeCode,
+            @RequestParam(name = "stateCode", defaultValue = "0") Integer stateCode,
+            @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
+    ) {
+        if (sellerId == null) sellerId = userId;
+        List<ItemVO> itemVOList = itemService.getItemVOList(userId, sellerId, modeCode, stateCode, pageNo, pageSize);
+        return ResponseEntity.ok(itemVOList);
+    }
+
+    @Operation(summary = "下架商品")
+    @PutMapping("/take-down/{itemId}")
+    public ResponseEntity<Boolean> takeDownItem(
+            @RequestHeader("X-USER-ID") Long userId,
+            @PathVariable("itemId") Long itemId
+    ) {
+        Boolean isTakeDown = itemService.takeDownItem(userId, itemId);
+        return ResponseEntity.ok(isTakeDown);
+    }
+
+    @Operation(summary = "上架商品")
+    @PutMapping("/take-up/{itemId}")
+    public ResponseEntity<Boolean> takeUpItem(
+            @RequestHeader("X-USER-ID") Long userId,
+            @PathVariable("itemId") Long itemId
+    ) {
+        Boolean isTakeUp = itemService.takeUpItem(userId, itemId);
+        return ResponseEntity.ok(isTakeUp);
+    }
 }

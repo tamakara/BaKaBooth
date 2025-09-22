@@ -56,7 +56,18 @@
               下架
             </el-button>
             <el-button
-                v-else
+                v-else-if="item.stateCode === 3"
+                size="small"
+                type="success"
+                @click="handlePublishItem(item.id)"
+                class="publish-button"
+            >
+              <el-icon style="margin-right: 4px">
+                <ArrowUp/>
+              </el-icon>
+              上架
+            </el-button>
+            <el-button
                 size="small"
                 type="primary"
                 @click="handleEditItem(item.id)"
@@ -109,7 +120,7 @@ import ItemManagePageLayout from "@/components/page/ItemManagePage/ItemManagePag
 import {onMounted, ref, watch} from "vue";
 import type {ItemManageVO} from "@/types/item.d.ts";
 import {CloudArrowDownIcon, PlusIcon} from "@heroicons/vue/24/outline";
-import {Edit, ArrowDown} from "@element-plus/icons-vue";
+import {Edit, ArrowDown, ArrowUp} from "@element-plus/icons-vue";
 import {createItem, getItemManageVO} from "@/api/item.ts";
 import {useRouter} from "vue-router";
 
@@ -137,6 +148,13 @@ async function handleTakeOffItem(itemId: number) {
   // TODO: 实现下架逻辑，调用下架接口
   console.log('下架商品:', itemId)
   // 下架后刷新列表
+  items.value = await getItemManageVO(currentStateCode.value)
+}
+
+async function handlePublishItem(itemId: number) {
+  // TODO: 实现上架逻辑，调用上架接口
+  console.log('上架商品:', itemId)
+  // 上架后刷新列表
   items.value = await getItemManageVO(currentStateCode.value)
 }
 
@@ -231,6 +249,8 @@ watch(currentStateCode, async (newState) => {
 
 .item-actions {
   margin-left: 16px;
+  display: flex;
+  gap: 8px;
 }
 
 .edit-button {
@@ -241,6 +261,13 @@ watch(currentStateCode, async (newState) => {
 }
 
 .takeoff-button {
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.publish-button {
   height: 32px;
   padding: 0 16px;
   border-radius: 6px;

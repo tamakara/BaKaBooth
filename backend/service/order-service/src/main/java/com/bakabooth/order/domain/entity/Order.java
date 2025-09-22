@@ -43,7 +43,6 @@ public class Order {
     public Order(Long userId, OrderEditFormVO orderEditFormVO) {
         this.stateCode = 1;
         this.userId = userId;
-        this.createdAt = Instant.now();
         BeanUtils.copyProperties(orderEditFormVO, this);
     }
 

@@ -8,12 +8,11 @@ import java.util.List;
 public class ItemEditFormVO {
     private Integer stateCode;
     private String name;
+    private Double price;
     private String description;
-    private String deliveryTime;
-    private String shippingDetails;
-    private String returnPolicy;
-    private String warrantyPeriod;
+    private Integer postage;
+    private Integer returnPeriod;
+    private Integer deliveryPeriod;
     private List<Long> images;
     private List<String> tags;
-    private List<VariationEditFormVO> variations;
 }
