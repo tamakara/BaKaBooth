@@ -13,9 +13,29 @@ import org.springframework.web.bind.annotation.*;
 public class FavoriteController {
     private final FavoriteService favoriteService;
 
+    @Operation(summary = "收藏商品")
+    @PostMapping("/favorite/{itemId}")
+    public ResponseEntity<Void> favorite(
+            @RequestHeader("X-USER-ID") Long userId,
+            @PathVariable("itemId") Long itemId
+    ) {
+        favoriteService.favorite(userId, itemId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "取消收藏商品")
+    @DeleteMapping("/unfavorite/{itemId}")
+    public ResponseEntity<Void> unfavorite(
+            @RequestHeader("X-USER-ID") Long userId,
+            @PathVariable("itemId") Long itemId
+    ) {
+        favoriteService.unfavorite(userId, itemId);
+        return ResponseEntity.ok().build();
+    }
+
     @Operation(summary = "获取收藏商品数量")
-    @PostMapping("/favorite/count/{itemId}")
-    public ResponseEntity<Long> getFavoriteItemCount(
+    @GetMapping("/favorite-count/{itemId}")
+    public ResponseEntity<Long> getFavoriteCount(
             @RequestHeader("X-USER-ID") Long userId,
             @PathVariable("itemId") Long itemId
     ) {
@@ -23,28 +43,8 @@ public class FavoriteController {
         return ResponseEntity.ok(favorites);
     }
 
-    @Operation(summary = "收藏商品")
-    @PostMapping("/favorite/{itemId}")
-    public ResponseEntity<Void> favoriteItem(
-            @RequestHeader("X-USER-ID") Long userId,
-            @PathVariable("itemId") Long itemId
-    ) {
-        favoriteService.favoriteItem(userId, itemId);
-        return ResponseEntity.ok().build();
-    }
-
-    @Operation(summary = "取消收藏商品")
-    @PostMapping("/un-favorite/{itemId}")
-    public ResponseEntity<Void> unFavoriteItem(
-            @RequestHeader("X-USER-ID") Long userId,
-            @PathVariable("itemId") Long itemId
-    ) {
-        favoriteService.unFavoriteItem(userId, itemId);
-        return ResponseEntity.ok().build();
-    }
-
     @Operation(summary = "商品是否已收藏")
-    @GetMapping("/favorite/{itemId}")
+    @GetMapping("/is-favorite/{itemId}")
     public ResponseEntity<Boolean> isFavorite(
             @RequestHeader("X-USER-ID") Long userId,
             @PathVariable("itemId") Long itemId

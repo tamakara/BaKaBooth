@@ -18,7 +18,7 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite> i
     }
 
     @Override
-    public void favoriteItem(Long userId, Long itemId) {
+    public void favorite(Long userId, Long itemId) {
         Favorite favorite = lambdaQuery().eq(Favorite::getUserId, userId).eq(Favorite::getItemId, itemId).one();
 
         if (favorite == null)
@@ -26,7 +26,7 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite> i
     }
 
     @Override
-    public void unFavoriteItem(Long userId, Long itemId) {
+    public void unfavorite(Long userId, Long itemId) {
         Favorite favorite = lambdaQuery().eq(Favorite::getUserId, userId).eq(Favorite::getItemId, itemId).one();
 
         if (favorite != null)

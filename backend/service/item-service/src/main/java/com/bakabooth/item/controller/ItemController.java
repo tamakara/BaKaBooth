@@ -52,11 +52,9 @@ public class ItemController {
     @GetMapping("/vo/item/{itemId}")
     public ResponseEntity<ItemVO> getItemVO(
             @RequestHeader("X-USER-ID") Long userId,
-            @PathVariable("itemId") Long itemId,
-            //0 - 简单, 1 - 详细, 2 - 全部
-            @RequestParam(name = "modeCode", defaultValue = "1") Integer modeCode
+            @PathVariable("itemId") Long itemId
     ) {
-        ItemVO vo = itemService.getItemVO(userId, itemId, modeCode);
+        ItemVO vo = itemService.getItemVO(userId, itemId);
         return ResponseEntity.ok(vo);
     }
 
@@ -64,15 +62,13 @@ public class ItemController {
     @GetMapping("/vo/items")
     public ResponseEntity<List<ItemVO>> getItemVOList(
             @RequestHeader("X-USER-ID") Long userId,
-            @RequestParam(name = "modeCode", required = false) Long sellerId,
-            //0 - 简单, 1 - 详细, 2 - 全部
-            @RequestParam(name = "modeCode", defaultValue = "0") Integer modeCode,
+            @RequestParam(name = "sellerId", required = false) Long sellerId,
             @RequestParam(name = "stateCode", defaultValue = "0") Integer stateCode,
             @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
             @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
     ) {
         if (sellerId == null) sellerId = userId;
-        List<ItemVO> itemVOList = itemService.getItemVOList(userId, sellerId, modeCode, stateCode, pageNo, pageSize);
+        List<ItemVO> itemVOList = itemService.getItemVOList(userId, sellerId,  stateCode, pageNo, pageSize);
         return ResponseEntity.ok(itemVOList);
     }
 
@@ -87,12 +83,12 @@ public class ItemController {
     }
 
     @Operation(summary = "上架商品")
-    @PutMapping("/take-up/{itemId}")
-    public ResponseEntity<Boolean> takeUpItem(
+    @PutMapping("/put-up/{itemId}")
+    public ResponseEntity<Boolean> putUpItem(
             @RequestHeader("X-USER-ID") Long userId,
             @PathVariable("itemId") Long itemId
     ) {
-        Boolean isTakeUp = itemService.takeUpItem(userId, itemId);
+        Boolean isTakeUp = itemService.putUpItem(userId, itemId);
         return ResponseEntity.ok(isTakeUp);
     }
 }

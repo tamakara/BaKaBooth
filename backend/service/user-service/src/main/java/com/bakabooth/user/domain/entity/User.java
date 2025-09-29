@@ -1,6 +1,5 @@
 package com.bakabooth.user.domain.entity;
 
-import com.bakabooth.user.domain.vo.UserVO;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
@@ -16,7 +15,7 @@ public class User {
     @TableField(value = "user_state_code")
     private Integer userStateCode;
 
-    // 0 - 关店, 1 - 营业, 3 - 禁用
+    // 0 - 关店, 1 - 营业, 2 - 禁用
     @TableField(value = "shop_state_code")
     private Integer shopStateCode;
 
@@ -56,31 +55,6 @@ public class User {
         this.announcement = "";
         this.followers = 0L;
         this.avatarFileId = 0L;
-    }
-
-    public static UserVO toUserVO(User user, Integer modeCode, String avatarUrl) {
-        UserVO userVO = new UserVO();
-
-        switch (modeCode) {
-            case 2:
-                userVO.setUserStateCode(user.userStateCode);
-                userVO.setShopStateCode(user.shopStateCode);
-                userVO.setPhone(user.getPhone());
-                userVO.setCreatedAt(Instant.now());
-            case 1:
-                userVO.setIntroduction(user.getIntroduction());
-                userVO.setAnnouncement(user.getAnnouncement());
-            case 0:
-                userVO.setId(user.getId());
-                userVO.setUsername(user.getUsername());
-                userVO.setFollowers(user.getFollowers());
-                userVO.setAvatarUrl(avatarUrl);
-                break;
-            default:
-                throw new RuntimeException("modeCode错误");
-        }
-
-        return userVO;
     }
 
 }

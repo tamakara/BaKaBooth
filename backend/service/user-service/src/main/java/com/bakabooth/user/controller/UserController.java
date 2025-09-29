@@ -30,18 +30,14 @@ public class UserController {
         return ResponseEntity.ok(token);
     }
 
-
     @Operation(summary = "获取用户信息")
     @GetMapping("/vo/user")
     public ResponseEntity<UserVO> getUserVO(
             @RequestHeader("X-USER-ID") Long userId,
-            @RequestParam(name = "sellerId", required = false) Long sellerId,
-            // 0 - 简单, 1 - 详细, 2 - 全部
-            @RequestParam(name = "modeCode", defaultValue = "0") Integer modeCode
+            @RequestParam(name = "sellerId", required = false) Long sellerId
     ) {
         if (sellerId == null) sellerId = userId;
-        UserVO userVO = userService.getUserVO(userId,sellerId,modeCode);
+        UserVO userVO = userService.getUserVO(userId, sellerId);
         return ResponseEntity.ok(userVO);
     }
-
 }

@@ -9,11 +9,14 @@ public class UserVO {
     private Long id;
     private Integer userStateCode;
     private Integer shopStateCode;
-    private String phone;
+
     private String username;
     private String introduction;
     private String announcement;
     private Long followers;
     private String avatarUrl;
     private Instant createdAt;
+
+    private Boolean isCurrentUser;
+    private String phone;
 }

@@ -12,6 +12,7 @@ import com.bakabooth.user.mapper.UserMapper;
 import com.bakabooth.user.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,12 +69,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public UserVO getUserVO(Long userId, Long sellerId, Integer modeCode) {
+    public UserVO getUserVO(Long userId, Long sellerId) {
         User user = userMapper.selectById(sellerId);
-        if (modeCode == 2 && !userId.equals(sellerId)) {
-            throw new RuntimeException("没有权限");
-        }
+        if (user == null) throw new RuntimeException("用户不存在");
+
+        UserVO vo = new UserVO();
+        BeanUtils.copyProperties(user, vo);
+
         String avatarUrl = fileClient.getFileUrl(user.getAvatarFileId()).getBody();
-        return User.toUserVO(user, modeCode, avatarUrl);
+        vo.setAvatarUrl(avatarUrl);
+
+        vo.setIsCurrentUser(userId.equals(sellerId));
+        if (!vo.getIsCurrentUser()) {
+            vo.setPhone(null);
+            vo.setCreatedAt(null);
+        }
+
+        return vo;
     }
 }

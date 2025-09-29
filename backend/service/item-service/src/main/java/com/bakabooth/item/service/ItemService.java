@@ -14,11 +14,11 @@ public interface ItemService extends IService<Item> {
 
     Boolean deleteItem(Long userId, Long itemId);
 
-    ItemVO getItemVO(Long userId, Long itemId, Integer modeCode);
+    ItemVO getItemVO(Long userId, Long itemId);
 
-    List<ItemVO> getItemVOList(Long userId, Long sellerId, Integer modeCode, Integer stateCode, Integer pageNo, Integer pageSize);
+    List<ItemVO> getItemVOList(Long userId, Long sellerId, Integer stateCode, Integer pageNo, Integer pageSize);
 
     Boolean takeDownItem(Long userId, Long itemId);
 
-    Boolean takeUpItem(Long userId, Long itemId);
+    Boolean putUpItem(Long userId, Long itemId);
 }

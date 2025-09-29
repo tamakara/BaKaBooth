@@ -9,6 +9,7 @@ import java.util.List;
 public class ItemVO {
     private Long id;
     private Long userId;
+    private Boolean isSeller;
     private Integer stateCode;
 
     private String name;
@@ -22,7 +23,6 @@ public class ItemVO {
 
     private Instant createdAt;
     private Instant updatedAt;
-    private Instant finishAt;
 
     private List<String> images;
     private List<String> tags;

@@ -27,7 +27,9 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
     @Override
     @Transactional
     public Long createItem(Long userId, ItemEditFormVO formVO) {
-        Item item = new Item(userId, formVO);
+        Item item = new Item();
+        BeanUtils.copyProperties(formVO, this);
+        item.setUserId(userId);
         itemMapper.insert(item);
         return item.getId();
     }
@@ -83,12 +85,8 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
 
     @Override
     @Transactional(readOnly = true)
-    public ItemVO getItemVO(Long userId, Long itemId, Integer modeCode) {
+    public ItemVO getItemVO(Long userId, Long itemId) {
         Item item = itemMapper.selectById(itemId);
-
-        if (modeCode.equals(2) && !userId.equals(item.getUserId())) {
-            throw new RuntimeException("没有权限");
-        }
 
         List<String> images = imageMapper
                 .selectImagesByItemId(itemId)
@@ -102,15 +100,21 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .map(Tag::getName)
                 .toList();
 
-        return Item.toItemVO(item, modeCode, images, tags);
+        ItemVO vo = new ItemVO();
+        BeanUtils.copyProperties(item, vo);
+        vo.setImages(images);
+        vo.setTags(tags);
+        vo.setIsSeller(userId.equals(item.getUserId()));
+        if (!vo.getIsSeller()) {
+            vo.setStateCode(null);
+        }
+
+        return vo;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<ItemVO> getItemVOList(Long userId, Long sellerId, Integer modeCode, Integer stateCode, Integer pageNo, Integer pageSize) {
-        if (modeCode.equals(2) && !userId.equals(sellerId)) {
-            throw new RuntimeException("没有权限");
-        }
+    public List<ItemVO> getItemVOList(Long userId, Long sellerId, Integer stateCode, Integer pageNo, Integer pageSize) {
 
         Page<Item> page = new Page<>(pageNo, pageSize);
 
@@ -122,7 +126,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         return page
                 .getRecords()
                 .stream()
-                .map(item -> getItemVO(userId, item.getId(), modeCode))
+                .map(item -> getItemVO(userId, item.getId()))
                 .toList();
     }
 
@@ -148,7 +152,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
     }
 
     @Override
-    public Boolean takeUpItem(Long userId, Long itemId) {
+    public Boolean putUpItem(Long userId, Long itemId) {
         Item item = itemMapper.selectById(itemId);
         if (!userId.equals(item.getUserId())) {
             throw new RuntimeException("没有权限");

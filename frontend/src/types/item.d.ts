@@ -1,67 +1,49 @@
-export interface ItemManageVO {
+export interface ItemVO {
     id: number
-    name: string
-    stateCode: number,
-    favorite: number
-    coverUrl: string
+    userId: number
+    isSeller: boolean
+    stateCode: number
 
-    variations: Array<{
-        name: string,
-        price: string
-        stock: number
-        sales: number
-    }>
-}
-
-export interface ItemCardVO {
-    itemId: string
-    itemName: string
-    shopId: number
-    shopName: string
-    favorite: number
-    minPrice: number
-    maxPrice: number
-    coverUrl: string
-}
-
-export interface VariationsEditFormVO {
     name: string
     price: number
-    stock: number
+    description: string
+    postage: string
+    returnPeriod: string
+    deliveryPeriod: string
+
+    favorites: number
+
+    createdAt: string
+    updatedAt: string
+
+    images: string[]
+    tags: string[]
 }
 
 export interface ItemEditFormVO {
     stateCode: number
+
     name: string
+    price: number
     description: string
+    postage: string
+    returnPeriod: string
+    deliveryPeriod: string
+
     images: number[]
     tags: string[]
-    variations: VariationsEditFormVO[]
-    deliveryTime: string
-    shippingDetails: string
-    returnPolicy: string
-    warrantyPeriod: string
 }
 
-export interface ItemVO {
-    userId: number
+export interface ItemCardVO {
+    id: string
     name: string
-    description: string
-    favorites: number
-    imageUrls: string[]
-    tags: string[]
-    variations: VariationVO[]
-    deliveryTime: string
-    shippingDetails: string
-    returnPolicy: string
-    warrantyPeriod: string
-}
-
-export interface VariationVO {
-    id: number
-    name: string
-    type: string
     price: number
-    stock: number
+    sellerId: number
+    sellerName: string
+    favorites: number
+    coverUrl: string
 }
+
+
+
 
