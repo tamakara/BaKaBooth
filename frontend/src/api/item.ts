@@ -1,6 +1,5 @@
 import axiosInstance from "@/api/index.ts";
 import type {ItemEditFormVO, ItemVO} from "@/types/item.d.ts";
-import type {FileVO} from "@/types/file";
 
 export async function createItem(formData: ItemEditFormVO): Promise<number> {
     const response = await axiosInstance.post<number>('/item/create', formData);
@@ -61,5 +60,4 @@ export async function isFavorite(itemId: number): Promise<boolean> {
     const response = await axiosInstance.get<boolean>(`/item/is-favorite/${itemId}`);
     return response.data;
 }
-
 

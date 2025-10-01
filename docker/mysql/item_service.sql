@@ -6,17 +6,18 @@ FLUSH PRIVILEGES;
 USE item_service_db;
 CREATE TABLE `item`
 (
-    `id`               BIGINT       NOT NULL AUTO_INCREMENT,
-    `user_id`          BIGINT       NOT NULL,
-    `state_code`       VARCHAR(255) NOT NULL,
-    `name`             VARCHAR(255) NOT NULL,
-    `description`      TEXT         NOT NULL,
-    `favorites`        BIGINT       NOT NULL,
-    `delivery_time`    VARCHAR(255) NOT NULL,
-    `shipping_details` VARCHAR(255) NOT NULL,
-    `return_policy`    VARCHAR(255) NOT NULL,
-    `warranty_period`  VARCHAR(255) NOT NULL,
-    `created_at`       TIMESTAMP    NOT NULL,
+    `id`             BIGINT       NOT NULL AUTO_INCREMENT,
+    `user_id`        BIGINT       NOT NULL,
+    `state_code`     VARCHAR(255) NOT NULL,
+    `price`          DOUBLE       NOT NULL,
+    `name`           VARCHAR(255) NOT NULL,
+    `description`    TEXT         NOT NULL,
+    `postage`        INTEGER      NOT NULL,
+    `returnPeriod`   INTEGER      NOT NULL,
+    `deliveryPeriod` INTEGER      NOT NULL,
+    `favorites`      BIGINT       NOT NULL,
+    `created_at`     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at`     TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`id`, `user_id`)
 ) DEFAULT CHARSET = utf8mb4;
@@ -39,17 +40,5 @@ CREATE TABLE `tag`
     `order_index` INTEGER      NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`item_id`, `name`),
-    UNIQUE KEY (`item_id`, `order_index`)
-) DEFAULT CHARSET = utf8mb4;
-
-CREATE TABLE `variation`
-(
-    `id`          BIGINT       NOT NULL AUTO_INCREMENT,
-    `item_id`     BIGINT       NOT NULL,
-    `order_index` INTEGER      NOT NULL,
-    `name`        VARCHAR(255) NOT NULL,
-    `price`       DOUBLE       NOT NULL,
-    `stock`       BIGINT       NOT NULL,
-    PRIMARY KEY (`id`),
     UNIQUE KEY (`item_id`, `order_index`)
 ) DEFAULT CHARSET = utf8mb4;

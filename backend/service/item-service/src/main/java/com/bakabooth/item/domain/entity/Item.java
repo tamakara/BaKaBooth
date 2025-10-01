@@ -47,7 +47,4 @@ public class Item {
 
     @TableField(value = "updated_at")
     private Instant updatedAt;
-
-    @TableField(value = "finish_at")
-    private Instant finishAt;
 }

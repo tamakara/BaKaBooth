@@ -28,9 +28,6 @@ public class File {
     @TableField(value = "size")
     private Long size;
 
-    @TableField(value = "is_public")
-    private Boolean isPublic;
-
     @TableField(value = "created_at")
     private Instant createdAt;
 

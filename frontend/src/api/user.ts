@@ -1,49 +1,17 @@
-import type {LoginFormDTO, RegisterFormDTO, ShopManageVO, UserSimpleInfoVO} from "@/types/user";
+import type {LoginFormDTO, RegisterFormDTO} from "@/types/user";
 import axiosInstance from "@/api/index.ts";
-import type {SellerVO} from "@/types/user";
 
-export async function login(data: LoginFormDTO): Promise<string> {
-    const response = await axiosInstance.post<string>('/user/login', data);
+export async function login(formData: LoginFormDTO): Promise<string> {
+    const response = await axiosInstance.post<string>('/user/login', formData);
     return response.data;
 }
 
-export async function register(data: RegisterFormDTO): Promise<string> {
-    const response = await axiosInstance.post<string>('/user/register', data);
+export async function register(formData: RegisterFormDTO): Promise<string> {
+    const response = await axiosInstance.post<string>('/user/register', formData);
     return response.data;
 }
 
-export async function getUserSimpleInfo(): Promise<UserSimpleInfoVO> {
-    const response = await axiosInstance.get<UserSimpleInfoVO>('/user/vo/simple-info');
+export async function getUserVO(userId: string): Promise<boolean> {
+    const response = await axiosInstance.get<boolean>(`/vo/user`, {params: {userId}});
     return response.data;
 }
-
-export async function getShopManagePageVO(): Promise<ShopManageVO> {
-    const response = await axiosInstance.get<ShopManageVO>('/user/vo/shop-manage-page');
-    return response.data;
-}
-
-export async function getSellerUserVO(userId: string): Promise<SellerVO> {
-    const response = await axiosInstance.get<SellerVO>(`/user/vo/seller-user/${userId}`);
-    return response.data;
-}
-
-export async function getFavoriteItemCount(itemId: string): Promise<number> {
-    const response = await axiosInstance.post<number>(`/user/favorite/count/${itemId}`);
-    return response.data;
-}
-
-export async function favoriteItem(itemId: string): Promise<void> {
-    const response = await axiosInstance.post<void>(`/user/favorite/${itemId}`);
-    return response.data;
-}
-
-export async function unFavoriteItem(itemId: string): Promise<void> {
-    const response = await axiosInstance.post<void>(`/user/un-favorite/${itemId}`);
-    return response.data;
-}
-
-export async function isFavorite(itemId: string): Promise<boolean> {
-    const response = await axiosInstance.get<boolean>(`/user/favorite/${itemId}`);
-    return response.data;
-}
-

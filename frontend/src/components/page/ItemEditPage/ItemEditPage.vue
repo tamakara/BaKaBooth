@@ -184,8 +184,8 @@ import ItemEditPageLayout from "./ItemEditPageLayout.vue";
 import Variation from "./Variation.vue";
 import {ref, computed, nextTick, watch, onMounted} from "vue";
 import {PlusIcon} from "@heroicons/vue/24/outline";
-import type {ItemEditFormVO, VariationsEditFormVO} from "@/types/item.d.ts";
-import {getItemEditFormVO, updateItem} from "@/api/item.ts";
+import type {ItemEditFormVO} from "@/types/item.d.ts";
+import { updateItem} from "@/api/item.ts";
 import {useRoute, useRouter} from "vue-router";
 import {useUserStore} from "@/stores/user.ts";
 import type {UploadUserFile} from "element-plus";
@@ -204,7 +204,6 @@ const formData = ref<ItemEditFormVO>({
   description: '',
   images: [],
   tags: [],
-  variations: [{name: '', price: 0.00, stock: 10}],
   deliveryTime: '',
   shippingDetails: '',
   returnPolicy: '',

@@ -51,24 +51,36 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new RuntimeException("手机号或密码或或用户名不能为空");
         }
 
-        User user = new User(
-                registerFormDTO.getPhone(),
-                registerFormDTO.getPassword()
-        );
+        User user = new User();
         userMapper.insert(user);
 
-        Long userId = user.getId();
-        lambdaUpdate()
-                .eq(User::getId, userId)
-                .set(User::getUsername, "用户" + userId);
+        user.setUserStateCode(0);
+        user.setShopStateCode(0);
+        user.setUsername("User" + user.getId());
+        user.setIntroduction("");
+        user.setAnnouncement("");
+        user.setFollowers(0L);
+        user.setAvatarFileId(0L);
+
+        BeanUtils.copyProperties(registerFormDTO, user);
+        updateById(user);
 
         String jti = UUID.randomUUID().toString();
         Algorithm algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
 
-        return JWT.create().withExpiresAt(Instant.now().plusSeconds(jwtProperties.getExpiration())).withSubject(userId.toString()).withClaim("jti", jti).sign(algorithm);
+        return JWT
+                .create()
+                .withExpiresAt(Instant
+                        .now()
+                        .plusSeconds(jwtProperties.getExpiration())
+                )
+                .withSubject(user.getId().toString())
+                .withClaim("jti", jti)
+                .sign(algorithm);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserVO getUserVO(Long userId, Long sellerId) {
         User user = userMapper.selectById(sellerId);
         if (user == null) throw new RuntimeException("用户不存在");

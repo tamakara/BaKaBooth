@@ -46,15 +46,4 @@ public class User {
     @TableField(value = "updated_at")
     private Instant updatedAt;
 
-    public User(String phone, String password) {
-        this.userStateCode = 0;
-        this.shopStateCode = 0;
-        this.phone = phone;
-        this.password = password;
-        this.introduction = "";
-        this.announcement = "";
-        this.followers = 0L;
-        this.avatarFileId = 0L;
-    }
-
 }

@@ -1,6 +1,5 @@
 package com.bakabooth.order.controller;
 
-import com.bakabooth.order.domain.vo.OrderEditFormVO;
 import com.bakabooth.order.domain.vo.OrderVO;
 import com.bakabooth.order.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,12 +15,12 @@ public class OrderController {
     public final OrderService orderService;
 
     @Operation(summary = "创建订单")
-    @PostMapping("/create")
+    @PostMapping("/create/{itemId}")
     public ResponseEntity<Long> createOrder(
             @RequestHeader("X-USER-ID") Long userId,
-            @RequestBody OrderEditFormVO orderEditFormVO
+            @PathVariable("itemId") Long itemId
     ) {
-        Long orderId = orderService.createOrder(userId, orderEditFormVO);
+        Long orderId = orderService.createOrder(userId, itemId);
         return ResponseEntity.ok(orderId);
     }
 
