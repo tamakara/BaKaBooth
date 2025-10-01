@@ -1,16 +1,16 @@
 import {createRouter, createWebHistory, type RouteRecordRaw} from 'vue-router'
 
-import HomePage from '@/components/page/HomePage/HomePage.vue'
-import ItemInfoPage from '@/components/page/ItemInfoPage/ItemInfoPage.vue'
-import ShopPage from '@/components/page/ShopPage/ShopPage.vue'
-import CheckoutPage from '@/components/page/CheckoutPage/CheckoutPage.vue'
-import LoginPage from "@/components/page/LoginPage/LoginPage.vue";
-import RegisterPage from "@/components/page/RegisterPage/RegisterPage.vue";
-import FavoritesPage from "@/components/page/FavoritesPage/FavoritesPage.vue";
-import ShopManagePage from "@/components/page/ShopManagePage/ShopManagePage.vue";
-import ItemManagePage from "@/components/page/ItemManagePage/ItemManagePage.vue";
-import ItemEditPage from "@/components/page/ItemEditPage/ItemEditPage.vue";
-import OrderEditPage from "@/components/page/OrderEditPage/OrderEditPage.vue";
+import HomePage from '@/views/HomePage/HomePage.vue'
+import ItemInfoPage from '@/views/ItemInfoPage/ItemInfoPage.vue'
+import ShopPage from '@/views/ShopPage/ShopPage.vue'
+import CheckoutPage from '@/views/CheckoutPage/CheckoutPage.vue'
+import LoginPage from "@/views/LoginPage/LoginPage.vue";
+import RegisterPage from "@/views/RegisterPage/RegisterPage.vue";
+import FavoritesPage from "@/views/FavoritesPage/FavoritesPage.vue";
+import ShopManagePage from "@/views/ShopManagePage/ShopManagePage.vue";
+import ItemManagePage from "@/views/ItemManagePage/ItemManagePage.vue";
+import ItemEditPage from "@/views/ItemEditPage/ItemEditPage.vue";
+import OrderEditPage from "@/views/OrderEditPage/OrderEditPage.vue";
 
 const routes: RouteRecordRaw[] = [
     {path: '/', name: 'home', component: HomePage},

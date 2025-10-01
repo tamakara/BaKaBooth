@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia';
 import type {LoginFormDTO, RegisterFormDTO} from "@/types/user";
-import {login, register} from "@/api/user.ts";
+import {login, register} from "@/services/user.ts";
 
 export const useUserStore = defineStore('user', {
     state: () => ({

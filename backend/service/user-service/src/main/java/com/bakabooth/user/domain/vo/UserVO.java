@@ -7,6 +7,7 @@ import java.time.Instant;
 @Data
 public class UserVO {
     private Long id;
+    private Boolean isCurrentUser;
     private Integer userStateCode;
     private Integer shopStateCode;
 
@@ -17,6 +18,5 @@ public class UserVO {
     private String avatarUrl;
     private Instant createdAt;
 
-    private Boolean isCurrentUser;
     private String phone;
 }

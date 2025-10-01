@@ -9,10 +9,20 @@ export interface RegisterFormDTO {
     confirmPassword?: string
 }
 
-export interface UserSimpleInfoVO {
+export interface UserVO {
     id: number
+    isCurrentUser: boolean
+    userStateCode: number
+    shopStateCode: number
+
     username: string
+    introduction: string
+    announcement: string
+    followers: number
     avatarUrl: string
+    createdAt: string
+
+    phone: string
 }
 
 export interface ShopManageVO {
