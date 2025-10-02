@@ -1,350 +1,425 @@
 <template>
-  <ItemManagePageLayout>
-    <template #actions-left>
-      <el-radio-group v-model="currentStateCode" class="state-filter">
-        <el-radio-button label="所有" :value="0"/>
-        <el-radio-button label="在售" :value="2"/>
-        <el-radio-button label="草稿" :value="1"/>
-        <el-radio-button label="已下架" :value="3"/>
-      </el-radio-group>
+  <BaseLayout>
+    <template #header>
+      <Banner/>
     </template>
-    <template #actions-right>
-      <div class="add-item">
-        <el-button
-            class="add-item-button"
-            color="#2c9ba6"
-            @click="handleAddItem"
-        >
-          <el-icon style="margin-right: 5px">
-            <PlusIcon/>
-          </el-icon>
-          添加商品
-        </el-button>
-      </div>
-    </template>
-    <template #items>
-      <div
-          class="item"
-          v-for="item in items"
-          :key="item.id"
-      >
-        <div class="item-header">
-          <div class="item-info">
-            <el-image
-                lazy
-                :src="item.coverUrl"
-                fit="cover"
-                class="item-image"
+    <template #main>
+      <div class="item-manage-page">
+        <div class="container">
+          <div class="page-header">
+            <h1>商品管理</h1>
+            <div class="header-actions">
+              <el-button type="primary" @click="createNewItem">
+                <PlusIcon class="button-icon"/>
+                发布新商品
+              </el-button>
+            </div>
+          </div>
+
+          <div class="filters">
+            <el-select v-model="selectedStatus" @change="loadItems" placeholder="商品状态">
+              <el-option label="全部状态" :value="0"/>
+              <el-option label="草稿" :value="1"/>
+              <el-option label="在售" :value="2"/>
+              <el-option label="已下架" :value="3"/>
+            </el-select>
+          </div>
+
+          <div v-if="loading" class="loading-table">
+            <el-skeleton animated>
+              <template #template>
+                <el-skeleton-item variant="text" style="width: 100%; height: 40px; margin-bottom: 10px;" v-for="i in 8" :key="i"/>
+              </template>
+            </el-skeleton>
+          </div>
+
+          <div v-else-if="items.length === 0" class="empty-state">
+            <el-empty description="您还���有发布任何商品">
+              <el-button type="primary" @click="createNewItem">发布第一个商品</el-button>
+            </el-empty>
+          </div>
+
+          <div v-else class="items-table">
+            <el-table :data="items" stripe style="width: 100%">
+              <el-table-column width="120">
+                <template #default="{ row }">
+                  <el-image
+                      :src="row.images[0]"
+                      fit="cover"
+                      style="width: 80px; height: 80px; border-radius: 4px;"
+                  >
+                    <template #placeholder>
+                      <div class="image-placeholder">
+                        <PhotoIcon class="placeholder-icon"/>
+                      </div>
+                    </template>
+                    <template #error>
+                      <div class="image-placeholder">
+                        <PhotoIcon class="placeholder-icon"/>
+                      </div>
+                    </template>
+                  </el-image>
+                </template>
+              </el-table-column>
+
+              <el-table-column prop="name" label="商品名称" min-width="200">
+                <template #default="{ row }">
+                  <div class="item-name">
+                    <span>{{ row.name }}</span>
+                    <div class="item-tags">
+                      <el-tag v-for="tag in row.tags" :key="tag" size="small" type="info">
+                        {{ tag }}
+                      </el-tag>
+                    </div>
+                  </div>
+                </template>
+              </el-table-column>
+
+              <el-table-column prop="price" label="价格" width="120">
+                <template #default="{ row }">
+                  <span class="price">¥{{ formatPrice(row.price) }}</span>
+                </template>
+              </el-table-column>
+
+              <el-table-column prop="favorites" label="收藏数" width="100">
+                <template #default="{ row }">
+                  <span class="favorites">
+                    <HeartIcon class="meta-icon"/>
+                    {{ row.favorites }}
+                  </span>
+                </template>
+              </el-table-column>
+
+              <el-table-column prop="stateCode" label="状态" width="100">
+                <template #default="{ row }">
+                  <el-tag :type="getStatusType(row.stateCode)">
+                    {{ getStatusText(row.stateCode) }}
+                  </el-tag>
+                </template>
+              </el-table-column>
+
+              <el-table-column prop="createdAt" label="创建时间" width="120">
+                <template #default="{ row }">
+                  {{ formatTime(row.createdAt) }}
+                </template>
+              </el-table-column>
+
+              <el-table-column label="操���" width="200" fixed="right">
+                <template #default="{ row }">
+                  <div class="item-actions">
+                    <el-button size="small" @click="editItem(row.id)">编辑</el-button>
+                    <el-button
+                        v-if="row.stateCode === 2"
+                        size="small"
+                        type="warning"
+                        @click="takeDownItem(row.id)"
+                    >
+                      下架
+                    </el-button>
+                    <el-button
+                        v-if="row.stateCode === 3"
+                        size="small"
+                        type="success"
+                        @click="putUpItem(row.id)"
+                    >
+                      上架
+                    </el-button>
+                    <el-button
+                        size="small"
+                        type="danger"
+                        @click="deleteItem(row.id)"
+                    >
+                      删除
+                    </el-button>
+                  </div>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+
+          <!-- 分页 -->
+          <div v-if="items.length > 0" class="pagination">
+            <el-pagination
+                v-model:current-page="currentPage"
+                :page-size="pageSize"
+                :total="total"
+                layout="prev, pager, next, total"
+                @current-change="handlePageChange"
             />
-            <div class="item-details">
-              <div class="item-state">{{ getStateText(item.stateCode) }}</div>
-              <div class="item-name">{{ item.name }}</div>
-              <div class="item-url">http://localhost:5173/item/{{ item.id }}</div>
-            </div>
-          </div>
-          <div class="item-actions">
-            <el-button
-                v-if="item.stateCode === 2"
-                size="small"
-                type="warning"
-                @click="handleTakeOffItem(item.id)"
-                class="takeoff-button"
-            >
-              <el-icon style="margin-right: 4px">
-                <ArrowDown/>
-              </el-icon>
-              下架
-            </el-button>
-            <el-button
-                v-else-if="item.stateCode === 3"
-                size="small"
-                type="success"
-                @click="handlePublishItem(item.id)"
-                class="publish-button"
-            >
-              <el-icon style="margin-right: 4px">
-                <ArrowUp/>
-              </el-icon>
-              上架
-            </el-button>
-            <el-button
-                size="small"
-                type="primary"
-                @click="handleEditItem(item.id)"
-                class="edit-button"
-            >
-              <el-icon style="margin-right: 4px">
-                <Edit/>
-              </el-icon>
-              编辑
-            </el-button>
-          </div>
-        </div>
-        <div class="variations">
-          <div
-              class="variation"
-              v-for="(variation, index) in item.variations"
-              :key="index"
-          >
-            <div class="variation-name">
-              <el-icon class="variation-icon">
-                <CloudArrowDownIcon/>
-              </el-icon>
-              {{ variation.name }}
-            </div>
-            <div class="variation-data">
-              <div class="variation-data-heading">销量</div>
-              <div class="variation-data-value">{{ variation.sales || 0 }}</div>
-            </div>
-            <div class="variation-data">
-              <div class="variation-data-heading">收藏</div>
-              <div class="variation-data-value">{{ item.favorite }}</div>
-            </div>
-            <div class="variation-data">
-              <div class="variation-data-heading">售价</div>
-              <div class="variation-data-value">¥{{ variation.price }}</div>
-            </div>
-            <div class="variation-data">
-              <div class="variation-data-heading">存库</div>
-              <div class="variation-data-value">{{ variation.stock }}</div>
-            </div>
           </div>
         </div>
       </div>
     </template>
-  </ItemManagePageLayout>
+  </BaseLayout>
 </template>
 
 <script setup lang="ts">
-import ItemManagePageLayout from "./ItemManagePageLayout.vue";
-import {onMounted, ref, watch} from "vue";
-import {CloudArrowDownIcon, PlusIcon} from "@heroicons/vue/24/outline";
-import {Edit, ArrowDown, ArrowUp} from "@element-plus/icons-vue";
-import {createItem} from "@/services/item.ts";
+import BaseLayout from "@/components/layout/BaseLayout.vue";
+import Banner from "@/components/business/Banner.vue";
+import {ref, onMounted} from "vue";
 import {useRouter} from "vue-router";
+import {ElMessage, ElMessageBox} from "element-plus";
+import {PlusIcon, PhotoIcon, HeartIcon} from "@heroicons/vue/24/outline";
+import {getItemVOList, deleteItem as deleteItemApi, takeDownItem as takeDownItemApi, putUpItem as putUpItemApi} from "@/services/item.ts";
+import type {ItemVO} from "@/types/item.d.ts";
+import {useUserStore} from "@/stores/user";
 
-const router = useRouter()
+const router = useRouter();
+const userStore = useUserStore();
 
-function getStateText(stateCode: number): string {
-  const stateMap: Record<number, string> = {
-    1: '草稿',
-    2: '在售',
-    3: '已下架'
+// 响应式数据
+const items = ref<ItemVO[]>([]);
+const loading = ref(false);
+const selectedStatus = ref(0);
+const currentPage = ref(1);
+const pageSize = ref(20);
+const total = ref(0);
+
+// 加载商品列表
+const loadItems = async () => {
+  try {
+    loading.value = true;
+    // 获取当前用户的商品列表
+    const itemList = await getItemVOList(userStore.currentUser?.id, selectedStatus.value, currentPage.value, pageSize.value);
+    items.value = itemList;
+    total.value = itemList.length;
+  } catch (error) {
+    console.error('加载商品失败:', error);
+    ElMessage.error('加载商品失败');
+  } finally {
+    loading.value = false;
   }
-  return stateMap[stateCode] || '未知'
-}
+};
 
-async function handleAddItem() {
-  const itemId = await createItem()
-  await router.push({name: 'item-edit', params: {id: itemId}})
-}
+// 创建新商品
+const createNewItem = () => {
+  router.push('/item/new/edit');
+};
 
-async function handleEditItem(itemId: number) {
-  await router.push({name: 'item-edit', params: {id: itemId}})
-}
+// 编辑商品
+const editItem = (itemId: number) => {
+  router.push(`/item/${itemId}/edit`);
+};
 
-async function handleTakeOffItem(itemId: number) {
-  // TODO: 实现下架逻辑，调用下架接口
-  console.log('下架商品:', itemId)
-  // 下架后刷新列表
-  items.value = await getItemManageVO(currentStateCode.value)
-}
+// 下架商品
+const takeDownItem = async (itemId: number) => {
+  try {
+    await ElMessageBox.confirm(
+        '确��要下架这个商品吗？下架后买家将无法购买。',
+        '下架商品',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+    );
 
-async function handlePublishItem(itemId: number) {
-  // TODO: 实现上架逻辑，调用上架接口
-  console.log('上架商品:', itemId)
-  // 上架后刷新列表
-  items.value = await getItemManageVO(currentStateCode.value)
-}
+    await takeDownItemApi(itemId.toString());
+    ElMessage.success('商品已下架');
+    loadItems();
+  } catch (error) {
+    if (error !== 'cancel') {
+      ElMessage.error('下架失败');
+    }
+  }
+};
 
-const currentStateCode = ref(0);
+// 上架商品
+const putUpItem = async (itemId: number) => {
+  try {
+    await putUpItemApi(itemId.toString());
+    ElMessage.success('商品已上架');
+    loadItems();
+  } catch (error) {
+    ElMessage.error('上架失败');
+  }
+};
 
-const items = ref<Array<ItemManageVO>>()
+// 删除商品
+const deleteItem = async (itemId: number) => {
+  try {
+    await ElMessageBox.confirm(
+        '确定要删除这个商品���？删除后无法恢复。',
+        '删除商品',
+        {
+          confirmButtonText: '确定删除',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+    );
 
-onMounted(async () => {
-  items.value = await getItemManageVO(currentStateCode.value)
-})
+    await deleteItemApi(itemId.toString());
+    ElMessage.success('商品已删除');
+    loadItems();
+  } catch (error) {
+    if (error !== 'cancel') {
+      ElMessage.error('删除失败');
+    }
+  }
+};
 
-watch(currentStateCode, async (newState) => {
-  items.value = await getItemManageVO(newState)
-})
+// 分页处理
+const handlePageChange = (page: number) => {
+  currentPage.value = page;
+  loadItems();
+};
+
+// 获取状态类型
+const getStatusType = (stateCode: number) => {
+  switch (stateCode) {
+    case 1: return 'info';
+    case 2: return 'success';
+    case 3: return 'warning';
+    default: return '';
+  }
+};
+
+// 获取状态文本
+const getStatusText = (stateCode: number) => {
+  switch (stateCode) {
+    case 1: return '草稿';
+    case 2: return '在售';
+    case 3: return '已下架';
+    default: return '未知';
+  }
+};
+
+// 格式化价格
+const formatPrice = (price: number) => {
+  return price.toFixed(2);
+};
+
+// 格式化时间
+const formatTime = (time: string) => {
+  return new Date(time).toLocaleDateString();
+};
+
+// 页面加载时获取数据
+onMounted(() => {
+  loadItems();
+});
 </script>
 
 <style scoped>
-.add-item-button {
-  width: 137px;
-  height: 42px;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 500;
+.item-manage-page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
 }
 
-.item {
-  width: 100%;
-  padding: 24px;
-  border: 1px solid #e4e7ed;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.2s ease;
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.item:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.item-header {
+.page-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.page-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.filters {
   margin-bottom: 20px;
+  padding: 16px 24px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.item-info {
+.loading-table {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.empty-state {
+  background: white;
+  border-radius: 12px;
+  padding: 60px 20px;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.items-table {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.image-placeholder {
   display: flex;
-  gap: 16px;
-  flex: 1;
-}
-
-.item-image {
+  align-items: center;
+  justify-content: center;
   width: 80px;
   height: 80px;
-  border-radius: 6px;
-  border: 1px solid #f0f2f5;
-  object-fit: cover;
-}
-
-.item-details {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-}
-
-.item-state {
-  width: 60px;
-  height: 24px;
-  font-size: 12px;
-  font-weight: 600;
-  text-align: center;
-  line-height: 22px;
-  border: 1px solid #d3d4d6;
+  background-color: #f5f5f5;
+  color: #c0c4cc;
   border-radius: 4px;
-  color: #606266;
-  background-color: #f5f7fa;
+}
+
+.placeholder-icon {
+  width: 24px;
+  height: 24px;
+  color: #c0c4cc;
 }
 
 .item-name {
-  font-size: 16px;
-  font-weight: 500;
-  color: #303133;
   line-height: 1.4;
 }
 
-.item-url {
-  font-size: 13px;
-  color: #909399;
+.item-tags {
+  margin-top: 8px;
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.price {
+  font-weight: 600;
+  color: #e74c3c;
+}
+
+.favorites {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #7f8c8d;
 }
 
 .item-actions {
-  margin-left: 16px;
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
-.edit-button {
-  height: 32px;
-  padding: 0 16px;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.takeoff-button {
-  height: 32px;
-  padding: 0 16px;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.publish-button {
-  height: 32px;
-  padding: 0 16px;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.variations {
-  border-top: 1px dashed #e4e7ed;
-}
-
-.variation {
-  height: 48px;
-  border-bottom: 1px dashed #e4e7ed;
+.pagination {
   display: flex;
-  align-items: center;
-  font-size: 14px;
-  color: #606266;
-  padding: 0 4px;
-}
-
-.variation:last-child {
-  border-bottom: none;
-}
-
-.variation-name {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 15px;
-  font-weight: 500;
-  color: #303133;
-}
-
-.variation-icon {
-  font-size: 16px;
-  color: #909399;
-}
-
-.variation-data {
-  width: 90px;
-  height: 100%;
-  text-align: right;
-  display: flex;
-  flex-direction: column;
   justify-content: center;
-  gap: 2px;
+  margin-top: 32px;
 }
 
-.variation-data-heading {
-  color: #909399;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 1.2;
+.button-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
 }
 
-.variation-data-value {
-  color: #303133;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 1.2;
-}
-
-.state-filter :deep(.el-radio-button__inner) {
-  height: 42px;
-  line-height: 40px;
-  padding: 0 20px;
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.state-filter :deep(.el-radio-button:first-child .el-radio-button__inner) {
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
-}
-
-.state-filter :deep(.el-radio-button:last-child .el-radio-button__inner) {
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
+.meta-icon {
+  width: 16px;
+  height: 16px;
 }
 </style>

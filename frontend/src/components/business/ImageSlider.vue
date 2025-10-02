@@ -1,6 +1,5 @@
 <template>
   <div class="image-slider">
-    <!-- 图片滑动容器 -->
     <el-carousel
         v-model="activeIndex"
         arrow="always"
@@ -11,7 +10,7 @@
       <el-carousel-item
           v-for="(image, index) in images"
           :key="index"
-          :label="index+1"
+          :label="(index+1).toString()"
           style="display: flex;justify-content: center;align-items: center"
       >
         <el-image
@@ -26,32 +25,18 @@
 
 <script setup lang="ts">
 import {ref} from 'vue';
-import {ElCarousel, ElCarouselItem} from 'element-plus';
-// 图片数据
-const images = [
-  'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-  'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-  'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-  'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-  'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-  'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-  'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-  'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-  'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-];
+
+// 接收从父组件传递的图片数组
+interface Props {
+  images: string[]
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  images: () => []
+});
 
 // 当前显示的图片索引
 const activeIndex = ref(0);
-
-
 </script>
 
-<style scoped>
-.image-slider {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-
-</style>
+// ...existing code...

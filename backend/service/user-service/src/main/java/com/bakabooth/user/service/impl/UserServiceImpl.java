@@ -53,15 +53,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         User user = new User();
         userMapper.insert(user);
-
-        user.setUserStateCode(0);
-        user.setShopStateCode(0);
         user.setUsername("User" + user.getId());
-        user.setIntroduction("");
-        user.setAnnouncement("");
-        user.setFollowers(0L);
-        user.setAvatarFileId(0L);
-
         BeanUtils.copyProperties(registerFormDTO, user);
         updateById(user);
 

@@ -11,7 +11,9 @@ export async function register(formData: RegisterFormDTO): Promise<string> {
     return response.data;
 }
 
-export async function getUserVO(userId: string): Promise<UserVO> {
-    const response = await http.get<UserVO>(`/vo/user`, {params: {userId}});
+export async function getUserVO(sellerId?: string): Promise<UserVO> {
+    const response = await http.get<UserVO>(`/user/vo/user`, {
+        params: sellerId ? { sellerId } : undefined
+    });
     return response.data;
 }

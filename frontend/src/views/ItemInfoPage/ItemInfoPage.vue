@@ -3,7 +3,7 @@
     <!-- 商品图片 -->
     <template #item-image>
       <div class="item-image-wrapper">
-        <ImageSlider v-if="!loading" :images="itemVO.imageUrls"/>
+        <ImageSlider v-if="!loading" :images="itemVO.images"/>
         <div v-else class="loading-placeholder">
           <el-skeleton animated>
             <template #template>
@@ -97,62 +97,44 @@
     <!-- 商品规格和价格 -->
     <template #item-variations>
       <div v-if="loading">
-        <el-skeleton v-for="i in 2" :key="i" animated>
+        <el-skeleton animated>
           <template #template>
             <el-skeleton-item variant="text" style="width: 100%; margin-bottom: 20px"/>
           </template>
         </el-skeleton>
       </div>
       <div v-else>
-        <div
-            class="item-variations"
-            v-for="(variation, index) in itemVO.variations"
-            :key="index"
-        >
-          <div class="variation-container">
-            <div class="variation-header">
-              <div class="variation-info">
-                <h4 class="variation-name">{{ variation.name }}</h4>
+        <div class="item-price-section">
+          <div class="price-container">
+            <div class="price-header">
+              <div class="price-info">
+                <h4 class="item-name">{{ itemVO.name }}</h4>
               </div>
-              <div class="variation-price">
+              <div class="item-price">
                 <span class="price-currency">¥</span>
-                <span class="price-amount">{{ formatPrice(variation.price) }}</span>
+                <span class="price-amount">{{ formatPrice(itemVO.price) }}</span>
               </div>
             </div>
 
-            <div class="variation-details">
-              <div class="variation-stock">
-                <span class="stock-label">库存：</span>
-                <span class="stock-count"
-                      :class="{ 'low-stock': variation.stock < 10, 'out-of-stock': variation.stock === 0 }">
-                  {{ variation.stock > 0 ? `${variation.stock}件` : '缺货' }}
-                </span>
-              </div>
-
-              <div class="variation-actions">
-                <el-button
-                    type="danger"
-                    size="default"
-                    class="buy-now-button"
-                    @click="handleBuy(variation)"
-                    :disabled="variation.stock === 0"
-                >
-                  <el-icon class="button-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                         stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H3.75m0 0v-.375c0-.621.504-1.125 1.125-1.125m0 0h9.75m-9.75 0h9.75m0 0h-.375c.621 0 1.125.504 1.125 1.125v.375M3.75 3.75h.375c.621 0 1.125.504 1.125 1.125v.375m0 0h9.75v-.375c0-.621.504-1.125 1.125-1.125h.375M3.75 3.75v9.75M20.25 3.75v9.75M3.75 13.5h16.5"/>
-                    </svg>
-                  </el-icon>
-                  {{ variation.stock === 0 ? '缺货' : '立即购买' }}
-                </el-button>
-              </div>
+            <div class="item-actions">
+              <el-button
+                  type="danger"
+                  size="large"
+                  class="buy-now-button"
+                  @click="handleBuy"
+                  :disabled="itemVO.stateCode !== 2"
+              >
+                <el-icon class="button-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                       stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H3.75m0 0v-.375c0-.621.504-1.125 1.125-1.125m0 0h9.75m-9.75 0h9.75m0 0h-.375c.621 0 1.125.504 1.125 1.125v.375M3.75 3.75h.375c.621 0 1.125.504 1.125 1.125v.375m0 0h9.75v-.375c0-.621.504-1.125 1.125-1.125h.375M3.75 3.75v9.75M20.25 3.75v9.75M3.75 13.5h16.5"/>
+                  </svg>
+                </el-icon>
+                {{ itemVO.stateCode === 2 ? '立即购买' : '商品已下架' }}
+              </el-button>
             </div>
           </div>
-
-        </div>
-        <div v-if="!itemVO.variations?.length" class="no-variations">
-          暂无商品规格信息
         </div>
       </div>
     </template>
@@ -169,11 +151,11 @@
         <div class="item-terms-content">
           <div class="info-item">
             <span class="info-label">发货时间：</span>
-            <span>{{ itemVO.deliveryTime }}</span>
+            <span>{{ itemVO.deliveryPeriod }}</span>
           </div>
           <div class="info-item">
             <span class="info-label">运费说明：</span>
-            <span>{{ itemVO.shippingDetails }}</span>
+            <span>{{ itemVO.postage }}</span>
           </div>
         </div>
         <div class="item-terms-title">
@@ -185,11 +167,7 @@
         <div class="item-terms-content">
           <div class="info-item">
             <span class="info-label">退换政策：</span>
-            <span>{{ itemVO.returnPolicy }}</span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">质保期限：</span>
-            <span>{{ itemVO.warrantyPeriod }}</span>
+            <span>{{ itemVO.returnPeriod }}</span>
           </div>
         </div>
         <div class="item-terms-title">
@@ -278,39 +256,12 @@
                   <div class="seller-meta">
                     <div class="meta-item">
                       <el-icon size="14" color="#666">
-                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-                          <path fill="currentColor"
-                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 0 0 .6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0 0 46.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"/>
-                        </svg>
+                        <StarIcon/>
                       </el-icon>
-                      <span>关注者: 100</span>
-                    </div>
-                    <div class="meta-item">
-                      <el-icon size="14" color="#666">
-                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-                          <path fill="currentColor"
-                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 0 0 .6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0 0 46.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"/>
-                        </svg>
-                      </el-icon>
-                      <span>评分: 4.9/5.0</span>
-                    </div>
-                    <div class="meta-item">
-                      <el-icon size="14" color="#666">
-                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-                          <path fill="currentColor"
-                                d="M512 85.333333C276.053333 85.333333 85.333333 276.053333 85.333333 512s190.72 426.666667 426.666667 426.666667 426.666667-190.72 426.666667-426.666667S747.946667 85.333333 512 85.333333z m0 768c-188.416 0-341.333333-152.917333-341.333333-341.333333S323.584 170.666667 512 170.666667s341.333333 152.917333 341.333333 341.333333S700.416 853.333333 512 853.333333z"/>
-                          <path fill="currentColor"
-                                d="M512 298.666667c-23.552 0-42.666667 19.114667-42.666667 42.666666v170.666667c0 11.306667 4.48 22.186667 12.458667 30.165333l128 128c16.682667 16.682667 43.648 16.682667 60.330667 0s16.682667-43.648 0-60.330666L554.666667 494.378667V341.333333c0-23.552-19.114667-42.666667-42.666667-42.666666z"/>
-                        </svg>
-                      </el-icon>
-                      <span>最近活跃: 2小时前</span>
+                      <span>关注者: {{ sellerVO.followers }}</span>
                     </div>
                   </div>
                 </div>
-
-                <!--TODO-->
-                <!--此处是商品预览-->
-
               </div>
             </div>
           </div>
@@ -321,31 +272,21 @@
 </template>
 
 <script setup lang="ts">
-import ItemInfoPageLayout from './ItemInfoPageLayout.vue';
-import {useRoute, useRouter} from 'vue-router';
-import ImageSlider from "@/components/business/ImageSlider.vue";
-import {
-  StarIcon,
-  HeartIcon,
-  ShareIcon,
-  ExclamationTriangleIcon,
-  ChatBubbleOvalLeftEllipsisIcon,
-  TruckIcon,
-  ShieldCheckIcon
-} from '@heroicons/vue/24/outline'
+// ...existing code...
 import {onMounted, ref, computed} from "vue";
 import {ElMessage, ElMessageBox} from 'element-plus';
-import {getItemVO} from "@/services/item.ts";
+import {getItemVO, favorite, unfavorite, getFavoriteCount, isFavorite} from "@/services/item.ts";
 import type {ItemVO} from "@/types/item.d.ts";
-import type {SellerVO} from "@/types/user";
+import type {UserVO} from "@/types/user";
 import {createOrder} from "@/services/order.ts";
+import {getUserVO} from "@/services/user.ts";
 
 const route = useRoute();
 const router = useRouter();
 
 // 响应式数据
 const itemVO = ref<ItemVO>({} as ItemVO);
-const sellerVO = ref<SellerVO>({} as SellerVO);
+const sellerVO = ref<UserVO>({} as UserVO);
 const loading = ref(true);
 const favoriteLoading = ref(false);
 const isFavorited = ref(false);
@@ -359,23 +300,21 @@ const fetchData = async () => {
   try {
     loading.value = true;
 
-    // 并行获取商品和卖家信息
-    const [itemResponse, sellerResponse] = await Promise.all([
-      getItemVO(itemId.value),
-      getItemVO(itemId.value).then(item => getSellerUserVO(item.userId?.toString() || ''))
-    ]);
+    // 获取商品信息
+    itemVO.value = await getItemVO(itemId.value);
 
-    itemVO.value = itemResponse;
-    sellerVO.value = sellerResponse;
+    // 获取卖家信息
+    sellerVO.value = await getUserVO(itemVO.value.userId.toString());
 
-    // TODO: 检查用户是否收藏/关注
-    // isFavorited.value = await checkIfFavorited(itemId.value);
-    // isFollowed.value = await checkIfFollowed(sellerUserData.value.id);
+    // 获取收藏状态
+    isFavorited.value = await isFavorite(Number(itemId.value));
+
+    // ��新收藏数量
+    itemVO.value.favorites = await getFavoriteCount(Number(itemId.value));
+
   } catch (error) {
     console.error('获取数据失败:', error);
     ElMessage.error('获取商品信息失败，请稍后再试');
-    // 可选择跳转到错误页面或返回上一页
-    // router.back();
   } finally {
     loading.value = false;
   }
@@ -384,7 +323,7 @@ const fetchData = async () => {
 // 事件处理函数
 const handleShopClick = () => {
   if (loading.value) return;
-  router.push(`/shop/${sellerVO.value.username}`);
+  router.push(`/user/${sellerVO.value.id}`);
 };
 
 const handleStarClick = async () => {
@@ -402,18 +341,17 @@ const handleFavoriteClick = async () => {
     favoriteLoading.value = true;
 
     if (isFavorited.value) {
-      await unFavoriteItem(itemId.value);
+      await unfavorite(Number(itemId.value));
     } else {
-      await favoriteItem(itemId.value);
+      await favorite(Number(itemId.value));
     }
 
     isFavorited.value = !isFavorited.value;
-
-    itemVO.value.favorites = await getFavoriteItemCount(itemId.value);
+    itemVO.value.favorites = await getFavoriteCount(Number(itemId.value));
 
     ElMessage.success(isFavorited.value ? '收藏成功' : '已取消收藏');
   } catch (error) {
-    ElMessage.error('操作失败，请稍后重试');
+    ElMessage.error('操作失败���请稍后重试');
   } finally {
     favoriteLoading.value = false;
   }
@@ -421,7 +359,6 @@ const handleFavoriteClick = async () => {
 
 const handleChatClick = () => {
   if (loading.value) return;
-  // TODO: 实现聊天功能
   ElMessage.info('聊天功能开发中');
 };
 
@@ -436,7 +373,6 @@ const handleShareClick = async () => {
         url: window.location.href
       });
     } else {
-      // 复制链接到剪贴板
       await navigator.clipboard.writeText(window.location.href);
       ElMessage.success('链接已复制到剪贴板');
     }
@@ -454,22 +390,25 @@ const handleReportClick = async () => {
         '举报商品',
         {
           confirmButtonText: '确定举报',
-          cancelButtonText: '取���',
+          cancelButtonText: '取消',
           type: 'warning',
         }
     );
 
-    // TODO: 实现举报功能
     ElMessage.success('举报已提交，我们会尽快处理');
   } catch {
     // 用户取消举报
   }
 };
 
-const handleBuy = async (variation: any) => {
-  if (loading.value || variation.stock === 0) return;
-  const orderId = await createOrder(variation.id)
-  router.push({name: 'order-edit', params: {id: orderId}});
+const handleBuy = async () => {
+  if (loading.value || itemVO.value.stateCode !== 2) return;
+  try {
+    const orderId = await createOrder(Number(itemId.value));
+    router.push({name: 'order-edit', params: {id: orderId}});
+  } catch (error) {
+    ElMessage.error('创建订单失败');
+  }
 };
 
 // 工具函数
@@ -483,3 +422,5 @@ onMounted(() => {
   fetchData();
 });
 </script>
+
+// ...existing code...

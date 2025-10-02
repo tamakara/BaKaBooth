@@ -1,251 +1,176 @@
 <template>
-  <LoginPageLayout>
-    <template #header>
-      <div class="login-title">
-        <h1>用户登录</h1>
-        <p class="login-subtitle">欢迎回到 BaKaBooth</p>
-      </div>
-    </template>
-    <template #main>
-      <div class="login-form">
+  <div class="login-page">
+    <div class="login-container">
+      <div class="login-card">
+        <div class="login-header">
+          <h2>欢迎回来</h2>
+          <p>登录您的BaKaBooth账户</p>
+        </div>
+
         <el-form
-          ref="ruleFormRef"
-          :model="loginForm"
-          :rules="rules"
-          label-position="top"
-          size="large"
+            ref="formRef"
+            :model="loginForm"
+            :rules="rules"
+            label-position="top"
+            class="login-form"
+            @submit.prevent="handleLogin"
         >
-          <el-form-item prop="phone" class="form-item">
+          <el-form-item label="手机号" prop="phone">
             <el-input
-              v-model="loginForm.phone"
-              type="text"
-              :prefix-icon="DevicePhoneMobileIcon"
-              placeholder="请输入手机号"
-              clearable
-              maxlength="11"
-              class="login-input"
+                v-model="loginForm.phone"
+                placeholder="请输入手机号"
+                size="large"
+                prefix-icon="Phone"
+                maxlength="11"
             />
           </el-form-item>
 
-          <el-form-item prop="password" class="form-item">
+          <el-form-item label="密码" prop="password">
             <el-input
-              v-model="loginForm.password"
-              type="password"
-              :prefix-icon="LockClosedIcon"
-              placeholder="请输入密码"
-              clearable
-              show-password
-              class="login-input"
+                v-model="loginForm.password"
+                type="password"
+                placeholder="请输入密码"
+                size="large"
+                prefix-icon="Lock"
+                show-password
+                @keyup.enter="handleLogin"
             />
           </el-form-item>
 
-          <el-form-item class="button-item">
+          <el-form-item>
             <el-button
-              type="primary"
-              size="large"
-              class="login-button"
-              @click="handleLoginClick(ruleFormRef)"
-              :loading="loginLoading"
+                type="primary"
+                size="large"
+                class="login-btn"
+                :loading="loading"
+                @click="handleLogin"
             >
-              {{ loginLoading ? '登录中...' : '登录' }}
+              登录
             </el-button>
           </el-form-item>
-
-          <el-form-item class="button-item">
-            <el-button
-              plain
-              size="large"
-              class="register-button"
-              @click="handleRegisterClick"
-            >
-              还没有账号？立即注册
-            </el-button>
-          </el-form-item>
-
-          <div class="back-link">
-            <el-button
-              text
-              @click="handleBackToHomeClick"
-              class="back-button"
-            >
-              <el-icon class="mr-1"><ArrowLeftIcon /></el-icon>
-              返回首页
-            </el-button>
-          </div>
         </el-form>
+
+        <div class="login-footer">
+          <p>还没有账户？<router-link to="/user/register" class="link">立即注册</router-link></p>
+        </div>
       </div>
-    </template>
-    <template #footer>
-      <div class="brand-footer">
-        <h3>BaKaBooth</h3>
-        <p>数字商品交易平台</p>
-      </div>
-    </template>
-  </LoginPageLayout>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import LoginPageLayout from "./LoginPageLayout.vue";
-import {reactive, ref} from "vue";
-import {useRouter} from "vue-router";
-import type {LoginFormDTO} from "@/types/user";
-import type {FormInstance, FormRules} from "element-plus";
-import {useUserStore} from "@/stores/user.ts";
-import {DevicePhoneMobileIcon, LockClosedIcon, ArrowLeftIcon} from "@heroicons/vue/24/outline";
+import { ref, reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import { ElMessage } from 'element-plus';
+import type { FormInstance, FormRules } from 'element-plus';
+import { useUserStore } from '@/stores/user';
+import type { LoginFormDTO } from '@/types/user';
 
-const router = useRouter()
-const userStore = useUserStore()
+const router = useRouter();
+const userStore = useUserStore();
 
-const ruleFormRef = ref<FormInstance>()
-const loginLoading = ref(false)
-const loginForm = ref<LoginFormDTO>({
+const formRef = ref<FormInstance>();
+const loading = ref(false);
+
+const loginForm = reactive<LoginFormDTO>({
   phone: '',
   password: ''
 });
 
-const rules = reactive<FormRules<LoginFormDTO>>({
+const rules: FormRules = {
   phone: [
-    {required: true, message: '请输入手机号', trigger: 'blur'},
-    {pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur'}
+    { required: true, message: '请输入手机号', trigger: 'blur' },
+    { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }
   ],
   password: [
-    {required: true, message: '请输入密码', trigger: 'blur'},
-    {min: 6, message: '密码长度至少6位', trigger: 'blur'}
-  ],
-})
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 6, message: '密码长度不能少于6位', trigger: 'blur' }
+  ]
+};
 
-async function handleLoginClick(formEl: FormInstance | undefined) {
-  if (!formEl) return
-  await formEl.validate(async (valid, fields) => {
-    if (valid) {
-      try {
-        loginLoading.value = true
-        await userStore.login(loginForm.value)
-        router.push({name: 'home'})
-      } catch (error) {
-        console.error('登录失败', error)
-      } finally {
-        loginLoading.value = false
-      }
-    } else {
-      console.log('登录表单校验失败', fields)
-    }
-  })
-}
+const handleLogin = async () => {
+  if (!formRef.value) return;
 
-function handleRegisterClick() {
-  router.push({name: 'register'})
-}
+  try {
+    await formRef.value.validate();
+    loading.value = true;
 
-function handleBackToHomeClick() {
-  router.push({name: 'home'})
-}
+    await userStore.login(loginForm);
+
+    ElMessage.success('登录成功！');
+    router.push('/');
+  } catch (error) {
+    console.error('登录失败:', error);
+    ElMessage.error('登录失败，请检查账号密码');
+  } finally {
+    loading.value = false;
+  }
+};
 </script>
 
 <style scoped>
-.login-title h1 {
+.login-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-card {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-header h2 {
   font-size: 28px;
   font-weight: 600;
-  color: #303133;
+  color: #2c3e50;
   margin: 0 0 8px 0;
 }
 
-.login-subtitle {
-  font-size: 14px;
-  color: #909399;
+.login-header p {
+  color: #7f8c8d;
   margin: 0;
 }
 
 .login-form {
-  padding: 32px;
+  margin-bottom: 24px;
 }
 
-.form-item {
-  margin-bottom: 20px;
-}
-
-.button-item {
-  margin-bottom: 16px;
-}
-
-.login-input {
-  height: 48px;
-}
-
-.login-button {
+.login-btn {
   width: 100%;
   height: 48px;
   font-size: 16px;
   font-weight: 500;
-  background: linear-gradient(135deg, #409eff 0%, #67c23a 100%);
-  border: none;
-  border-radius: 8px;
-  transition: all 0.3s ease;
 }
 
-.login-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
-}
-
-.register-button {
-  width: 100%;
-  height: 40px;
-  font-size: 14px;
-  color: #606266;
-  border: 1px solid #dcdfe6;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.register-button:hover {
-  color: #409eff;
-  border-color: #409eff;
-  background: #ecf5ff;
-}
-
-.back-link {
+.login-footer {
   text-align: center;
-  margin-top: 24px;
-  padding-top: 16px;
-  border-top: 1px solid #f0f0f0;
+  color: #7f8c8d;
 }
 
-.back-button {
-  font-size: 14px;
-  color: #909399;
-  transition: color 0.3s ease;
-}
-
-.back-button:hover {
+.link {
   color: #409eff;
+  text-decoration: none;
+  font-weight: 500;
 }
 
-.brand-footer h3 {
-  font-size: 20px;
-  font-weight: 600;
-  color: #303133;
-  margin: 0 0 4px 0;
-}
-
-.brand-footer p {
-  font-size: 12px;
-  color: #909399;
-  margin: 0;
-}
-
-.mr-1 {
-  margin-right: 4px;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .login-form {
-    padding: 24px 16px;
-  }
-
-  .login-title h1 {
-    font-size: 24px;
-  }
+.link:hover {
+  text-decoration: underline;
 }
 </style>
+

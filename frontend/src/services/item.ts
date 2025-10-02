@@ -6,53 +6,50 @@ export async function createItem(formData: ItemEditFormVO): Promise<number> {
     return response.data;
 }
 
-export async function updateItem(itemId: string, formData: ItemEditFormVO): Promise<number> {
-    const response = await http.put<number>(`/item/update/${itemId}`, formData);
+export async function updateItem(itemId: string, formData: ItemEditFormVO): Promise<boolean> {
+    const response = await http.put<boolean>(`/item/update/${itemId}`, formData);
     return response.data;
 }
 
-export async function deleteItem(itemId: string): Promise<number> {
-    const response = await http.delete<number>(`/item/delete/${itemId}`);
+export async function deleteItem(itemId: string): Promise<boolean> {
+    const response = await http.delete<boolean>(`/item/delete/${itemId}`);
     return response.data;
 }
 
 export async function getItemVO(itemId: string): Promise<ItemVO> {
-    const response = await http.get<ItemVO>(`/item/vo/item/${itemId}`,);
+    const response = await http.get<ItemVO>(`/item/vo/item/${itemId}`);
     return response.data;
 }
 
-export async function getItemVOList(sellerId: number, stateCode: number, pageNo: number, pageSize: number): Promise<ItemVO> {
-    const response = await http.get<ItemVO>(`/item/vo/items`, {
-        params: {sellerId, stateCode, pageNo, pageSize}
+export async function getItemVOList(sellerId?: number, stateCode: number = 0, pageNo: number = 1, pageSize: number = 20): Promise<ItemVO[]> {
+    const response = await http.get<ItemVO[]>(`/item/vo/items`, {
+        params: { sellerId, stateCode, pageNo, pageSize }
     });
     return response.data;
 }
 
-export async function takeDownItem(itemId: string): Promise<number> {
-    const response = await http.put<number>(`/item/take-down/${itemId}`);
+export async function takeDownItem(itemId: string): Promise<boolean> {
+    const response = await http.put<boolean>(`/item/take-down/${itemId}`);
     return response.data;
 }
 
-export async function putUpItem(itemId: string): Promise<number> {
-    const response = await http.put<number>(`/item/put-up/${itemId}`);
+export async function putUpItem(itemId: string): Promise<boolean> {
+    const response = await http.put<boolean>(`/item/put-up/${itemId}`);
     return response.data;
 }
 
 export async function favorite(itemId: number): Promise<void> {
-    const response =
-        await http.post<void>(`/item/favorite/${itemId}`);
+    const response = await http.post<void>(`/item/favorite/${itemId}`);
     return response.data;
 }
 
 export async function unfavorite(itemId: number): Promise<void> {
-    const response =
-        await http.delete<void>(`/item/unfavorite/${itemId}`);
+    const response = await http.delete<void>(`/item/unfavorite/${itemId}`);
     return response.data;
 }
 
 export async function getFavoriteCount(itemId: number): Promise<number> {
-    const response =
-        await http.get<number>(`/item/favorite-count/${itemId}`);
+    const response = await http.get<number>(`/item/favorite-count/${itemId}`);
     return response.data;
 }
 

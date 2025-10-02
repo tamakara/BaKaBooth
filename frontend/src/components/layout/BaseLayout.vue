@@ -1,48 +1,54 @@
 <template>
-  <el-container class="container">
-    <el-header class="header">
-      <slot name="header"/>
-    </el-header>
-    <el-main class="main">
-      <slot name="main"/>
-    </el-main>
-    <el-footer class="footer">
-      <slot name="footer"/>
-    </el-footer>
-  </el-container>
+  <div class="base-layout">
+    <header class="header">
+      <slot name="header"></slot>
+    </header>
+    <main class="main">
+      <slot name="main"></slot>
+    </main>
+    <footer class="footer">
+      <slot name="footer">
+        <div class="footer-content">
+          <p>&copy; 2025 BaKaBooth 二手交易平台. All rights reserved.</p>
+        </div>
+      </slot>
+    </footer>
+  </div>
 </template>
 
 <script setup lang="ts">
-
 </script>
 
 <style scoped>
-.container {
-  height: 100vh;
-  width: 100vw;
-  background-color: #f1f5f8;
-}
-
-.header {
-  height: auto !important;
-  padding: 0 !important;
-  line-height: normal !important;
-  overflow: hidden !important;
-}
-
-.header :deep(.banner) {
-  height: 60px !important;
-  min-height: 60px !important;
-  max-height: 60px !important;
-}
-
-.main {
+.base-layout {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-.footer {
-  height: auto;
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+.main {
+  flex: 1;
+  background-color: #f5f5f5;
+}
+
+.footer {
+  background: #2c3e50;
+  color: white;
+  padding: 20px 0;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 0 20px;
+}
 </style>
