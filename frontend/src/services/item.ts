@@ -60,4 +60,3 @@ export async function isFavorite(itemId: number): Promise<boolean> {
     const response = await http.get<boolean>(`/item/is-favorite/${itemId}`);
     return response.data;
 }
-

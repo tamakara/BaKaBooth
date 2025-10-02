@@ -33,17 +33,3 @@ export interface ItemEditFormVO {
     images: number[]
     tags: string[]
 }
-
-export interface ItemCardVO {
-    id: string
-    name: string
-    price: number
-    sellerId: number
-    sellerName: string
-    favorites: number
-    coverUrl: string
-}
-
-
-
-
