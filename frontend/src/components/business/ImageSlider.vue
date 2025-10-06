@@ -16,7 +16,7 @@
         <el-image
             fit="contain"
             :src="image"
-            style="height: 100%"
+            style="height: 100%;width:100%"
         />
       </el-carousel-item>
     </el-carousel>
@@ -39,4 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
 const activeIndex = ref(0);
 </script>
 
-// ...existing code...
+<style scoped>
+.image-slider { width:100%; height:420px; border-radius:12px; overflow:hidden; background:#f5f7fa; }
+.image-slider :deep(.el-carousel__container){ height:100%; }
+</style>
