@@ -17,3 +17,23 @@ export async function getUserVO(sellerId?: string): Promise<UserVO> {
     });
     return response.data;
 }
+
+export async function favorite(itemId: number): Promise<void> {
+    const response = await http.post<void>(`/user/favorite/${itemId}`);
+    return response.data;
+}
+
+export async function unfavorite(itemId: number): Promise<void> {
+    const response = await http.delete<void>(`/user/unfavorite/${itemId}`);
+    return response.data;
+}
+
+export async function getFavoriteCount(itemId: number): Promise<number> {
+    const response = await http.get<number>(`/user/favorite-count/${itemId}`);
+    return response.data;
+}
+
+export async function isFavorite(itemId: number): Promise<boolean> {
+    const response = await http.get<boolean>(`/user/is-favorite/${itemId}`);
+    return response.data;
+}

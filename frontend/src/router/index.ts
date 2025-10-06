@@ -2,7 +2,7 @@ import {createRouter, createWebHistory, type RouteRecordRaw} from 'vue-router'
 
 // 导入页面组件
 import HomePage from '@/views/HomePage/HomePage.vue'
-import ItemInfoPage from '@/views/ItemInfoPage/ItemInfoPage.vue'
+import ItemPage from '@/views/ItemPage/ItemPage.vue'
 import ItemEditPage from '@/views/ItemEditPage/ItemEditPage.vue'
 import LoginPage from '@/views/LoginPage/LoginPage.vue'
 import RegisterPage from '@/views/RegisterPage/RegisterPage.vue'
@@ -16,7 +16,7 @@ import OrderEditPage from '@/views/OrderEditPage/OrderEditPage.vue'
 const routes: RouteRecordRaw[] = [
     {path: '/', name: 'home', component: HomePage},
 
-    {path: '/item/:id', name: 'item', component: ItemInfoPage},
+    {path: '/item/:id', name: 'item', component: ItemPage},
     {path: '/item/:id/edit', name: 'item-edit', component: ItemEditPage},
 
     {path: '/user/login', name: 'login', component: LoginPage},

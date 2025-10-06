@@ -37,23 +37,3 @@ export async function putUpItem(itemId: string): Promise<boolean> {
     const response = await http.put<boolean>(`/item/put-up/${itemId}`);
     return response.data;
 }
-
-export async function favorite(itemId: number): Promise<void> {
-    const response = await http.post<void>(`/item/favorite/${itemId}`);
-    return response.data;
-}
-
-export async function unfavorite(itemId: number): Promise<void> {
-    const response = await http.delete<void>(`/item/unfavorite/${itemId}`);
-    return response.data;
-}
-
-export async function getFavoriteCount(itemId: number): Promise<number> {
-    const response = await http.get<number>(`/item/favorite-count/${itemId}`);
-    return response.data;
-}
-
-export async function isFavorite(itemId: number): Promise<boolean> {
-    const response = await http.get<boolean>(`/item/is-favorite/${itemId}`);
-    return response.data;
-}

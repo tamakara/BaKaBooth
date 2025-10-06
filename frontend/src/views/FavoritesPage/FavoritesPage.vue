@@ -104,7 +104,8 @@ import {ref, onMounted} from "vue";
 import {useRouter} from "vue-router";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {PhotoIcon, HeartIcon, TrashIcon} from "@heroicons/vue/24/outline";
-import {getItemVOList, unfavorite} from "@/services/item.ts";
+import {getItemVOList} from "@/services/item.ts";
+import {unfavorite} from "@/services/user.ts";
 import type {ItemVO} from "@/types/item.d.ts";
 
 const router = useRouter();

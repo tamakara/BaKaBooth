@@ -177,7 +177,6 @@ import Banner from "@/components/business/Banner.vue";
 import {ref, reactive, computed, onMounted, nextTick} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
-import {PlusIcon} from "@heroicons/vue/24/outline";
 import type {FormInstance, FormRules, UploadUserFile, UploadProps} from "element-plus";
 import {createItem, updateItem, getItemVO} from "@/services/item.ts";
 import type {ItemEditFormVO, ItemVO} from "@/types/item.d.ts";
@@ -196,7 +195,7 @@ const publishLoading = ref(false);
 
 // 表单数据
 const formData = reactive<ItemEditFormVO>({
-  stateCode: 1, // 1: 草稿, 2: 在售
+  stateCode: 1, // 0-已删除, 1-在售 ,2-已下架, 3-已售出
   name: '',
   price: 0,
   description: '',
@@ -232,7 +231,7 @@ const rules: FormRules = {
   ],
   description: [
     { required: true, message: '请输入商品描述', trigger: 'blur' },
-    { min: 10, message: '商品描述至��10个字符', trigger: 'blur' }
+    { min: 10, message: '商品描述至少10个字符', trigger: 'blur' }
   ],
   deliveryPeriod: [
     { required: true, message: '请输入发货时间', trigger: 'blur' }
@@ -245,10 +244,33 @@ const rules: FormRules = {
   ]
 };
 
-// 加载商品数据（编辑模式）
-const loadItemData = async () => {
-  if (!isEdit.value) return;
+// 初始化页面数据
+const initPageData = async () => {
+  if (isEdit.value) {
+    // 编辑模式：加载现有商品数据
+    await loadItemData();
+  } else {
+    // 创建模式：初始化空表单
+    resetFormData();
+  }
+};
 
+// 重置表单数据到初始状态
+const resetFormData = () => {
+  formData.stateCode = 1; // 默认草稿状态
+  formData.name = '';
+  formData.price = 0;
+  formData.description = '';
+  formData.postage = '';
+  formData.returnPeriod = '';
+  formData.deliveryPeriod = '';
+  formData.images = [];
+  formData.tags = [];
+  imageFiles.value = [];
+};
+
+// 加载商品数据（仅编辑模式使用）
+const loadItemData = async () => {
   try {
     const itemData: ItemVO = await getItemVO(itemId.value);
 
@@ -271,8 +293,10 @@ const loadItemData = async () => {
     }));
 
   } catch (error) {
-    console.error('加载商品数据��败:', error);
+    console.error('加载商品数据失败:', error);
     ElMessage.error('加载商品数据失败');
+    // 如果加载失败，可以选择跳转回商品列表或首页
+    router.push('/');
   }
 };
 
@@ -331,7 +355,7 @@ const handleSaveDraft = async () => {
 
     if (isEdit.value) {
       await updateItem(itemId.value, formData);
-      ElMessage.success('草稿保��成功');
+      ElMessage.success('草稿保存成功');
     } else {
       const newItemId = await createItem(formData);
       ElMessage.success('草稿保存成功');
@@ -378,7 +402,7 @@ const handlePublish = async () => {
 
 // 页面加载时初始化
 onMounted(() => {
-  loadItemData();
+  initPageData();
 });
 </script>
 

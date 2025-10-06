@@ -28,7 +28,8 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
     @Transactional
     public Long createItem(Long userId, ItemEditFormVO formVO) {
         Item item = new Item();
-        BeanUtils.copyProperties(formVO, this);
+        BeanUtils.copyProperties(formVO, item);
+        item.setFavorites(0L);
         item.setUserId(userId);
         itemMapper.insert(item);
         return item.getId();
