@@ -7,7 +7,7 @@
       <div class="user-edit-page">
         <div class="container">
           <div class="page-header">
-            <h1>��辑个人资料</h1>
+            <h1>编辑个人资料</h1>
             <p>管理您的个人信息和账户设置</p>
           </div>
 
@@ -39,7 +39,7 @@
                       :before-upload="beforeAvatarUpload"
                       accept=".jpg,.jpeg,.png"
                   >
-                    <el-button type="primary">更��头像</el-button>
+                    <el-button type="primary">更换头像</el-button>
                   </el-upload>
                   <p class="upload-tip">支持 JPG、PNG 格式，文件大小不超过 2MB</p>
                 </div>
@@ -57,7 +57,7 @@
                   class="profile-form"
               >
                 <div class="form-row">
-                  <el-form-item label="用户���" prop="username" class="form-item">
+                  <el-form-item label="用户名" prop="username" class="form-item">
                     <el-input
                         v-model="profileForm.username"
                         placeholder="请输入用户名"
@@ -198,7 +198,7 @@ import type {UserVO} from "@/types/user";
 const router = useRouter();
 const userStore = useUserStore();
 
-// 响应式数��
+// 响应式数据
 const loading = ref(true);
 const updateLoading = ref(false);
 const userInfo = ref<UserVO>({} as UserVO);
@@ -222,8 +222,8 @@ const stats = reactive({
 // 表单验证规则
 const profileRules: FormRules = {
   username: [
-    { required: true, message: '请输入用户���', trigger: 'blur' },
-    { min: 2, max: 20, message: '用户名长度�� 2 到 20 个字符', trigger: 'blur' }
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { min: 2, max: 20, message: '用户名长度为 2 到 20 个字符', trigger: 'blur' }
   ]
 };
 
@@ -244,7 +244,7 @@ const loadUserInfo = async () => {
     profileForm.announcement = userInfo.value.announcement || '';
   } catch (error) {
     console.error('加载用户信息失败:', error);
-    ElMessage.error('加载用户信息��败');
+    ElMessage.error('加载用户信息失败');
   }
 };
 
@@ -277,7 +277,7 @@ const loadData = async () => {
   }
 };
 
-// 更新个人��料
+// 更新个人资料
 const updateProfile = async () => {
   if (!profileFormRef.value) return;
 
@@ -288,7 +288,7 @@ const updateProfile = async () => {
     // TODO: 调用更新用户信息的API
     ElMessage.success('保存成功！');
 
-    // 更新store中的用户���息
+    // 更新store中的用户信息
     await userStore.fetchUserInfo();
   } catch (error) {
     console.error('更新失败:', error);
@@ -324,7 +324,7 @@ const handleAvatarSuccess = (response: any) => {
   loadUserInfo();
 };
 
-// 快捷��作
+// 快捷操作
 const goToItemManage = () => {
   router.push('/item/manage');
 };
@@ -343,7 +343,7 @@ const goToFavorites = () => {
 
 // 安全操作
 const showChangePassword = () => {
-  ElMessage.info('修改密��功能开发中');
+  ElMessage.info('修改密码功能开发中');
 };
 
 const showDeleteAccount = async () => {

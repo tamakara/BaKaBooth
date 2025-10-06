@@ -20,9 +20,12 @@
                 v-model="loginForm.phone"
                 placeholder="请输入手机号"
                 size="large"
-                prefix-icon="Phone"
                 maxlength="11"
-            />
+            >
+              <template #prefix>
+                <DevicePhoneMobileIcon style="width: 16px; height: 16px;" />
+              </template>
+            </el-input>
           </el-form-item>
 
           <el-form-item label="密码" prop="password">
@@ -31,10 +34,13 @@
                 type="password"
                 placeholder="请输入密码"
                 size="large"
-                prefix-icon="Lock"
                 show-password
                 @keyup.enter="handleLogin"
-            />
+            >
+              <template #prefix>
+                <LockClosedIcon style="width: 16px; height: 16px;" />
+              </template>
+            </el-input>
           </el-form-item>
 
           <el-form-item>
@@ -65,6 +71,7 @@ import { ElMessage } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
 import { useUserStore } from '@/stores/user';
 import type { LoginFormDTO } from '@/types/user';
+import { DevicePhoneMobileIcon, LockClosedIcon } from '@heroicons/vue/24/outline';
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -173,4 +180,3 @@ const handleLogin = async () => {
   text-decoration: underline;
 }
 </style>
-

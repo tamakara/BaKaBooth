@@ -55,6 +55,6 @@ public class User {
         this.introduction = "";
         this.announcement = "";
         this.followers = 0L;
-        this.avatarFileId = 0L;
+        this.avatarFileId = 1L;
     }
 }

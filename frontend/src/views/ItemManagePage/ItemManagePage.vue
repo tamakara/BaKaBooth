@@ -34,7 +34,7 @@
           </div>
 
           <div v-else-if="items.length === 0" class="empty-state">
-            <el-empty description="您还���有发布任何商品">
+            <el-empty description="您还没有发布任何商品">
               <el-button type="primary" @click="createNewItem">发布第一个商品</el-button>
             </el-empty>
           </div>
@@ -104,7 +104,7 @@
                 </template>
               </el-table-column>
 
-              <el-table-column label="操���" width="200" fixed="right">
+              <el-table-column label="操作" width="200" fixed="right">
                 <template #default="{ row }">
                   <div class="item-actions">
                     <el-button size="small" @click="editItem(row.id)">编辑</el-button>
@@ -205,7 +205,7 @@ const editItem = (itemId: number) => {
 const takeDownItem = async (itemId: number) => {
   try {
     await ElMessageBox.confirm(
-        '确��要下架这个商品吗？下架后买家将无法购买。',
+        '确定要下架这个商品吗？下架后买家将无法购买。',
         '下架商品',
         {
           confirmButtonText: '确定',
@@ -239,7 +239,7 @@ const putUpItem = async (itemId: number) => {
 const deleteItem = async (itemId: number) => {
   try {
     await ElMessageBox.confirm(
-        '确定要删除这个商品���？删除后无法恢复。',
+        '确定要删除这个商品吗？删除后无法恢复。',
         '删除商品',
         {
           confirmButtonText: '确定删除',

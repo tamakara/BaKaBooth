@@ -20,9 +20,12 @@
                 v-model="registerForm.phone"
                 placeholder="请输入手机号"
                 size="large"
-                prefix-icon="Phone"
                 maxlength="11"
-            />
+            >
+              <template #prefix>
+                <DevicePhoneMobileIcon style="width: 16px; height: 16px;" />
+              </template>
+            </el-input>
           </el-form-item>
 
           <el-form-item label="密码" prop="password">
@@ -31,9 +34,12 @@
                 type="password"
                 placeholder="请输入密码（至少6位）"
                 size="large"
-                prefix-icon="Lock"
                 show-password
-            />
+            >
+              <template #prefix>
+                <LockClosedIcon style="width: 16px; height: 16px;" />
+              </template>
+            </el-input>
           </el-form-item>
 
           <el-form-item label="确认密码" prop="confirmPassword">
@@ -42,10 +48,13 @@
                 type="password"
                 placeholder="请再次输入密码"
                 size="large"
-                prefix-icon="Lock"
                 show-password
                 @keyup.enter="handleRegister"
-            />
+            >
+              <template #prefix>
+                <LockClosedIcon style="width: 16px; height: 16px;" />
+              </template>
+            </el-input>
           </el-form-item>
 
           <el-form-item>
@@ -76,6 +85,7 @@ import { ElMessage } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
 import { useUserStore } from '@/stores/user';
 import type { RegisterFormDTO } from '@/types/user';
+import { DevicePhoneMobileIcon, LockClosedIcon } from '@heroicons/vue/24/outline';
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -89,7 +99,7 @@ const registerForm = reactive<RegisterFormDTO>({
   confirmPassword: ''
 });
 
-const validateConfirmPassword = (rule: any, value: any, callback: any) => {
+const validateConfirmPassword = (_rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('请再次输入密码'));
   } else if (value !== registerForm.password) {
@@ -198,4 +208,3 @@ const handleRegister = async () => {
   text-decoration: underline;
 }
 </style>
-

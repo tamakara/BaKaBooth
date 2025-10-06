@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {
 
-    Long uploadFile(Long userId, MultipartFile multipartFile);
+    Long upload(Long userId, MultipartFile multipartFile);
 
-    String getFileVO( Long fileId,Integer time);
+    String getFileURL(Long fileId, Integer time);
 }

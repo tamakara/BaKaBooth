@@ -7,10 +7,11 @@ USE file_service_db;
 
 CREATE TABLE `file`
 (
-    `id`      BIGINT       NOT NULL AUTO_INCREMENT,
-    `user_id` BIGINT       NOT NULL,
-    `name`    VARCHAR(255) NOT NULL,
-    `hash`    VARCHAR(255) NOT NULL,
-    `size`    BIGINT       NOT NULL,
+    `id`        BIGINT       NOT NULL AUTO_INCREMENT,
+    `user_id`   BIGINT       NOT NULL,
+    `name`      VARCHAR(255) NOT NULL,
+    `hash`      VARCHAR(255) NOT NULL,
+    `size`      BIGINT       NOT NULL,
+    `created_at` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 ) DEFAULT CHARSET = utf8mb4;

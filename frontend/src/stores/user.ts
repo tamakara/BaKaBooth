@@ -48,11 +48,23 @@ export const useUserStore = defineStore('user', {
 
         async check() {
             const token = localStorage.getItem('token');
-            this.isLogged = token !== null;
-            if (this.isLogged && !this.user) {
-                await this.fetchUserInfo();
+            if (!token) {
+                this.isLogged = false;
+                this.user = null;
+                return false;
             }
-            return this.isLogged;
+
+            try {
+                // 通过获取用户信息来验证token是否有效
+                this.user = await getUserVO();
+                this.isLogged = true;
+                return true;
+            } catch (error) {
+                // token无效，清除本地存储
+                console.log('Token已失效，请重新登录', error);
+                this.logout();
+                return false;
+            }
         },
 
         logout() {

@@ -91,7 +91,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         List<String> images = imageMapper
                 .selectImagesByItemId(itemId)
                 .stream()
-                .map(image -> fileClient.getFileUrl(image.getFileId()).getBody())
+                .map(image -> fileClient.getFileURL(image.getFileId()).getBody())
                 .toList();
 
         List<String> tags = tagMapper

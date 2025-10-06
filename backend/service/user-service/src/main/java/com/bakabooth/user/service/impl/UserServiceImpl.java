@@ -80,7 +80,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         UserVO vo = new UserVO();
         BeanUtils.copyProperties(user, vo);
 
-        String avatarUrl = fileClient.getFileUrl(user.getAvatarFileId()).getBody();
+        String avatarUrl = fileClient.getFileURL(user.getAvatarFileId()).getBody();
         vo.setAvatarUrl(avatarUrl);
 
         vo.setIsCurrentUser(userId.equals(sellerId));

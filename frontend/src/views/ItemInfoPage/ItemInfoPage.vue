@@ -309,7 +309,7 @@ const fetchData = async () => {
     // 获取收藏状态
     isFavorited.value = await isFavorite(Number(itemId.value));
 
-    // ��新收藏数量
+    // 更新收藏数量
     itemVO.value.favorites = await getFavoriteCount(Number(itemId.value));
 
   } catch (error) {
@@ -351,7 +351,7 @@ const handleFavoriteClick = async () => {
 
     ElMessage.success(isFavorited.value ? '收藏成功' : '已取消收藏');
   } catch (error) {
-    ElMessage.error('操作失败���请稍后重试');
+    ElMessage.error('操作失败，请稍后重试');
   } finally {
     favoriteLoading.value = false;
   }

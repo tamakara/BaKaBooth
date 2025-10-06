@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(value = "file-service")
 public interface FileClient {
-    @GetMapping("/file")
-    ResponseEntity<String> getFileUrl(
+    @GetMapping("/url")
+    ResponseEntity<String> getFileURL(
             @RequestParam("fileId") Long fileId
     );
 }
