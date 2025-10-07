@@ -4,11 +4,9 @@ GRANT ALL PRIVILEGES ON file_service_db.* TO 'file_service_user'@'%';
 FLUSH PRIVILEGES;
 
 USE file_service_db;
-
 CREATE TABLE `file`
 (
     `id`        BIGINT       NOT NULL AUTO_INCREMENT,
-    `user_id`   BIGINT       NOT NULL,
     `name`      VARCHAR(255) NOT NULL,
     `hash`      VARCHAR(255) NOT NULL,
     `size`      BIGINT       NOT NULL,

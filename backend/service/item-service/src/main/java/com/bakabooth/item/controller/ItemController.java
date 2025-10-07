@@ -53,17 +53,17 @@ public class ItemController {
     @Operation(summary = "获取商品信息")
     @GetMapping("/vo/item/{itemId}")
     public ResponseEntity<ItemVO> getItemVO(
-            @RequestHeader("X-USER-ID") Long userId,
+            @RequestHeader(name = "X-USER-ID", required = false) Long userId,
             @PathVariable("itemId") Long itemId
     ) {
         ItemVO vo = itemService.getItemVO(userId, itemId);
         return ResponseEntity.ok(vo);
     }
 
-    @Operation(summary = "获取用户商品信息列表")
+    @Operation(summary = "获取商品信息列表")
     @GetMapping("/vo/items")
     public ResponseEntity<ItemPageVO> getItemPageVO(
-            @RequestHeader("X-USER-ID") Long userId,
+            @RequestHeader(name = "X-USER-ID", required = false) Long userId,
             @ModelAttribute ItemQueryFormVO formVO
     ) {
         ItemPageVO itemPageVO = itemService.getItemPageVO(userId, formVO);
@@ -90,5 +90,16 @@ public class ItemController {
         return ResponseEntity.ok(isTakeUp);
     }
 
-
+    @Operation(summary = "锁定商品")
+    @PutMapping("/lock/{itemId}")
+    public ResponseEntity<Boolean> lockItem(
+            @RequestHeader("X-USER-ID") Long userId,
+            @PathVariable("itemId") Long itemId
+    ) {
+        if (userId != 0) {
+            throw new RuntimeException("只有管理员可以锁定商品");
+        }
+        Boolean isLock = itemService.lockItem(itemId);
+        return ResponseEntity.ok(isLock);
+    }
 }

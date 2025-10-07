@@ -1,9 +1,11 @@
 package com.bakabooth.order.service.impl;
 
+import com.bakabooth.common.client.ItemClient;
 import com.bakabooth.order.domain.entity.Order;
 import com.bakabooth.order.domain.vo.OrderVO;
 import com.bakabooth.order.mapper.OrderMapper;
 import com.bakabooth.order.service.OrderService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -14,16 +16,27 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
     private final OrderMapper orderMapper;
+    private final ItemClient itemClient;
 
     @Override
     @Transactional
     public Long createOrder(Long userId, Long itemId) {
-        //TODO:分布式锁
+        boolean sold = exists(new LambdaQueryWrapper<Order>()
+                .eq(Order::getItemId, itemId)
+                .ne(Order::getStateCode, 0)
+        );
+        if (sold) {
+            throw new RuntimeException("商品已被购买");
+        }
+
+        itemClient.lockItem(itemId);
+
         Order order = new Order();
         order.setUserId(userId);
         order.setItemId(itemId);
         order.setStateCode(1);
-        baseMapper.insert(order);
+        orderMapper.insert(order);
+
         return order.getId();
     }
 
@@ -38,6 +51,5 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         BeanUtils.copyProperties(order, vo);
         return vo;
     }
-
 
 }

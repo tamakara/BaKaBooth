@@ -17,7 +17,7 @@ public class Item {
     @TableField(value = "user_id")
     private Long userId;
 
-    // 0-已删除, 1-在售 ,2-已下架, 3-已售出
+    // 0-已删除, 1-草稿, 2-在售, 3-已下架, 4-锁定, 5-已售出
     @TableField(value = "state_code")
     private Integer stateCode;
 

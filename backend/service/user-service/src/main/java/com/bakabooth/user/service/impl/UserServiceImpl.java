@@ -1,9 +1,7 @@
 package com.bakabooth.user.service.impl;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.bakabooth.common.client.FileClient;
-import com.bakabooth.user.config.JwtProperties;
+import com.bakabooth.common.util.JWTUtil;
 import com.bakabooth.user.domain.dto.LoginFormDTO;
 import com.bakabooth.user.domain.dto.RegisterFormDTO;
 import com.bakabooth.user.domain.entity.User;
@@ -16,15 +14,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     private final UserMapper userMapper;
     private final FileClient fileClient;
-    private final JwtProperties jwtProperties;
 
     @Override
     @Transactional
@@ -37,11 +31,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         if (user == null) throw new RuntimeException("手机号或密码错误");
 
-        String userId = user.getId().toString();
-        String jti = UUID.randomUUID().toString();
-        Algorithm algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
-
-        return JWT.create().withExpiresAt(Instant.now().plusSeconds(jwtProperties.getExpiration())).withSubject(userId).withClaim("jti", jti).sign(algorithm);
+        return JWTUtil.generateJWT(user.getId(), 3600 * 24 * 7);
     }
 
     @Override
@@ -57,18 +47,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         BeanUtils.copyProperties(registerFormDTO, user);
         updateById(user);
 
-        String jti = UUID.randomUUID().toString();
-        Algorithm algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
-
-        return JWT
-                .create()
-                .withExpiresAt(Instant
-                        .now()
-                        .plusSeconds(jwtProperties.getExpiration())
-                )
-                .withSubject(user.getId().toString())
-                .withClaim("jti", jti)
-                .sign(algorithm);
+        return JWTUtil.generateJWT(user.getId(), 3600 * 24 * 7);
     }
 
     @Override
@@ -83,7 +62,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String avatarUrl = fileClient.getFileURL(user.getAvatarFileId()).getBody();
         vo.setAvatarUrl(avatarUrl);
 
-        vo.setIsCurrentUser(userId.equals(sellerId));
+        vo.setIsCurrentUser(sellerId.equals(userId));
         if (!vo.getIsCurrentUser()) {
             vo.setPhone(null);
             vo.setCreatedAt(null);

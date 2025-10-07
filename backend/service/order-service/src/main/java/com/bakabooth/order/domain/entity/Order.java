@@ -1,5 +1,6 @@
 package com.bakabooth.order.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -7,10 +8,10 @@ import lombok.Data;
 
 import java.time.Instant;
 
-@TableName("order")
+@TableName("`order`")
 @Data
 public class Order {
-    @TableId
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     @TableField(value = "user_id")
@@ -26,10 +27,6 @@ public class Order {
     // 0 - 未支付
     @TableField(value = "pay_id")
     private Long payId;
-
-    // 0 - 未支付, 1 - 余额， 2 - 支付宝, 3 - 微信
-    @TableField(value = "pay_method_code")
-    private Integer payMethodCode;
 
     @TableField(value = "pay_amount")
     private Double payAmount;

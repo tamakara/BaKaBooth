@@ -1,9 +1,6 @@
 package com.bakabooth.gateway.filter;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import org.springframework.beans.factory.annotation.Value;
+import com.bakabooth.common.util.JWTUtil;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
@@ -13,10 +10,8 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import reactor.core.publisher.Mono;
 
 @Component
-public class JwtFilter implements GlobalFilter, Ordered {
+public class JWTFilter implements GlobalFilter, Ordered {
 
-    @Value("${jwt.secret}")
-    private String secret;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -26,15 +21,10 @@ public class JwtFilter implements GlobalFilter, Ordered {
             token = token.substring(7);
 
             try {
-                DecodedJWT decodedJWT = JWT
-                        .require(Algorithm.HMAC256(secret))
-                        .build()
-                        .verify(token);
-
-                String userId = decodedJWT.getSubject();
+                long userId = JWTUtil.decodeJWT(token);
                 exchange = exchange
                         .mutate()
-                        .request(r -> r.header("X-USER-ID", userId))
+                        .request(r -> r.header("X-USER-ID", String.valueOf(userId)))
                         .build();
 
             } catch (Exception e) {

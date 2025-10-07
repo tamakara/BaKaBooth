@@ -15,9 +15,6 @@ public class File {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @TableField(value = "user_id")
-    private Long userId;
-
     @TableField(value = "name")
     private String name;
 

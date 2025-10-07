@@ -23,4 +23,6 @@ public interface ItemService extends IService<Item> {
     Boolean takeDownItem(Long userId, Long itemId);
 
     Boolean putUpItem(Long userId, Long itemId);
+
+    Boolean lockItem(Long itemId);
 }

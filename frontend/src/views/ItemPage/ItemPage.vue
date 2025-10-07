@@ -103,7 +103,7 @@
                 <div class="price-row" v-if="!loading">
                   <span class="currency">¥</span>
                   <span class="amount">{{ formatPrice(itemVO.price) }}</span>
-                  <el-tag v-if="itemVO.stateCode !== 2" size="small" type="warning" effect="light">已下架</el-tag>
+                  <el-tag v-if="itemVO.stateCode ===0" size="small" type="warning" effect="light">已下架</el-tag>
                 </div>
                 <div v-else class="price-skeleton">
                   <el-skeleton-item variant="text" style="width:160px;height:40px"/>
@@ -131,7 +131,7 @@
                     </el-icon>
                     {{ isFavorited ? '已收藏' : '收藏' }}
                   </el-button>
-                  <el-button type="primary" :disabled="loading || itemVO.stateCode !== 2" @click="handleBuy">
+                  <el-button type="primary" :disabled="loading || itemVO.stateCode !==2" @click="handleBuy">
                     立即购买
                   </el-button>
                   <el-button @click="shareItem">分享</el-button>
@@ -181,7 +181,7 @@ const loading = ref(true)
 const pageLoading = ref(false)
 const favoriteLoading = ref(false)
 const isFavorited = ref(false)
-const isFollowed = ref(false) // TODO: 后端跟进
+const isFollowed = ref(false)
 const favoriteCount = ref(0)
 
 const itemId = computed(() => route.params.id as string)
@@ -242,11 +242,11 @@ async function toggleFavorite() {
 }
 
 async function handleBuy() {
-  if (loading.value || itemVO.value.stateCode !== 2) return
+  if (loading.value) return
   try {
     pageLoading.value = true
     const orderId = await createOrder(Number(itemId.value))
-    router.push({name: 'order-edit', params: {id: orderId}})
+    await router.push({name: 'order-edit', params: {id: orderId}})
   } catch {
     ElMessage.error('创建订单失败')
   } finally {
@@ -304,7 +304,6 @@ onMounted(fetchData)
 </script>
 
 <style scoped>
-/* 覆盖之前插入的样式保持一致，避免重复，这里只补充未展示部分 */
 .item-page {
   min-height: 100vh;
   background: linear-gradient(180deg, #f8faff 0%, #f5f5f5 100%);

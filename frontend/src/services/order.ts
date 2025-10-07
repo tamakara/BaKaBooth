@@ -5,7 +5,7 @@ export async function createOrder(itemId: number): Promise<number> {
     return response.data;
 }
 
-export async function getOrderVO(orderId: string): Promise<any> {
+export async function getOrderVO(orderId: number): Promise<any> {
     const response = await http.get<any>(`/order/vo/order/${orderId}`);
     return response.data;
 }

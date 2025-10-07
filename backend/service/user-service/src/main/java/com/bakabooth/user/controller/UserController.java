@@ -33,7 +33,7 @@ public class UserController {
     @Operation(summary = "获取用户信息")
     @GetMapping("/vo/user")
     public ResponseEntity<UserVO> getUserVO(
-            @RequestHeader("X-USER-ID") Long userId,
+            @RequestHeader(name = "X-USER-ID", required = false) Long userId,
             @RequestParam(name = "sellerId", required = false) Long sellerId
     ) {
         if (sellerId == null) sellerId = userId;

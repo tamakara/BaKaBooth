@@ -15,16 +15,18 @@
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
         </processorPath>
+        <module name="common" />
         <module name="item-service" />
         <module name="order-service" />
-        <module name="pay-service" />
         <module name="user-service" />
         <module name="file-service" />
+        <module name="gateway" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="api" target="17" />
       <module name="authorization-server" target="17" />
+      <module name="pay-service" target="17" />
       <module name="shop-service" target="17" />
     </bytecodeTargetLevel>
   </component>

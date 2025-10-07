@@ -107,10 +107,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         BeanUtils.copyProperties(item, vo);
         vo.setImages(images);
         vo.setTags(tags);
-        vo.setIsSeller(userId.equals(item.getUserId()));
-        if (!vo.getIsSeller()) {
-            vo.setStateCode(null);
-        }
+        vo.setIsSeller(item.getUserId().equals(userId));
 
         return vo;
     }
@@ -124,7 +121,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         if (formVO.getSellerId() == 0) {
             // 获取所有在售商品
             wrapper.eq(Item::getStateCode, 2);
-        } else if (userId.equals(formVO.getSellerId())) {
+        } else if (formVO.getSellerId().equals(userId)) {
             // 获取自己的特定状态商品
             wrapper
                     .ne(Item::getStateCode, 0)
@@ -173,6 +170,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
     }
 
     @Override
+    @Transactional
     public Boolean putUpItem(Long userId, Long itemId) {
         Item item = itemMapper.selectById(itemId);
         if (!userId.equals(item.getUserId())) {
@@ -190,6 +188,18 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .set(Item::getStateCode, 2);
 
         return null;
+    }
+
+    @Override
+    @Transactional
+    public Boolean lockItem(Long itemId) {
+        Item item = itemMapper.selectById(itemId);
+        if (item.getStateCode() != 2) {
+            throw new RuntimeException("商品状态异常");
+        }
+        item.setStateCode(4);
+        updateById(item);
+        return true;
     }
 
 }

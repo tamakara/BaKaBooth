@@ -11,6 +11,7 @@
       <set>
         <option value="$PROJECT_DIR$/backend/api/pom.xml" />
         <option value="$PROJECT_DIR$/backend/authorization-server/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/service/pay-service/pom.xml" />
         <option value="$PROJECT_DIR$/backend/service/shop-service/pom.xml" />
       </set>
     </option>

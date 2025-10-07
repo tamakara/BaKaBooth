@@ -31,6 +31,13 @@ spring:
               filters:
                 - RewritePath=/file/(?<segment>.*), /${segment}
 
+            - id: order
+              uri: lb://order-service
+              predicates:
+                - Path=/order/**
+              filters:
+                - RewritePath=/order/(?<segment>.*), /${segment}
+
           globalcors:
             cors-configurations:
               '[/**]':
@@ -45,5 +52,3 @@ spring:
                   - "*"
                 allowCredentials: false
                 maxAge: 3600
-jwt:
-  secret: tamakara

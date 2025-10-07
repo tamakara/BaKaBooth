@@ -75,7 +75,6 @@
               <div class="filters">
                 <el-select v-model="stateCode" @change="loadItems" placeholder="商品状态" class="filter-select">
                   <el-option label="全部" :value="0"/>
-                  <el-option label="在售" :value="2"/>
                 </el-select>
               </div>
             </div>
@@ -178,7 +177,7 @@ const router = useRouter();
 const searchKeyword = ref('');
 const items = ref<ItemVO[]>([]);
 const loading = ref(false);
-const stateCode = ref(2);
+const stateCode = ref(0);
 const currentPage = ref(1);
 const pageSize = ref(20);
 const total = ref(0);

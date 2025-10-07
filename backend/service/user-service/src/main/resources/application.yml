@@ -26,9 +26,3 @@ mybatis-plus:
     db-config:
       id-type: assign_id
       update-strategy: not_null
-
-jwt:
-  secret: tamakara
-  expiration: 604800
-
-

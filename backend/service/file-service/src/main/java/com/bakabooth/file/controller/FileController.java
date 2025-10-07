@@ -17,19 +17,26 @@ public class FileController {
     @Operation(summary = "上传文件")
     @PostMapping("/upload")
     public ResponseEntity<Long> upload(
-            @RequestHeader(name = "X-USER-ID", defaultValue = "0") Long userId,
+            @RequestHeader(name = "X-USER-ID") Long userId,
             @RequestParam("file") MultipartFile file
     ) {
-        Long fileId = fileService.upload(userId, file);
+        if (userId != 0) {
+            throw new RuntimeException("仅管理员可上传文件");
+        }
+        Long fileId = fileService.upload(file);
         return ResponseEntity.ok(fileId);
     }
 
     @Operation(summary = "获取文件URL")
     @GetMapping("/url")
     public ResponseEntity<String> getFileURL(
+            @RequestHeader(name = "X-USER-ID") Long userId,
             @RequestParam("fileId") Long fileId,
             @RequestParam(name = "time", defaultValue = "86400") Integer time
     ) {
+        if (userId != 0) {
+            throw new RuntimeException("仅管理员可获取文件URL");
+        }
         String url = fileService.getFileURL(fileId, time);
         return ResponseEntity.ok(url);
     }

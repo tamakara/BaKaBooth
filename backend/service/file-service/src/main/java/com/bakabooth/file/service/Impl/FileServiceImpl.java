@@ -17,9 +17,8 @@ public class FileServiceImpl implements FileService {
     private final FileMapper fileMapper;
 
     @Transactional
-    public Long upload(Long userId, MultipartFile multipartFile) {
+    public Long upload( MultipartFile multipartFile) {
         File file = new File();
-        file.setUserId(userId);
         file.setName(multipartFile.getOriginalFilename());
         file.setHash(HashUtil.calculateHash(multipartFile));
         file.setSize(multipartFile.getSize());
