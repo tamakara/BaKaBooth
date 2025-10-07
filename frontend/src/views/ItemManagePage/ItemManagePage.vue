@@ -160,7 +160,7 @@ import {ref, onMounted} from "vue";
 import {useRouter} from "vue-router";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {PlusIcon, PhotoIcon, HeartIcon} from "@heroicons/vue/24/outline";
-import {getItemVOList, deleteItem as deleteItemApi, takeDownItem as takeDownItemApi, putUpItem as putUpItemApi} from "@/services/item.ts";
+import {getItemPageVO, deleteItem as deleteItemApi, takeDownItem as takeDownItemApi, putUpItem as putUpItemApi} from "@/services/item.ts";
 import type {ItemVO} from "@/types/item.d.ts";
 import {useUserStore} from "@/stores/user";
 

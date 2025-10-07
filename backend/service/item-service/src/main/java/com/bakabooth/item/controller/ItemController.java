@@ -1,6 +1,8 @@
 package com.bakabooth.item.controller;
 
 import com.bakabooth.item.domain.vo.ItemEditFormVO;
+import com.bakabooth.item.domain.vo.ItemPageVO;
+import com.bakabooth.item.domain.vo.ItemQueryFormVO;
 import com.bakabooth.item.domain.vo.ItemVO;
 import com.bakabooth.item.service.ItemService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,9 +23,9 @@ public class ItemController {
     @PostMapping("/create")
     public ResponseEntity<Long> createItem(
             @RequestHeader("X-USER-ID") Long userId,
-            @RequestBody ItemEditFormVO itemEditFormVO
+            @RequestBody ItemEditFormVO formVO
     ) {
-        Long itemId = itemService.createItem(userId, itemEditFormVO);
+        Long itemId = itemService.createItem(userId, formVO);
         return ResponseEntity.ok(itemId);
     }
 
@@ -32,9 +34,9 @@ public class ItemController {
     public ResponseEntity<Boolean> updateItem(
             @RequestHeader("X-USER-ID") Long userId,
             @PathVariable("itemId") Long itemId,
-            @RequestBody ItemEditFormVO itemEditFormVO
+            @RequestBody ItemEditFormVO formVO
     ) {
-        Boolean isUpdate = itemService.updateItem(userId, itemId, itemEditFormVO);
+        Boolean isUpdate = itemService.updateItem(userId, itemId, formVO);
         return ResponseEntity.ok(isUpdate);
     }
 
@@ -58,18 +60,14 @@ public class ItemController {
         return ResponseEntity.ok(vo);
     }
 
-    @Operation(summary = "获取商品信息列表")
+    @Operation(summary = "获取用户商品信息列表")
     @GetMapping("/vo/items")
-    public ResponseEntity<List<ItemVO>> getItemVOList(
+    public ResponseEntity<ItemPageVO> getItemPageVO(
             @RequestHeader("X-USER-ID") Long userId,
-            @RequestParam(name = "sellerId", required = false) Long sellerId,
-            @RequestParam(name = "stateCode", defaultValue = "0") Integer stateCode,
-            @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
+            @ModelAttribute ItemQueryFormVO formVO
     ) {
-        if (sellerId == null) sellerId = userId;
-        List<ItemVO> itemVOList = itemService.getItemVOList(userId, sellerId,  stateCode, pageNo, pageSize);
-        return ResponseEntity.ok(itemVOList);
+        ItemPageVO itemPageVO = itemService.getItemPageVO(userId, formVO);
+        return ResponseEntity.ok(itemPageVO);
     }
 
     @Operation(summary = "下架商品")
@@ -91,4 +89,6 @@ public class ItemController {
         Boolean isTakeUp = itemService.putUpItem(userId, itemId);
         return ResponseEntity.ok(isTakeUp);
     }
+
+
 }

@@ -3,6 +3,8 @@ package com.bakabooth.item.service.impl;
 import com.bakabooth.common.client.FileClient;
 import com.bakabooth.item.domain.entity.*;
 import com.bakabooth.item.domain.vo.ItemEditFormVO;
+import com.bakabooth.item.domain.vo.ItemPageVO;
+import com.bakabooth.item.domain.vo.ItemQueryFormVO;
 import com.bakabooth.item.domain.vo.ItemVO;
 import com.bakabooth.item.mapper.*;
 import com.bakabooth.item.service.ItemService;
@@ -37,16 +39,16 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
 
     @Override
     @Transactional
-    public Boolean updateItem(Long userId, Long itemId, ItemEditFormVO itemEditFormVO) {
+    public Boolean updateItem(Long userId, Long itemId, ItemEditFormVO formVO) {
         Item item = itemMapper.selectById(itemId);
         if (!userId.equals(item.getUserId())) {
             throw new RuntimeException("没有权限");
         }
-        BeanUtils.copyProperties(itemEditFormVO, item);
+        BeanUtils.copyProperties(formVO, item);
         updateById(item);
 
         imageMapper.delete(new LambdaQueryWrapper<Image>().eq(Image::getItemId, itemId));
-        List<Long> images = itemEditFormVO.getImages();
+        List<Long> images = formVO.getImages();
         for (int index = 0; index < images.size(); index++) {
             Image image = new Image();
             image.setItemId(itemId);
@@ -56,7 +58,7 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         }
 
         tagMapper.delete(new LambdaQueryWrapper<Tag>().eq(Tag::getItemId, itemId));
-        List<String> tags = itemEditFormVO.getTags();
+        List<String> tags = formVO.getTags();
         for (int index = 0; index < tags.size(); index++) {
             Tag tag = new Tag();
             tag.setItemId(itemId);
@@ -115,20 +117,38 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
 
     @Override
     @Transactional(readOnly = true)
-    public List<ItemVO> getItemVOList(Long userId, Long sellerId, Integer stateCode, Integer pageNo, Integer pageSize) {
+    public ItemPageVO getItemPageVO(Long userId, ItemQueryFormVO formVO) {
+        Page<Item> page = new Page<>(formVO.getPageNo(), formVO.getPageSize());
+        LambdaQueryWrapper<Item> wrapper = new LambdaQueryWrapper<>();
 
-        Page<Item> page = new Page<>(pageNo, pageSize);
+        if (formVO.getSellerId() == 0) {
+            // 获取所有在售商品
+            wrapper.eq(Item::getStateCode, 2);
+        } else if (userId.equals(formVO.getSellerId())) {
+            // 获取自己的特定状态商品
+            wrapper
+                    .ne(Item::getStateCode, 0)
+                    .eq(Item::getUserId, formVO.getSellerId())
+                    .eq(formVO.getStateCode() != null, Item::getStateCode, formVO.getStateCode());
+        } else {
+            // 获取他人的在售商品
+            wrapper.
+                    eq(Item::getUserId, formVO.getSellerId()).
+                    eq(Item::getStateCode, 1);
+        }
 
-        itemMapper.selectPage(page, new LambdaQueryWrapper<Item>()
-                .eq(Item::getUserId, userId)
-                .eq(stateCode != 0, Item::getStateCode, stateCode)
-        );
+        itemMapper.selectPage(page, wrapper);
 
-        return page
+        ItemPageVO vo = new ItemPageVO();
+        BeanUtils.copyProperties(page, vo);
+        vo.setRecords(page
                 .getRecords()
                 .stream()
                 .map(item -> getItemVO(userId, item.getId()))
-                .toList();
+                .toList()
+        );
+
+        return vo;
     }
 
     @Override

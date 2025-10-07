@@ -33,3 +33,20 @@ export interface ItemEditFormVO {
     images: number[]
     tags: string[]
 }
+
+export interface ItemQueryFormVO {
+    sellerId?: number
+    stateCode?: number
+    pageNo?: number
+    pageSize?: number
+    keyword?: string
+    isFavorite?: boolean
+}
+
+export interface ItemPageVO {
+    records: ItemVO[]
+    total: number
+    size: number
+    current: number
+}
+

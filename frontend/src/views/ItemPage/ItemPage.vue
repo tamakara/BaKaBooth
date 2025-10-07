@@ -36,16 +36,6 @@
               </div>
 
               <div class="section-card">
-                <h3 class="section-title">物流与售后</h3>
-                <el-descriptions :column="1" border v-if="!loading">
-                  <el-descriptions-item label="发货时间">{{ itemVO.deliveryPeriod || '——' }}</el-descriptions-item>
-                  <el-descriptions-item label="运费说明">{{ itemVO.postage || '——' }}</el-descriptions-item>
-                  <el-descriptions-item label="退换政策">{{ itemVO.returnPeriod || '——' }}</el-descriptions-item>
-                </el-descriptions>
-                <el-skeleton v-else :rows="3" animated/>
-              </div>
-
-              <div class="section-card">
                 <h3 class="section-title">商品标签</h3>
                 <div v-if="!loading" class="tags-wrapper">
                   <template v-if="itemVO.tags && itemVO.tags.length">
@@ -66,6 +56,42 @@
 
             <!-- 右侧：核心信息 -->
             <div class="right-column">
+              <div class="seller-card info-card">
+                <div class="seller-header">
+                  <div class="avatar-box">
+                    <el-skeleton animated v-if="loading">
+                      <template #template>
+                        <el-skeleton-item variant="circle" style="width:64px;height:64px"/>
+                      </template>
+                    </el-skeleton>
+                    <el-avatar v-else :size="64" :src="sellerVO.avatarUrl"/>
+                  </div>
+                  <div class="seller-main" v-if="!loading">
+                    <div class="seller-top">
+                      <span class="seller-name" @click="goSeller">{{ sellerVO.username }}</span>
+                      <el-tag v-if="sellerVO.isCurrentUser" size="small" type="success" effect="dark">我</el-tag>
+                    </div>
+                    <div class="seller-meta-line">
+                      关注者 {{ sellerVO.followers || 0 }}
+                    </div>
+                    <div class="seller-actions">
+                      <el-button size="small" :type="isFollowed ? 'primary':'default'" @click="toggleFollow">
+                        <el-icon style="margin-right:4px">
+                          <StarIcon/>
+                        </el-icon>
+                        {{ isFollowed ? '已关注' : '关注' }}
+                      </el-button>
+                      <el-button size="small" type="primary" plain @click="chatSeller">
+                        <el-icon style="margin-right:4px">
+                          <ChatBubbleOvalLeftEllipsisIcon/>
+                        </el-icon>
+                        联系
+                      </el-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div class="info-card">
                 <div class="title-row">
                   <h1 class="item-name">
@@ -111,41 +137,16 @@
                   <el-button @click="shareItem">分享</el-button>
                   <el-button type="warning" @click="reportItem" plain>举报</el-button>
                 </div>
-              </div>
 
-              <div class="seller-card info-card">
-                <div class="seller-header">
-                  <div class="avatar-box">
-                    <el-skeleton animated v-if="loading">
-                      <template #template>
-                        <el-skeleton-item variant="circle" style="width:64px;height:64px"/>
-                      </template>
-                    </el-skeleton>
-                    <el-avatar v-else :size="64" :src="sellerVO.avatarUrl"/>
-                  </div>
-                  <div class="seller-main" v-if="!loading">
-                    <div class="seller-top">
-                      <span class="seller-name" @click="goSeller">{{ sellerVO.username }}</span>
-                      <el-tag v-if="sellerVO.isCurrentUser" size="small" type="success" effect="dark">我</el-tag>
-                    </div>
-                    <div class="seller-meta-line">
-                      关注者 {{ sellerVO.followers || 0 }}
-                    </div>
-                    <div class="seller-actions">
-                      <el-button size="small" :type="isFollowed ? 'primary':'default'" @click="toggleFollow">
-                        <el-icon style="margin-right:4px">
-                          <StarIcon/>
-                        </el-icon>
-                        {{ isFollowed ? '已关注' : '关注' }}
-                      </el-button>
-                      <el-button size="small" type="primary" plain @click="chatSeller">
-                        <el-icon style="margin-right:4px">
-                          <ChatBubbleOvalLeftEllipsisIcon/>
-                        </el-icon>
-                        联系
-                      </el-button>
-                    </div>
-                  </div>
+                <!-- 新增：整合 物流与售后 -->
+                <div class="logistics-section">
+                  <h3 class="section-title">物流与售后</h3>
+                  <el-descriptions :column="1" border v-if="!loading">
+                    <el-descriptions-item label="发货时间">{{ itemVO.deliveryPeriod || '——' }}</el-descriptions-item>
+                    <el-descriptions-item label="运费说明">{{ itemVO.postage || '——' }}</el-descriptions-item>
+                    <el-descriptions-item label="退换政策">{{ itemVO.returnPeriod || '——' }}</el-descriptions-item>
+                  </el-descriptions>
+                  <el-skeleton v-else :rows="3" animated/>
                 </div>
               </div>
 
@@ -466,6 +467,12 @@ onMounted(fetchData)
 .seller-actions {
   display: flex;
   gap: 8px;
+  margin-top: 4px;
+}
+
+.logistics-section {
+  border-top: 1px solid #f0f2f5;
+  padding-top: 8px;
   margin-top: 4px;
 }
 

@@ -191,7 +191,7 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import type {FormInstance, FormRules, UploadProps} from "element-plus";
 import {ShoppingBagIcon, PlusIcon, UserIcon, HeartIcon} from "@heroicons/vue/24/outline";
 import {getUserVO} from "@/services/user.ts";
-import {getItemVOList} from "@/services/item.ts";
+import {getItemPageVO} from "@/services/item.ts";
 import {useUserStore} from "@/stores/user";
 import type {UserVO} from "@/types/user";
 

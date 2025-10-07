@@ -1,5 +1,5 @@
 import http from "@/services/http.ts";
-import type {ItemEditFormVO, ItemVO} from "@/types/item.d.ts";
+import type {ItemEditFormVO, ItemPageVO, ItemQueryFormVO, ItemVO} from "@/types/item.d.ts";
 
 export async function createItem(formData: ItemEditFormVO): Promise<number> {
     const response = await http.post<number>('/item/create', formData);
@@ -21,10 +21,8 @@ export async function getItemVO(itemId: string): Promise<ItemVO> {
     return response.data;
 }
 
-export async function getItemVOList(sellerId?: number, stateCode: number = 0, pageNo: number = 1, pageSize: number = 20): Promise<ItemVO[]> {
-    const response = await http.get<ItemVO[]>(`/item/vo/items`, {
-        params: { sellerId, stateCode, pageNo, pageSize }
-    });
+export async function getItemPageVO(formData: ItemQueryFormVO): Promise<ItemPageVO> {
+    const response = await http.get<ItemPageVO>(`/item/vo/items`, {params: formData});
     return response.data;
 }
 

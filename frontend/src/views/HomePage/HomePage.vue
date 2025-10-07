@@ -165,12 +165,12 @@
 <script setup lang="ts">
 import BaseLayout from "@/components/layout/BaseLayout.vue";
 import Banner from "@/components/business/Banner.vue";
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
-import { ElMessage } from "element-plus";
-import { MagnifyingGlassIcon, PhotoIcon, HeartIcon, ShieldCheckIcon } from "@heroicons/vue/24/outline";
-import { getItemVOList } from "@/services/item.ts";
-import type { ItemVO } from "@/types/item.d.ts";
+import {ref, onMounted} from "vue";
+import {useRouter} from "vue-router";
+import {ElMessage} from "element-plus";
+import {MagnifyingGlassIcon, PhotoIcon, HeartIcon, ShieldCheckIcon} from "@heroicons/vue/24/outline";
+import {getItemPageVO} from "@/services/item.ts";
+import type {ItemVO} from "@/types/item.d.ts";
 
 const router = useRouter();
 
@@ -180,28 +180,35 @@ const items = ref<ItemVO[]>([]);
 const loading = ref(false);
 const stateCode = ref(2);
 const currentPage = ref(1);
-const pageSize = ref(16);
+const pageSize = ref(20);
 const total = ref(0);
 
 // 分类数据
 const categories = ref([
-  { name: '数码产品', icon: '📱' },
-  { name: '服装配饰', icon: '👕' },
-  { name: '家居用品', icon: '🏠' },
-  { name: '图书文具', icon: '📚' },
-  { name: '运动户外', icon: '⚽' },
-  { name: '美妆护肤', icon: '💄' },
-  { name: '母婴用品', icon: '👶' },
-  { name: '其他商品', icon: '🎁' },
+  {name: '数码产品', icon: '📱'},
+  {name: '服装配饰', icon: '👕'},
+  {name: '家居用品', icon: '🏠'},
+  {name: '图书文具', icon: '📚'},
+  {name: '运动户外', icon: '⚽'},
+  {name: '美妆护肤', icon: '💄'},
+  {name: '母婴用品', icon: '👶'},
+  {name: '其他商品', icon: '🎁'},
 ]);
 
 // 加载商品列表
 const loadItems = async () => {
   try {
     loading.value = true;
-    const itemList = await getItemVOList(undefined, stateCode.value, currentPage.value, pageSize.value);
-    items.value = itemList;
-    total.value = itemList.length; // 这里应该从后端返回总数，暂时用当前列表长度
+    const page = await getItemPageVO({
+      sellerId: 0,
+      pageNo: currentPage.value,
+      pageSize: pageSize.value,
+      stateCode: stateCode.value,
+      keyword: searchKeyword.value.trim(),
+    });
+    items.value = page.records;
+    currentPage.value = page.current;
+    total.value = page.total;
   } catch (error) {
     console.error('加载商品失败:', error);
     ElMessage.error('加载商品失败');
@@ -213,10 +220,9 @@ const loadItems = async () => {
 // 搜索处理
 const handleSearch = () => {
   if (searchKeyword.value.trim()) {
-    // TODO: 实现搜索功能
-    ElMessage.info('搜索功能开发中');
-  } else {
     loadItems();
+  } else {
+    ElMessage.error('搜索失败');
   }
 };
 
@@ -388,8 +394,12 @@ onMounted(() => {
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
 /* Categories Section */

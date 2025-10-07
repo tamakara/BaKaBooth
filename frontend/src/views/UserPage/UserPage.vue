@@ -146,9 +146,18 @@ import ItemGrid from "./components/ItemGrid.vue";
 import {ref, onMounted, computed, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
-import {UserIcon, CalendarIcon, BuildingStorefrontIcon, BellIcon, StarIcon, ChatBubbleLeftEllipsisIcon, PencilIcon, PlusIcon} from "@heroicons/vue/24/outline";
+import {
+  UserIcon,
+  CalendarIcon,
+  BuildingStorefrontIcon,
+  BellIcon,
+  StarIcon,
+  ChatBubbleLeftEllipsisIcon,
+  PencilIcon,
+  PlusIcon
+} from "@heroicons/vue/24/outline";
 import {getUserVO} from "@/services/user.ts";
-import {getItemVOList} from "@/services/item.ts";
+import {getItemPageVO} from "@/services/item.ts";
 import type {UserVO, ItemVO} from "@/types/user";
 import {useUserStore} from "@/stores/user";
 
@@ -170,7 +179,7 @@ const sortBy = ref('newest');
 // 计算属性
 const userId = computed(() => route.params.id as string);
 const isOwnProfile = computed(() =>
-  userStore.currentUser && userStore.currentUser.id.toString() === userId.value
+    userStore.currentUser && userStore.currentUser.id.toString() === userId.value
 );
 
 // 监听路由变化
@@ -293,9 +302,12 @@ const goToItemCreate = () => {
 // 获取店铺��态文本
 const getShopStateText = (stateCode: number) => {
   switch (stateCode) {
-    case 1: return '正常营业';
-    case 2: return '暂停营业';
-    default: return '未开通';
+    case 1:
+      return '正常营业';
+    case 2:
+      return '暂停营业';
+    default:
+      return '未开通';
   }
 };
 

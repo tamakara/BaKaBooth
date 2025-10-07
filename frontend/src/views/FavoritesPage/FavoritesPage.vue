@@ -104,7 +104,7 @@ import {ref, onMounted} from "vue";
 import {useRouter} from "vue-router";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {PhotoIcon, HeartIcon, TrashIcon} from "@heroicons/vue/24/outline";
-import {getItemVOList} from "@/services/item.ts";
+import {getItemPageVO} from "@/services/item.ts";
 import {unfavorite} from "@/services/user.ts";
 import type {ItemVO} from "@/types/item.d.ts";
 
@@ -121,10 +121,13 @@ const total = ref(0);
 const loadFavoriteItems = async () => {
   try {
     loading.value = true;
-    // TODO: 这里应该调用获取收藏商品的接口，暂时用普通商品列表代替
-    const itemList = await getItemVOList(undefined, 2, currentPage.value, pageSize.value);
-    favoriteItems.value = itemList;
-    total.value = itemList.length;
+    const page = await getItemPageVO({
+      page: currentPage.value,
+      pageSize: pageSize.value,
+      isFavorite: true,
+    });
+    favoriteItems.value = page.records;
+    total.value = page.total;
   } catch (error) {
     console.error('加载收藏商品失败:', error);
     ElMessage.error('加载收藏商品失败');
