@@ -28,7 +28,8 @@
           <div v-if="loading" class="loading-table">
             <el-skeleton animated>
               <template #template>
-                <el-skeleton-item variant="text" style="width: 100%; height: 40px; margin-bottom: 10px;" v-for="i in 8" :key="i"/>
+                <el-skeleton-item variant="text" style="width: 100%; height: 40px; margin-bottom: 10px;" v-for="i in 8"
+                                  :key="i"/>
               </template>
             </el-skeleton>
           </div>
@@ -160,7 +161,12 @@ import {ref, onMounted} from "vue";
 import {useRouter} from "vue-router";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {PlusIcon, PhotoIcon, HeartIcon} from "@heroicons/vue/24/outline";
-import {getItemPageVO, deleteItem as deleteItemApi, takeDownItem as takeDownItemApi, putUpItem as putUpItemApi} from "@/services/item.ts";
+import {
+  getItemPageVO,
+  deleteItem as deleteItemApi,
+  takeDownItem as takeDownItemApi,
+  putUpItem as putUpItemApi
+} from "@/services/item.ts";
 import type {ItemVO} from "@/types/item.d.ts";
 import {useUserStore} from "@/stores/user";
 
@@ -180,9 +186,14 @@ const loadItems = async () => {
   try {
     loading.value = true;
     // 获取当前用户的商品列表
-    const itemList = await getItemVOList(userStore.currentUser?.id, selectedStatus.value, currentPage.value, pageSize.value);
-    items.value = itemList;
-    total.value = itemList.length;
+    const page = await getItemPageVO({
+      sellerId: userStore.user.id,
+      stateCode: selectedStatus.value,
+      pageNo: currentPage.value,
+      pageSize: pageSize.value,
+    });
+    items.value = page.records;
+    total.value = page.total;
   } catch (error) {
     console.error('加载商品失败:', error);
     ElMessage.error('加载商品失败');
@@ -267,20 +278,28 @@ const handlePageChange = (page: number) => {
 // 获取状态类型
 const getStatusType = (stateCode: number) => {
   switch (stateCode) {
-    case 1: return 'info';
-    case 2: return 'success';
-    case 3: return 'warning';
-    default: return '';
+    case 1:
+      return 'info';
+    case 2:
+      return 'success';
+    case 3:
+      return 'warning';
+    default:
+      return '';
   }
 };
 
 // 获取状态文本
 const getStatusText = (stateCode: number) => {
   switch (stateCode) {
-    case 1: return '草稿';
-    case 2: return '在售';
-    case 3: return '已下架';
-    default: return '未知';
+    case 1:
+      return '草稿';
+    case 2:
+      return '在售';
+    case 3:
+      return '已下架';
+    default:
+      return '未知';
   }
 };
 

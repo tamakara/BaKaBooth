@@ -13,7 +13,6 @@ CREATE TABLE `order`
     `pay_id`            BIGINT    DEFAULT NULL,
     `pay_amount`        DOUBLE    DEFAULT NULL,
     `created_at`        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `pay_at`            TIMESTAMP DEFAULT NULL,
     `delivery_at`       TIMESTAMP DEFAULT NULL,
     `receive_at`        TIMESTAMP DEFAULT NULL,
     `finish_at`         TIMESTAMP DEFAULT NULL,

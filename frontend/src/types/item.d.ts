@@ -2,14 +2,14 @@ export interface ItemVO {
     id: number
     userId: number
     isSeller: boolean
-    stateCode: number
+    stateCode: number// 0-已删除, 1-草稿, 2-在售, 3-已下架, 4-锁定, 5-已售出
+    deliveryMethodCode: number// 0-无需邮寄, 1-包邮, 2-固定邮费
+
+    price: number
+    postage: string
 
     name: string
-    price: number
     description: string
-    postage: string
-    returnPeriod: string
-    deliveryPeriod: string
 
     favorites: number
 
@@ -17,21 +17,19 @@ export interface ItemVO {
     updatedAt: string
 
     images: string[]
-    tags: string[]
 }
 
 export interface ItemEditFormVO {
-    stateCode: number
+    stateCode: number// 0-已删除, 1-草稿, 2-在售, 3-已下架, 4-锁定, 5-已售出
+    deliveryMethodCode: number// 0-无需邮寄, 1-包邮, 2-固定邮费
 
     name: string
-    price: number
     description: string
-    postage: string
-    returnPeriod: string
-    deliveryPeriod: string
+
+    price: number
+    postage: number
 
     images: number[]
-    tags: string[]
 }
 
 export interface ItemQueryFormVO {

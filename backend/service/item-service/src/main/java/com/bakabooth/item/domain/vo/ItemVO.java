@@ -11,13 +11,13 @@ public class ItemVO {
     private Long userId;
     private Boolean isSeller;
     private Integer stateCode;
+    private Integer deliveryMethodCode;
+
+    private Double price;
+    private Integer postage;
 
     private String name;
-    private Double price;
     private String description;
-    private Integer postage;
-    private Integer returnPeriod;
-    private Integer deliveryPeriod;
 
     private Long favorites;
 
@@ -25,5 +25,4 @@ public class ItemVO {
     private Instant updatedAt;
 
     private List<String> images;
-    private List<String> tags;
 }

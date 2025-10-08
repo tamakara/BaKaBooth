@@ -11,7 +11,6 @@ import UserPage from '@/views/UserPage/UserPage.vue'
 import UserEditPage from '@/views/UserEditPage/UserEditPage.vue'
 import ItemManagePage from '@/views/ItemManagePage/ItemManagePage.vue'
 import OrderPage from '@/views/OrderPage/OrderPage.vue'
-import OrderEditPage from '@/views/OrderEditPage/OrderEditPage.vue'
 
 const routes: RouteRecordRaw[] = [
     {path: '/', name: 'home', component: HomePage},
@@ -29,7 +28,6 @@ const routes: RouteRecordRaw[] = [
     {path: '/item/manage', name: 'item-manage', component: ItemManagePage},
 
     {path: '/order/:id', name: 'order', component: OrderPage},
-    {path: '/order/:id/edit', name: 'order-edit', component: OrderEditPage},
 ]
 
 const router = createRouter({

@@ -23,7 +23,6 @@ import java.util.List;
 public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements ItemService {
     private final ItemMapper itemMapper;
     private final ImageMapper imageMapper;
-    private final TagMapper tagMapper;
     private final FileClient fileClient;
 
     @Override
@@ -57,16 +56,6 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
             imageMapper.insert(image);
         }
 
-        tagMapper.delete(new LambdaQueryWrapper<Tag>().eq(Tag::getItemId, itemId));
-        List<String> tags = formVO.getTags();
-        for (int index = 0; index < tags.size(); index++) {
-            Tag tag = new Tag();
-            tag.setItemId(itemId);
-            tag.setName(tags.get(index));
-            tag.setOrderIndex(index);
-            tagMapper.insert(tag);
-        }
-
         return true;
     }
 
@@ -97,16 +86,9 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
                 .map(image -> fileClient.getFileURL(image.getFileId()).getBody())
                 .toList();
 
-        List<String> tags = tagMapper
-                .selectTagsByItemId(itemId)
-                .stream()
-                .map(Tag::getName)
-                .toList();
-
         ItemVO vo = new ItemVO();
         BeanUtils.copyProperties(item, vo);
         vo.setImages(images);
-        vo.setTags(tags);
         vo.setIsSeller(item.getUserId().equals(userId));
 
         return vo;

@@ -7,14 +7,13 @@ import java.util.List;
 @Data
 public class ItemEditFormVO {
     private Integer stateCode;
+    private Integer deliveryMethodCode;
+
+    private Double price;
+    private Double postage;
 
     private String name;
-    private Double price;
     private String description;
-    private Integer postage;
-    private Integer returnPeriod;
-    private Integer deliveryPeriod;
 
     private List<Long> images;
-    private List<String> tags;
 }

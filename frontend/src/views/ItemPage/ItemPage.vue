@@ -34,24 +34,6 @@
                 <div class="description" v-if="!loading">{{ itemVO.description || '暂无描述' }}</div>
                 <el-skeleton v-else :rows="5" animated/>
               </div>
-
-              <div class="section-card">
-                <h3 class="section-title">商品标签</h3>
-                <div v-if="!loading" class="tags-wrapper">
-                  <template v-if="itemVO.tags && itemVO.tags.length">
-                    <el-tag
-                        v-for="t in itemVO.tags"
-                        :key="t"
-                        size="small"
-                        type="info"
-                        class="tag-item"
-                    >{{ t }}
-                    </el-tag>
-                  </template>
-                  <span v-else class="empty-text">暂无标签</span>
-                </div>
-                <el-skeleton v-else :rows="1" animated/>
-              </div>
             </div>
 
             <!-- 右侧：核心信息 -->
@@ -103,6 +85,7 @@
                 <div class="price-row" v-if="!loading">
                   <span class="currency">¥</span>
                   <span class="amount">{{ formatPrice(itemVO.price) }}</span>
+                  <span class="shipping-text" v-if="itemVO.deliveryMethodCode !== undefined">{{ shippingInline }}</span>
                   <el-tag v-if="itemVO.stateCode ===0" size="small" type="warning" effect="light">已下架</el-tag>
                 </div>
                 <div v-else class="price-skeleton">
@@ -136,17 +119,6 @@
                   </el-button>
                   <el-button @click="shareItem">分享</el-button>
                   <el-button type="warning" @click="reportItem" plain>举报</el-button>
-                </div>
-
-                <!-- 新增：整合 物流与售后 -->
-                <div class="logistics-section">
-                  <h3 class="section-title">物流与售后</h3>
-                  <el-descriptions :column="1" border v-if="!loading">
-                    <el-descriptions-item label="发货时间">{{ itemVO.deliveryPeriod || '——' }}</el-descriptions-item>
-                    <el-descriptions-item label="运费说明">{{ itemVO.postage || '——' }}</el-descriptions-item>
-                    <el-descriptions-item label="退换政策">{{ itemVO.returnPeriod || '——' }}</el-descriptions-item>
-                  </el-descriptions>
-                  <el-skeleton v-else :rows="3" animated/>
                 </div>
               </div>
 
@@ -268,17 +240,15 @@ async function shareItem() {
   }
 }
 
-async function reportItem() {
+function reportItem() {
   if (loading.value) return
-  try {
-    await ElMessageBox.confirm('确认举报该商品？', '举报', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    })
+  ElMessageBox.confirm('确认举报该商品？', '举报', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
     ElMessage.success('已提交举报')
-  } catch {
-  }
+  }).catch(() => {})
 }
 
 function toggleFollow() {
@@ -298,6 +268,16 @@ function goSeller() {
 function goBack() {
   router.back()
 }
+
+const shippingInline = computed(() => {
+  const code = itemVO.value.deliveryMethodCode
+  switch (code) {
+    case 0: return '（自取）'
+    case 1: return '（包邮）'
+    case 2: return `（邮费 ¥${formatPrice(itemVO.value.postage)}）`
+    default: return ''
+  }
+})
 
 watch(itemId, fetchData)
 onMounted(fetchData)
@@ -361,21 +341,6 @@ onMounted(fetchData)
   white-space: pre-wrap;
 }
 
-.tags-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tag-item {
-  border-radius: 8px;
-}
-
-.empty-text {
-  color: #888;
-  font-size: 14px;
-}
-
 .info-card {
   display: flex;
   flex-direction: column;
@@ -397,6 +362,7 @@ onMounted(fetchData)
   font-weight: 700;
   background: linear-gradient(135deg, #667eea, #764ba2);
   -webkit-background-clip: text;
+  background-clip: text; /* 标准属性补充 */
   color: transparent;
 }
 
@@ -469,11 +435,11 @@ onMounted(fetchData)
   margin-top: 4px;
 }
 
-.logistics-section {
-  border-top: 1px solid #f0f2f5;
-  padding-top: 8px;
-  margin-top: 4px;
-}
+/* 新增运费小字样式 */
+.shipping-text { font-size:14px; font-weight:400; margin-left:8px; color:#8a92a0; }
+
+/* 移除物流信息表格样式 */
+.logistics-section { display:none; }
 
 @media (max-width: 1100px) {
   .content-grid {

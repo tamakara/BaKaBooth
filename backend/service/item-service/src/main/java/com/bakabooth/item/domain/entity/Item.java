@@ -21,23 +21,21 @@ public class Item {
     @TableField(value = "state_code")
     private Integer stateCode;
 
-    @TableField(value = "name")
-    private String name;
+    // 0-无需邮寄, 1-包邮, 2-固定邮费
+    @TableField(value = "delivery_method_code")
+    private Integer deliveryMethodCode;
 
     @TableField(value = "price")
     private Double price;
 
+    @TableField(value = "postage")
+    private Double postage;
+
+    @TableField(value = "name")
+    private String name;
+
     @TableField(value = "description")
     private String description;
-
-    @TableField(value = "postage")
-    private Integer postage;
-
-    @TableField(value = "return_period")
-    private Integer returnPeriod;
-
-    @TableField(value = "delivery_period")
-    private Integer deliveryPeriod;
 
     @TableField(value = "favorites")
     private Long favorites;

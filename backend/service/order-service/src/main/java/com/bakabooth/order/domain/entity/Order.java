@@ -24,10 +24,6 @@ public class Order {
     @TableField(value = "state_code")
     private Integer stateCode;
 
-    // 0 - 未支付
-    @TableField(value = "pay_id")
-    private Long payId;
-
     @TableField(value = "pay_amount")
     private Double payAmount;
 
