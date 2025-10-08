@@ -10,7 +10,6 @@ CREATE TABLE `order`
     `user_id`           BIGINT  NOT NULL,
     `item_id`           BIGINT  NOT NULL,
     `state_code`        INTEGER NOT NULL,
-    `pay_id`            BIGINT    DEFAULT NULL,
     `pay_amount`        DOUBLE    DEFAULT NULL,
     `created_at`        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `delivery_at`       TIMESTAMP DEFAULT NULL,

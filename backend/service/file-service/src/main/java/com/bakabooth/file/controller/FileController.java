@@ -17,12 +17,8 @@ public class FileController {
     @Operation(summary = "上传文件")
     @PostMapping("/upload")
     public ResponseEntity<Long> upload(
-            @RequestHeader(name = "X-USER-ID") Long userId,
             @RequestParam("file") MultipartFile file
     ) {
-        if (userId != 0) {
-            throw new RuntimeException("仅管理员可上传文件");
-        }
         Long fileId = fileService.upload(file);
         return ResponseEntity.ok(fileId);
     }

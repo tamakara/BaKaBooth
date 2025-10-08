@@ -33,7 +33,19 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         item.setFavorites(0L);
         item.setUserId(userId);
         itemMapper.insert(item);
-        return item.getId();
+
+        Long itemId = item.getId();
+
+        List<Long> images = formVO.getImages();
+        for (int index = 0; index < images.size(); index++) {
+            Image image = new Image();
+            image.setItemId(itemId);
+            image.setFileId(images.get(index));
+            image.setOrderIndex(index);
+            imageMapper.insert(image);
+        }
+
+        return itemId;
     }
 
     @Override
