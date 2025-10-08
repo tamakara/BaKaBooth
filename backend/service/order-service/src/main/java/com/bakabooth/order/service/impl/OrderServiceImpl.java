@@ -1,6 +1,7 @@
 package com.bakabooth.order.service.impl;
 
 import com.bakabooth.common.client.ItemClient;
+import com.bakabooth.common.domain.vo.ItemVO;
 import com.bakabooth.order.domain.entity.Order;
 import com.bakabooth.order.domain.vo.OrderVO;
 import com.bakabooth.order.mapper.OrderMapper;
@@ -29,14 +30,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new RuntimeException("商品已被购买");
         }
 
-        itemClient.lockItem(itemId);
+        ItemVO itemVO = itemClient.getItemVO(itemId).getBody();
+        if (itemVO == null) {
+            throw new RuntimeException("商品不存在");
+        }
 
         Order order = new Order();
         order.setUserId(userId);
         order.setItemId(itemId);
         order.setStateCode(1);
+        order.setPayAmount(itemVO.getPrice() + (itemVO.getDeliveryMethodCode() == 2 ? itemVO.getPostage() : 0.0));
         orderMapper.insert(order);
 
+        itemClient.lockItem(itemId);
         return order.getId();
     }
 

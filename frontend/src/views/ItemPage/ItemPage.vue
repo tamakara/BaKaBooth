@@ -258,7 +258,7 @@ async function handleBuy() {
   try {
     pageLoading.value = true
     const orderId = await createOrder(Number(itemId.value))
-    await router.push({name: 'order-edit', params: {id: orderId}})
+    await router.push({name: 'order', params: {id: orderId}})
   } catch {
     ElMessage.error('创建订单失败')
   } finally {

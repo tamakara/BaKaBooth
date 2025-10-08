@@ -10,8 +10,9 @@ public class OrderVO {
     private Long userId;
     private Long itemId;
     private Integer stateCode;
-    private Long payId;
+
     private Double payAmount;
+
     private Instant createdAt;
     private Instant payAt;
     private Instant deliveryAt;

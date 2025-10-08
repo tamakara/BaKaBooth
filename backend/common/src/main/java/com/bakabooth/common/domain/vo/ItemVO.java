@@ -1,4 +1,4 @@
-package com.bakabooth.item.domain.vo;
+package com.bakabooth.common.domain.vo;
 
 import lombok.Data;
 
