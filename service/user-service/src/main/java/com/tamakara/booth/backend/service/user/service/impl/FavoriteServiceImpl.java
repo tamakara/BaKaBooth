@@ -1,0 +1,41 @@
+package com.tamakara.booth.backend.service.user.service.impl;
+
+import com.tamakara.booth.backend.service.user.domain.entity.Favorite;
+import com.tamakara.booth.backend.service.user.mapper.FavoriteMapper;
+import com.tamakara.booth.backend.service.user.service.FavoriteService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite> implements FavoriteService {
+
+    @Override
+    public Long getFavoriteCount(Long userId, Long itemId) {
+        return count(new LambdaQueryWrapper<Favorite>().eq(Favorite::getUserId, userId).eq(Favorite::getItemId, itemId));
+    }
+
+    @Override
+    public void favorite(Long userId, Long itemId) {
+        Favorite favorite = lambdaQuery().eq(Favorite::getUserId, userId).eq(Favorite::getItemId, itemId).one();
+
+        if (favorite == null)
+            save(new Favorite(userId, itemId));
+    }
+
+    @Override
+    public void unfavorite(Long userId, Long itemId) {
+        Favorite favorite = lambdaQuery().eq(Favorite::getUserId, userId).eq(Favorite::getItemId, itemId).one();
+
+        if (favorite != null)
+            removeById(favorite.getId());
+    }
+
+    @Override
+    public Boolean isFavorite(Long userId, Long itemId) {
+        return exists(new LambdaQueryWrapper<Favorite>().eq(Favorite::getUserId, userId).eq(Favorite::getItemId, itemId));
+    }
+
+}
