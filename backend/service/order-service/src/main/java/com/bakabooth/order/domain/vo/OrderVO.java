@@ -1,5 +1,6 @@
 package com.bakabooth.order.domain.vo;
 
+import com.bakabooth.order.domain.pojo.OrderState;
 import lombok.Data;
 
 import java.time.Instant;
@@ -7,19 +8,19 @@ import java.time.Instant;
 @Data
 public class OrderVO {
     private Long id;
-    private Long userId;
     private Long itemId;
-    private Integer stateCode;
+    private Long sellerId;
+    private OrderState orderState;
 
     private Double payAmount;
 
     private Instant createdAt;
     private Instant payAt;
-    private Instant deliveryAt;
-    private Instant receiveAt;
-    private Instant finishAt;
-    private Instant returnRequestAt;
-    private Instant returnAt;
+    private Instant shippedAt;
+    private Instant completedAt;
+
+    private Instant refundRequestAt;
     private Instant refundAt;
-    private Instant returnFinishAt;
+
+    private Instant cancelledAt;
 }

@@ -11,13 +11,11 @@ public class User {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    // 0 - 下线, 1 - 在线 ,2 - 已注销, 3 - 禁用
-    @TableField(value = "user_state_code")
-    private Integer userStateCode;
+    @TableField(value = "is_online")
+    private Boolean isOnline;
 
-    // 0 - 关店, 1 - 营业, 2 - 禁用
-    @TableField(value = "shop_state_code")
-    private Integer shopStateCode;
+    @TableField(value = "is_open")
+    private Boolean isOpen;
 
     @TableField(value = "phone")
     private String phone;
@@ -40,6 +38,9 @@ public class User {
     @TableField(value = "avatar_file_id")
     private Long avatarFileId;
 
+    @TableField(value = "balance")
+    private Double balance;
+
     @TableField(value = "created_at")
     private Instant createdAt;
 
@@ -49,12 +50,13 @@ public class User {
     public User() {
         this.phone = "";
         this.password = "";
-        this.userStateCode = 0;
-        this.shopStateCode = 0;
+        this.isOnline = false;
+        this.isOpen = false;
         this.username = "";
         this.introduction = "";
         this.announcement = "";
         this.followers = 0L;
         this.avatarFileId = 1L;
+        this.balance = 0.0;
     }
 }

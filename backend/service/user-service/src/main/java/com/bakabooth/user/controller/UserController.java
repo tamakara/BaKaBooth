@@ -40,4 +40,15 @@ public class UserController {
         UserVO userVO = userService.getUserVO(userId, sellerId);
         return ResponseEntity.ok(userVO);
     }
+
+    @Operation(summary = "支付")
+    @PostMapping("/pay")
+    public ResponseEntity<Boolean> pay(
+            @RequestHeader("X-USER-ID") Long userId,
+            @RequestParam("sellerId") Long sellerId,
+            @RequestParam("amount") Double amount
+    ) {
+        Boolean result = userService.pay(userId, sellerId, amount);
+        return ResponseEntity.ok(result);
+    }
 }

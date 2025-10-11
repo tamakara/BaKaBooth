@@ -1,5 +1,6 @@
 package com.bakabooth.item.domain.entity;
 
+import com.bakabooth.item.domain.pojo.ItemState;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -17,9 +18,8 @@ public class Item {
     @TableField(value = "user_id")
     private Long userId;
 
-    // 0-已删除, 1-草稿, 2-在售, 3-已下架, 4-锁定, 5-已售出
-    @TableField(value = "state_code")
-    private Integer stateCode;
+    @TableField(value = "item_state")
+    private ItemState itemState;
 
     // 0-无需邮寄, 1-包邮, 2-固定邮费
     @TableField(value = "delivery_method_code")

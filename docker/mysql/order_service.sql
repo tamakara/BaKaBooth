@@ -6,10 +6,10 @@ FLUSH PRIVILEGES;
 USE order_service_db;
 CREATE TABLE `order`
 (
-    `id`                BIGINT  NOT NULL AUTO_INCREMENT,
-    `user_id`           BIGINT  NOT NULL,
-    `item_id`           BIGINT  NOT NULL,
-    `state_code`        INTEGER NOT NULL,
+    `id`                BIGINT      NOT NULL AUTO_INCREMENT,
+    `seller_id`         BIGINT      NOT NULL,
+    `item_id`           BIGINT      NOT NULL,
+    `order_state`       VARCHAR(20) NOT NULL,
     `pay_amount`        DOUBLE    DEFAULT NULL,
     `created_at`        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `pay_at`            TIMESTAMP DEFAULT NULL,

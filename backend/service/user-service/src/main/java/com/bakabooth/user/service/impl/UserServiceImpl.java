@@ -65,9 +65,31 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         vo.setIsCurrentUser(sellerId.equals(userId));
         if (!vo.getIsCurrentUser()) {
             vo.setPhone(null);
+            vo.setBalance(null);
             vo.setCreatedAt(null);
         }
 
         return vo;
+    }
+
+    @Override
+    @Transactional
+    public Boolean pay(Long userId, Long sellerId, Double amount) {
+        User user = userMapper.selectById(userId);
+        User seller = userMapper.selectById(sellerId);
+        if (user == null || seller == null) {
+            throw new RuntimeException("用户不存在");
+        }
+
+        if (user.getBalance() < amount) {
+            throw new RuntimeException("余额不足");
+        }
+
+        user.setBalance(user.getBalance() - amount);
+        seller.setBalance(seller.getBalance() + amount);
+        userMapper.updateById(user);
+        userMapper.updateById(seller);
+
+        return true;
     }
 }

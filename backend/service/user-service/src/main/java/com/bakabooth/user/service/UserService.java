@@ -12,4 +12,6 @@ public interface UserService extends IService<User> {
     String register(RegisterFormDTO registerFormDTO);
 
     UserVO getUserVO(Long userId, Long sellerId);
+
+    Boolean pay(Long userId, Long sellerId, Double amount);
 }

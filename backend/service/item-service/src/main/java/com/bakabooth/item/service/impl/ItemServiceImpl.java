@@ -2,6 +2,7 @@ package com.bakabooth.item.service.impl;
 
 import com.bakabooth.common.client.FileClient;
 import com.bakabooth.item.domain.entity.*;
+import com.bakabooth.item.domain.pojo.ItemState;
 import com.bakabooth.item.domain.vo.ItemEditFormVO;
 import com.bakabooth.item.domain.vo.ItemPageVO;
 import com.bakabooth.item.domain.vo.ItemQueryFormVO;
@@ -114,18 +115,18 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
 
         if (formVO.getSellerId() == 0) {
             // 获取所有在售商品
-            wrapper.eq(Item::getStateCode, 2);
+            wrapper.eq(Item::getItemState, ItemState.ON_SALE);
         } else if (formVO.getSellerId().equals(userId)) {
             // 获取自己的特定状态商品
             wrapper
-                    .ne(Item::getStateCode, 0)
+                    .ne(Item::getItemState, ItemState.DELETED)
                     .eq(Item::getUserId, formVO.getSellerId())
-                    .eq(formVO.getStateCode() != null, Item::getStateCode, formVO.getStateCode());
+                    .eq(formVO.getItemState() != ItemState.ALL, Item::getItemState, formVO.getItemState());
         } else {
             // 获取他人的在售商品
             wrapper.
                     eq(Item::getUserId, formVO.getSellerId()).
-                    eq(Item::getStateCode, 1);
+                    eq(Item::getItemState, ItemState.ON_SALE);
         }
 
         itemMapper.selectPage(page, wrapper);
@@ -149,16 +150,16 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         if (!userId.equals(item.getUserId())) {
             throw new RuntimeException("没有权限");
         }
-        if (item.getStateCode() == 2) {
+        if (item.getItemState() == ItemState.OFF_SHELF) {
             return true;
         }
-        if (item.getStateCode() != 1) {
+        if (item.getItemState() != ItemState.ON_SALE) {
             throw new RuntimeException("商品状态异常");
         }
 
         lambdaUpdate()
                 .eq(Item::getUserId, userId)
-                .set(Item::getStateCode, 1);
+                .set(Item::getItemState, ItemState.OFF_SHELF);
 
         return true;
     }
@@ -170,16 +171,16 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         if (!userId.equals(item.getUserId())) {
             throw new RuntimeException("没有权限");
         }
-        if (item.getStateCode() == 1) {
+        if (item.getItemState() == ItemState.ON_SALE) {
             return true;
         }
-        if (item.getStateCode() != 2) {
+        if (item.getItemState() != ItemState.OFF_SHELF) {
             throw new RuntimeException("商品状态异常");
         }
 
         lambdaUpdate()
                 .eq(Item::getUserId, userId)
-                .set(Item::getStateCode, 2);
+                .set(Item::getItemState, ItemState.ON_SALE);
 
         return null;
     }
@@ -188,10 +189,10 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
     @Transactional
     public Boolean lockItem(Long itemId) {
         Item item = itemMapper.selectById(itemId);
-        if (item.getStateCode() != 2) {
+        if (item.getItemState() != ItemState.ON_SALE) {
             throw new RuntimeException("商品状态异常");
         }
-        item.setStateCode(4);
+        item.setItemState(ItemState.RESERVED);
         updateById(item);
         return true;
     }

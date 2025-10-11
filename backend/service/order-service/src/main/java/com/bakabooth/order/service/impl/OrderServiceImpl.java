@@ -3,6 +3,7 @@ package com.bakabooth.order.service.impl;
 import com.bakabooth.common.client.ItemClient;
 import com.bakabooth.common.domain.vo.ItemVO;
 import com.bakabooth.order.domain.entity.Order;
+import com.bakabooth.order.domain.pojo.OrderState;
 import com.bakabooth.order.domain.vo.OrderVO;
 import com.bakabooth.order.mapper.OrderMapper;
 import com.bakabooth.order.service.OrderService;
@@ -24,7 +25,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     public Long createOrder(Long userId, Long itemId) {
         boolean sold = exists(new LambdaQueryWrapper<Order>()
                 .eq(Order::getItemId, itemId)
-                .ne(Order::getStateCode, 0)
+                .ne(Order::getOrderState, OrderState.CANCELLED)
         );
         if (sold) {
             throw new RuntimeException("商品已被购买");
@@ -36,9 +37,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
 
         Order order = new Order();
-        order.setUserId(userId);
         order.setItemId(itemId);
-        order.setStateCode(1);
+        order.setSellerId(userId);
+
+        order.setOrderState(OrderState.CREATED);
         order.setPayAmount(itemVO.getPrice() + (itemVO.getDeliveryMethodCode() == 2 ? itemVO.getPostage() : 0.0));
         orderMapper.insert(order);
 
